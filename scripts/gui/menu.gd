@@ -57,6 +57,9 @@ var icons_personality = {
 
 func reset():
 	var file = File.new()
+	if game_instance!=null:
+		game_instance.queue_free()
+		game_instance = null
 	active = false
 	_close(true)
 	contacts.clear()
@@ -94,6 +97,7 @@ func reset():
 	$Left/ScrollContainer/VBoxContainer/Button9.hide()
 	$Left/ScrollContainer/VBoxContainer/Button10.hide()
 	$Left/ScrollContainer/VBoxContainer/Button11.show()
+	Music.play_default()
 
 func _start_new_game(name=null):
 	var timer = Timer.new()
