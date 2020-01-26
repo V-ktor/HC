@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/392408__patricklieberkind__time-slow-down.wav-85d8d7eee5e2524f78b0e933e10f5255.sample"
+
+[deps]
+
+source_file="res://sounds/392408__patricklieberkind__time-slow-down.wav"
+dest_files=[ "res://.import/392408__patricklieberkind__time-slow-down.wav-85d8d7eee5e2524f78b0e933e10f5255.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,35 @@
+,en
+_TRUE,true
+_FALSE,false
+ENEMY_ADACENT,enemy adjacent
+HOSTILE_PROGRAM_ADJACENT,hostile program adjacent
+ALL_NODES,all nodes
+ENEMY_NODES,enemy nodes
+CONTROLED_NODES,controled nodes
+ANTI_VIRUS,Anti Virus
+ANTI_VIRUS_COMMENT_1,"Basic defence program that protects the local node."
+ANTI_VIRUS_COMMENT_2,"Attack only when necessary."
+PULSE,Pulse
+PULSE_COMMENT_1,"Basic offence program that attacks all neighboring nodes."
+PULSE_COMMENT_2,"Attack a random hostile node as long as there is one available."
+WAVE,Wave
+WAVE_COMMENT_1,"Offence program that attacks all neighboring nodes."
+WAVE_COMMENT_2,"Connect to all adjacent enemies."
+WAVE_COMMENT_3,"Attack and disconnect!"
+FIRE_WALL,Fire Wall
+FIRE_WALL_COMMENT_1,"Defensive program that protects it's node while hostile nodes are adjacent."
+FIRE_WALL_COMMENT_2,"Only activate the defence while hostile programs are nearby."
+PHALANX,Phalanx
+PHALANX_COMMENT_1,"Perform defensive operations while engaged, attack a random node otherwise."
+PHALANX_COMMENT_2,"Hold node if needed, then defend if a hostile program is nearby, else attack."
+PHALANX_COMMENT_3,"Wait and repeat."
+WORM,Worm
+WORM_COMMENT_1,"Attacks random hostile nodes and makes copies of itself."
+WORM_COMMENT_2,"Attack a random hostile node."
+WORM_COMMENT_3,"Make a copy."
+WORM_COMMENT_4,"Move to another node."
+AGENT,Agent
+AGENT_COMMENT_1,"Attacks all neighboring nodes and move to another node if no valid targets nearby."
+AGENT_COMMENT_2,"Attack a random hostile node as long as there is one available."
+AGENT_COMMENT_3,"Move on."
+

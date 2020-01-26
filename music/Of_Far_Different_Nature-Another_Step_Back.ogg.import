@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Of_Far_Different_Nature-Another_Step_Back.ogg-262419000cb773874d14a6094016f338.oggstr"
+
+[deps]
+
+source_file="res://music/Of_Far_Different_Nature-Another_Step_Back.ogg"
+dest_files=[ "res://.import/Of_Far_Different_Nature-Another_Step_Back.ogg-262419000cb773874d14a6094016f338.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

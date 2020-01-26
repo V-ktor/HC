@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/tribal_chaos.ogg-3e7a1562158e92661d1affa49bb49089.oggstr"
+
+[deps]
+
+source_file="res://music/tribal_chaos.ogg"
+dest_files=[ "res://.import/tribal_chaos.ogg-3e7a1562158e92661d1affa49bb49089.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

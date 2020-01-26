@@ -1,0 +1,12 @@
+,en
+LOG_HACK_SUCCESS,"Succesfully hacked %s."
+LOG_HACK_FAILED,"Hacking attempt on %s failed."
+LOG_NEW_PROGRAM_ACQUIRED,"Acquired the %s program."
+LOG_PROGRAM_DECOMPLIED,"Learned the %s program."
+LOG_COMMAND_LEARNED,"Learned the %s command."
+LOG_WELCOME,"Welcome!"
+LOG_MET_AI,"You made acquaintance with an AI that claims to belong to you."
+LOG_HACKED_LOCAL_HOST,"I hacked 127.0.0.1"
+LOG_HARD_WORK,"Hard work"
+LOG_CONTINUE,"I need to hack as many systems as possible."
+

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/152322__deleted-user-1941307__heavy-beam-weapon.wav-6ac0abad6132e0f5169ce808f3fc72e6.sample"
+
+[deps]
+
+source_file="res://sounds/152322__deleted-user-1941307__heavy-beam-weapon.wav"
+dest_files=[ "res://.import/152322__deleted-user-1941307__heavy-beam-weapon.wav-6ac0abad6132e0f5169ce808f3fc72e6.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

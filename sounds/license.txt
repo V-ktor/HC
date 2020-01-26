@@ -1,0 +1,44 @@
+346425__soneproject__ecofuture3.wav:
+Copyright: soneproject
+License: CC-BY 3.0
+
+392408__patricklieberkind__time-slow-down.wav:
+Copyright: PatrickLieberkind
+License: CC-BY 3.0
+
+27565__suonho__memorymoon-cyborga.wav, 27568__suonho__memorymoon-space-blaster-plays.wav:
+Copyright: suonho
+License: CC-BY 3.0
+
+209579__pcruzn__windy-transition.wav:
+Copyright: pcruzn
+License: CC-BY 3.0
+
+288956__littlerobotsoundfactory__click-electronic-04.wav, 288955__littlerobotsoundfactory__click-electronic-05.wav, 288965__littlerobotsoundfactory__click-electronic-13.wav:
+Copyright: LittleRobotSoundFactory
+License: CC-BY 3.0
+
+238367__stewdio2003__cp-power-down01.wav:
+Copyright: stewdio2003
+License: CC0
+
+194312__soundmatch24__laser-gun-cannon-shot.wav:
+Copyright: soundmatch24
+License: CC0
+
+245731__noirenex__teleport.wav:
+Copyright: noirenex
+License: CC0
+
+30935__aust-paul__possiblelazer.wav:
+Copyright: aust_paul
+License: CC0
+
+364935__cabled-mess__loading-energy-basic-retro-sci-fi-dry.wav:
+Copyright: cabled_mess
+License: CC0
+
+152322__deleted-user-1941307__heavy-beam-weapon.wav:
+Copyright: deleted_user_1941307
+License: CC0
+

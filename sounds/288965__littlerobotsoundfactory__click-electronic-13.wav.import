@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/288965__littlerobotsoundfactory__click-electronic-13.wav-c09a62b17bb5eb2f69c3ba1549d5fd03.sample"
+
+[deps]
+
+source_file="res://sounds/288965__littlerobotsoundfactory__click-electronic-13.wav"
+dest_files=[ "res://.import/288965__littlerobotsoundfactory__click-electronic-13.wav-c09a62b17bb5eb2f69c3ba1549d5fd03.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

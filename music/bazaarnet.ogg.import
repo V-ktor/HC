@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/bazaarnet.ogg-efca99254b34a9b1b82e097d86cea5db.oggstr"
+
+[deps]
+
+source_file="res://music/bazaarnet.ogg"
+dest_files=[ "res://.import/bazaarnet.ogg-efca99254b34a9b1b82e097d86cea5db.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

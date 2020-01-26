@@ -1,0 +1,150 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://scripts/gui/node.gd" type="Script" id=1]
+[ext_resource path="res://images/nodes/base.png" type="Texture" id=2]
+[ext_resource path="res://scripts/gui/node_input.gd" type="Script" id=3]
+[ext_resource path="res://images/nodes/select.png" type="Texture" id=4]
+[ext_resource path="res://images/nodes/control1.png" type="Texture" id=5]
+[ext_resource path="res://images/nodes/control2.png" type="Texture" id=6]
+[ext_resource path="res://images/nodes/control3.png" type="Texture" id=7]
+[ext_resource path="res://images/gui/control.png" type="Texture" id=8]
+
+[sub_resource type="Animation" id=1]
+resource_name = "rotate"
+length = 4.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite1:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ),
+"transitions": PoolRealArray( 2, 2, 2, 2, 2, 2, 2, 2, 1 ),
+"update": 0,
+"values": [ Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite2:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ),
+"transitions": PoolRealArray( 2, 2, 2, 2, 2, 2, 2, 2, 1 ),
+"update": 0,
+"values": [ Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite3:offset")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ),
+"transitions": PoolRealArray( 2, 2, 2, 2, 2, 2, 2, 2, 1 ),
+"update": 0,
+"values": [ Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sprite4:offset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ),
+"transitions": PoolRealArray( 2, 2, 2, 2, 2, 2, 2, 2, 1 ),
+"update": 0,
+"values": [ Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ), Vector2( -52, -52 ), Vector2( -44, -44 ) ]
+}
+
+[node name="Node" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+script = ExtResource( 3 )
+
+[node name="Select" type="Node2D" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+
+[node name="Sprite1" type="Sprite" parent="Select"]
+texture = ExtResource( 4 )
+offset = Vector2( -44, -44 )
+
+[node name="Sprite2" type="Sprite" parent="Select"]
+rotation = 1.5708
+texture = ExtResource( 4 )
+offset = Vector2( -44, -44 )
+
+[node name="Sprite3" type="Sprite" parent="Select"]
+rotation = 3.14159
+texture = ExtResource( 4 )
+offset = Vector2( -44, -44 )
+
+[node name="Sprite4" type="Sprite" parent="Select"]
+rotation = 4.71239
+texture = ExtResource( 4 )
+offset = Vector2( -44, -44 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Select"]
+autoplay = "rotate"
+anims/rotate = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="Select"]
+
+[node name="Control1" type="TextureProgress" parent="."]
+margin_left = -48.0
+margin_top = -48.0
+margin_right = 48.0
+margin_bottom = 48.0
+mouse_filter = 2
+max_value = 50.0
+texture_progress = ExtResource( 5 )
+fill_mode = 4
+
+[node name="Control2" type="TextureProgress" parent="."]
+visible = false
+margin_left = -48.0
+margin_top = -48.0
+margin_right = 48.0
+margin_bottom = 48.0
+mouse_filter = 2
+texture_progress = ExtResource( 6 )
+fill_mode = 4
+
+[node name="Control3" type="TextureProgress" parent="."]
+visible = false
+margin_left = -48.0
+margin_top = -48.0
+margin_right = 48.0
+margin_bottom = 48.0
+mouse_filter = 2
+texture_progress = ExtResource( 7 )
+fill_mode = 4
+
+[node name="Control" type="TextureProgress" parent="."]
+margin_left = -48.0
+margin_top = -48.0
+margin_right = 48.0
+margin_bottom = 48.0
+mouse_filter = 2
+texture_progress = ExtResource( 8 )
+fill_mode = 4
+

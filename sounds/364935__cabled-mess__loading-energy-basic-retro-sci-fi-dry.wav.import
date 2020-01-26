@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/364935__cabled-mess__loading-energy-basic-retro-sci-fi-dry.wav-0783ba4c164a19efd519d1b9a32876a4.sample"
+
+[deps]
+
+source_file="res://sounds/364935__cabled-mess__loading-energy-basic-retro-sci-fi-dry.wav"
+dest_files=[ "res://.import/364935__cabled-mess__loading-energy-basic-retro-sci-fi-dry.wav-0783ba4c164a19efd519d1b9a32876a4.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

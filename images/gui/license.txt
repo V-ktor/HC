@@ -1,0 +1,8 @@
+charm.png, cunning.png, eye.png, focus.png, magnifying_glass.png:
+Copyright: Lorc
+License: CC-BY 3.0
+
+*:
+Copyright: Viktor Hahn
+License: CC0
+

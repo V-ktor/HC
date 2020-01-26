@@ -1,0 +1,137 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://images/gui/chat_bg/shape1.png" type="Texture" id=1]
+[ext_resource path="res://fonts/TechBreak.png" type="Texture" id=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform sampler2D mask;
+uniform vec4 color_dark : hint_color;
+uniform vec4 color_light : hint_color;
+uniform float phi;
+uniform float speed = 1.0;
+uniform float width = 1.0;
+
+void fragment()
+{
+	vec2 uv = 4.0*mat2(vec2(cos(phi),sin(-phi)),vec2(sin(phi),cos(phi)))*(UV)*vec2(1.0,width)+vec2(0.0,speed*TIME);
+	float w = texture(mask,uv).g;
+	COLOR = color_dark*(1.0-w) + color_light*w;
+//	COLOR = vec4(UV.x,UV.y,0.0,1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/color_dark = Color( 0.0941176, 0.25098, 0.501961, 1 )
+shader_param/color_light = Color( 0.12549, 0.376471, 0.627451, 1 )
+shader_param/phi = 0.785
+shader_param/speed = 0.2
+shader_param/width = 0.8
+shader_param/mask = ExtResource( 1 )
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Sprite
+
+var delay = 0.075
+var rnd_delay = rand_range(0.2,1.0)
+var velocity = 256.0
+var color = randf()
+
+func _process(delta):
+	position += delta*Vector2(0,velocity)
+	if delay>0.0:
+		delay -= delta
+		if delay<=0.0:
+			var li = duplicate()
+			if randf()<0.1:
+				li.position = Vector2(get_parent().rect_size.x*randf(),-16*scale.x)
+				li.velocity = rand_range(128.0,256.0)
+				li.scale = rand_range(0.5,2.5)*Vector2(1,1)
+				li.color = randf()
+			else:
+				li.position = position - Vector2(0,24*scale.x)
+				li.velocity = velocity
+				li.scale = scale
+				li.color = color+0.05
+			li.frame = randi()%(hframes*vframes)
+			get_parent().add_child(li)
+	rnd_delay -= delta
+	if rnd_delay<=0.0:
+		frame = randi()%(hframes*vframes)
+		rnd_delay = rand_range(0.2,1.0)
+	if position.y>get_parent().rect_size.y+32:
+		queue_free()
+
+func _ready():
+	modulate = Color(0.4,0.5,1.0,0.75).linear_interpolate(Color(0.4,1.0,0.6,0.25),color)
+"
+
+[sub_resource type="Animation" id=4]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+
+[node name="Panel" type="Panel"]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Letter0" type="Sprite" parent="."]
+position = Vector2( 256, -16 )
+texture = ExtResource( 2 )
+hframes = 58
+script = SubResource( 3 )
+
+[node name="Letter1" type="Sprite" parent="."]
+position = Vector2( 512, -32 )
+texture = ExtResource( 2 )
+hframes = 58
+frame = 9
+script = SubResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "fade_in"
+anims/fade_in = SubResource( 4 )
+anims/fade_out = SubResource( 5 )

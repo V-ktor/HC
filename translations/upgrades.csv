@@ -1,0 +1,7 @@
+,en
+CPU_DESC,"Increase your CPU by %d."
+MEMORY_DESC,"Increase your memory by %d."
+TIME_LIMIT_DESC,"Increases yout time limit for hacks by %ds."
+COMPILER_CPU,Compiler CPU
+COMPILER_CPU_DESC,"Increase your compiler CPU by %d."
+

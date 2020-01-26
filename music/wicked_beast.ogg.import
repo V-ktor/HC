@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/wicked_beast.ogg-efac3b0a838f668ee634f569442d95b1.oggstr"
+
+[deps]
+
+source_file="res://music/wicked_beast.ogg"
+dest_files=[ "res://.import/wicked_beast.ogg-efac3b0a838f668ee634f569442d95b1.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

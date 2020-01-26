@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/27568__suonho__memorymoon-space-blaster-plays.wav-f69663a3010f4a01e893d7c1d3672a2e.sample"
+
+[deps]
+
+source_file="res://sounds/27568__suonho__memorymoon-space-blaster-plays.wav"
+dest_files=[ "res://.import/27568__suonho__memorymoon-space-blaster-plays.wav-f69663a3010f4a01e893d7c1d3672a2e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Of_Far_Different_Nature-Escape-08-Gain.ogg-dc46295df0cd3848754e7bf663afcfb9.oggstr"
+
+[deps]
+
+source_file="res://music/Of_Far_Different_Nature-Escape-08-Gain.ogg"
+dest_files=[ "res://.import/Of_Far_Different_Nature-Escape-08-Gain.ogg-dc46295df0cd3848754e7bf663afcfb9.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,96 @@
+,en
+MAIN_MENU,Main Menu
+CONTINUE,Continue
+NEW_GAME,New Game
+LOAD,Load
+SAVE,Save
+CHAT,Chat
+GEAR,Gear
+COMPILE,Compile
+CODE,Code
+DECK,Deck
+WEB,Web
+LOGIN,Login
+LOAD,Load
+SAVE,Save
+HACK,Hack
+SHUTDOWN,Shutdown
+CREDITS,Credits
+NEW_MESSAGES,new messages
+INVENTORY,Inventory
+MEMORY,Memory
+NUM_LINES,Lines
+MAX_CPU,Max. CPU
+MEAN_CPU,Mean CPU
+NEW_FILE,New File
+SAVE_FILE,Save File
+DELETE,Delete
+CHANGE_ICON,Change Icon
+ADD_COMMENT,"Add your code here."
+RESEARCH,Research
+DECOMPILE,Decompile
+COST,Cost
+TIME,Time
+DELAY,Delay
+CREDITS,Credits
+RANKING,Ranking
+STACK,Stack
+SCAN,Scan
+NODES,Nodes
+TECHS,Techs
+USERNAME,Username
+FILENAME,Filename
+INSTALLING,Installing
+RUNNING,Running
+IDLE,Idle
+CONNECTING,Connecting
+DISCONNECTED,Disconnected
+ATTACKING,Attacking
+PROTECT,Protect
+TERMINATING,Terminating
+REMAINING_TIME,%0.1fs remaining
+SHIELD,Shield
+DPS,DPS
+ATTACK,Attack
+TIMEOUT,Timeout
+DRAW,Draw
+VICTORY,Victory
+LOST,Lost
+HACK_DRAW,Hack failed!
+HACK_VICTORY,Hack succesful!
+HACK_LOST,Hack failed!
+LOG,Log
+COMMANDS,Commands
+PERSONS,Persons
+GROUPS,Groups
+COUNTRIES,Countries
+HISTORY,History
+WORLD_POPULATION,World population
+POPULATION,Population
+INFLUENCE,Influence
+DEVELOPMENT,Development
+RELATION,Relation
+RELATIONS,Relations
+LOCATION,Location
+BILLIONS,billions
+CONFIDENTIAL,"<CONFIDENTIAL>"
+TOP_SECRET,"<TOP SECRET>"
+KNOWN_COMMANDS,known commands
+STRENGTH,Strength
+RATING,Rating
+DATA,Data
+PERSONALITY,Personality
+CURIOSITY,Curiosity
+CHARISMA,Charisma
+FEAR,Fear
+FOCUS,Focus
+CUNNING,Cunning
+YES,Yes
+NO,No
+MADE_WITH_GODOT,"Made with Godot game engine."
+PROGRAMMING,Programming
+GRAPHICS,Graphics
+MUSIC,Music
+SOUNDS,Sounds
+FONTS,Fonts
+

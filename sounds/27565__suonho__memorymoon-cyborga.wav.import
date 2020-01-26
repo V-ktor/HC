@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/27565__suonho__memorymoon-cyborga.wav-48fbbf275e09ce187e70abcf9578a7b3.sample"
+
+[deps]
+
+source_file="res://sounds/27565__suonho__memorymoon-cyborga.wav"
+dest_files=[ "res://.import/27565__suonho__memorymoon-cyborga.wav-48fbbf275e09ce187e70abcf9578a7b3.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

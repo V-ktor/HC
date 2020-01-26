@@ -1,0 +1,16 @@
+Of_Far_Different_Nature-Another_Step_Back.ogg:
+Copyright: Of Far Different Nature (https://about.me/FarDifferent/)
+License: CC-BY 4.0
+
+Of_Far_Different_Nature-Escape-*:
+Copyright: Of Far Different Nature (https://fardifferent.carrd.co)
+License: CC-BY 4.0
+
+bazaarnet.ogg, crystal_space.ogg, restoration_completed.ogg, the_client.ogg:
+Copyright: maxstack (https://opengameart.org/content/freelance)
+License: CC-BY 3.0
+
+caves.ogg, currents.ogg, simulation_unknown.ogg, space_collisions.ogg, test_subject.ogg, tribal_chaos.ogg, wicked_beast.ogg:
+Copyright: tricksntraps
+License: CC0
+

@@ -1,0 +1,10 @@
+,en
+PULSE,Pulse
+PULSE_DESC,"Deal %d damage to all adjacent nodes."
+FIRE_WALL,Fire Wall
+FIRE_WALL_DESC,"Absorb %d damage for 12s."
+BEAM_CANNON,Beam Cannon
+BEAM_CANNON_DESC,"Deal %d damage per second over 4s to one node."
+ANTI_VIRUS,Anti Virus
+ANTI_VIRUS_DESC,"Heal %d damage per second over 6s."
+

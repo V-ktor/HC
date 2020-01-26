@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://images/masks/radial.png" type="Texture" id=1]
+
+[sub_resource type="Animation" id=1]
+resource_name = "fade"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.8, 1, 2 ),
+"transitions": PoolRealArray( 0.757858, 1, 1.23114, 1 ),
+"update": 0,
+"values": [ 0.01, 2.0, 2.0, 0.01 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:texture_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 0.757858, 1 ),
+"update": 0,
+"values": [ 0.25, 3.0 ]
+}
+
+[node name="Mask" type="Light2D"]
+light_mask = 1024
+texture = ExtResource( 1 )
+texture_scale = 0.25
+energy = 0.01
+range_item_cull_mask = 1024
+shadow_item_cull_mask = 1024
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "fade"
+anims/fade = SubResource( 1 )
+

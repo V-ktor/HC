@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/194312__soundmatch24__laser-gun-cannon-shot.wav-396b064298b073c0c990b35a500e07ce.sample"
+
+[deps]
+
+source_file="res://sounds/194312__soundmatch24__laser-gun-cannon-shot.wav"
+dest_files=[ "res://.import/194312__soundmatch24__laser-gun-cannon-shot.wav-396b064298b073c0c990b35a500e07ce.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0
