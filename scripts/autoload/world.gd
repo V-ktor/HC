@@ -529,7 +529,7 @@ func create_group_target(strength):
 		"agent":int(rand_range(0.125,0.5)*max(str_eff-5,0.0))
 	}
 	var cpu := int(rand_range(1.1,1.5)*strength+rand_range(0.5,3.0))
-	var credits := int(rand_range(40,50)*strength)
+	var credits := int(rand_range(40,60)*strength+rand_range(50,250))
 	var prestige := int(rand_range(3.0,3.5)*sqrt(strength))
 	var params := [5,4,max(int(rand_range(10.0,16.0)+strength*rand_range(0.1,0.2)),1),max(int(sqrt(strength)*rand_range(0.25,0.6)+rand_range(0.0,0.75)),1)]
 	var best_match := 999
