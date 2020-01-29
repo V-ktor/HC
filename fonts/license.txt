@@ -1,4 +1,4 @@
-
+kenvector_future.ttf, kenvector_future_thin.ttf:
 ###############################################################################
 
 	KenPixel & KenVector fonts by Kenney Vleugels (www.kenney.nl)
@@ -12,3 +12,7 @@
 	Credit (Kenney or www.kenney.nl) would be nice but is not mandatory.
 
 ###############################################################################
+
+TechBreak.png:
+License: CC0
+
