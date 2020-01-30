@@ -151,10 +151,17 @@ func allow_scan():
 		Menu._show_targets()
 
 func add_npc1():
-	var c = Objects.Actor.new("",Color(0.5,0.4,0.05),"","res://scenes/gui/chat_bg/.tscn",30,150,60.0,{"wave":16,"phalanx":6},0,0,128,{},0)
+	var c = Objects.Actor.new("",Color(0.5,0.4,0.05),"","res://scenes/gui/chat_bg/crypto.tscn",30,150,60.0,{"wave":16,"phalanx":6},0,0,128,{},0)
 	Objects.actors["crypto"] = c
 	Menu.contacts.push_back("crypto")
 
+func failed_communication_attempt():
+	Menu.textbox.set_portrait("res://images/gui/portraits/AI.png")
+	Menu.textbox.show_text(tr("AI_0350"))
+	Menu.textbox.show_text(tr("AI_0351"))
+	Menu.textbox.show_text(tr("AI_0352"))
+	Menu.textbox.show_text(tr("AI_0353"))
+	
 
 
 func _remove_target(victory):

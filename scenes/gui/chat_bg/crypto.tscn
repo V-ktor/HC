@@ -1,9 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://images/gui/chat_bg/shape1.png" type="Texture" id=1]
+[ext_resource path="res://images/gui/chat_bg/signal.png" type="Texture" id=1]
 [ext_resource path="res://fonts/TechBreak.png" type="Texture" id=2]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=6]
 code = "shader_type canvas_item;
 
 uniform sampler2D mask;
@@ -22,14 +22,26 @@ void fragment()
 }
 "
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
-shader_param/color_dark = Color( 0.0941176, 0.25098, 0.501961, 1 )
-shader_param/color_light = Color( 0.12549, 0.376471, 0.627451, 1 )
-shader_param/phi = 0.785
-shader_param/speed = 0.2
-shader_param/width = 0.8
+[sub_resource type="ShaderMaterial" id=7]
+shader = SubResource( 6 )
+shader_param/color_dark = Color( 0.1, 0.5, 0.15, 1 )
+shader_param/color_light = Color( 0.15, 0.4, 0.35, 1 )
+shader_param/phi = 0.393
+shader_param/speed = -0.25
+shader_param/width = 0.5
 shader_param/mask = ExtResource( 1 )
+
+[sub_resource type="Shader" id=8]
+code = "shader_type canvas_item;
+
+void fragment()
+{
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = min(2.0*COLOR.rgb,1.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 8 )
 
 [sub_resource type="GDScript" id=3]
 script/source = "extends Sprite
@@ -47,7 +59,7 @@ func _process(delta):
 			var li = duplicate()
 			if randf()<0.1:
 				li.position = Vector2(get_parent().rect_size.x*randf(),-16*scale.x)
-				li.velocity = rand_range(128.0,256.0)
+				li.velocity = rand_range(256.0,512.0)
 				li.scale = rand_range(0.5,2.5)*Vector2(1,1)
 				li.color = randf()
 			else:
@@ -60,12 +72,13 @@ func _process(delta):
 	rnd_delay -= delta
 	if rnd_delay<=0.0:
 		frame = randi()%(hframes*vframes)
-		rnd_delay = rand_range(0.2,1.0)
+		rnd_delay = rand_range(0.05,0.25)
 	if position.y>get_parent().rect_size.y+32:
 		queue_free()
 
 func _ready():
-	modulate = Color(0.4,0.5,1.0,0.75).linear_interpolate(Color(0.4,1.0,0.6,0.25),color)
+	color = round(color)
+	modulate = Color(0.1,0.5,0.15,1.0).linear_interpolate(Color(0.15,0.4,0.35,1.0),color)
 "
 
 [sub_resource type="Animation" id=4]
@@ -113,22 +126,25 @@ tracks/1/keys = {
 }
 
 [node name="Panel" type="Panel"]
-material = SubResource( 2 )
+material = SubResource( 7 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="Letter0" type="Sprite" parent="."]
+material = SubResource( 9 )
 position = Vector2( 256, -16 )
 texture = ExtResource( 2 )
 hframes = 58
+frame = 28
 script = SubResource( 3 )
 
 [node name="Letter1" type="Sprite" parent="."]
+material = SubResource( 9 )
 position = Vector2( 512, -32 )
 texture = ExtResource( 2 )
 hframes = 58
-frame = 9
+frame = 33
 script = SubResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
