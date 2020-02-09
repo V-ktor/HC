@@ -18,6 +18,7 @@ var node_selected := -1
 
 var action_button := preload("res://scenes/gui/action_button.tscn")
 var effect_tooltip := preload("res://scenes/gui/effect_tooltip.tscn")
+var click_particle := preload("res://scenes/particles/click.tscn")
 var pulse_particle := preload("res://scenes/particles/pulse.tscn")
 var connection_particle := preload("res://scenes/particles/connection.tscn")
 var fire_wall_particle := preload("res://scenes/particles/fire.tscn")
@@ -64,13 +65,7 @@ class ControlPoint:
 		check_owner()
 	
 	func has_access(player):
-		if player==owner:
-			return true
-		for p in connections:
-			for program in gamestate.nodes[p].programs:
-				if program.owner==player && program.type=="access":
-					return true
-		return false
+		return player==owner
 	
 	func check_owner():
 		var new_owner = -1
@@ -161,12 +156,13 @@ class ControlPoint:
 
 class Program:
 	var type := ""
-	var prog
+	var prgm
+	var nodes := {}
 	var owner := -1
 	var cpu : int
 	var delay : float
-	var line : int
-	var last
+	var focus : Vector2
+	var last : Vector2
 	var gamestate
 	var targets := []
 	var current_command
@@ -178,23 +174,29 @@ class Program:
 # warning-ignore:unused_class_variable
 	var particles := []
 	var tooltip
+	var status_delay := 0.0
+	var ticks := 0
 	
-	func _init(_type,_prog,_player,_ID,_gamestate,_node):
+	func _init(_type,_prgm,_player,_ID,_gamestate,_node):
 		type = _type
 		owner = _player
 		ID = _ID
 		targets = []
-		prog = _prog
+		prgm = _prgm
+		nodes = prgm.nodes
 		cpu = 0
 		gamestate = _gamestate
-		delay = 2.0
-		line = 0
-		last = -1
+		delay = 0.1
+		for p in nodes.keys():
+			if nodes[p].type=="initialize":
+				focus = p
+				break
+		last = focus
 		node = _node
-		node.get_node("VBoxContainer/Status/HBoxContainer/Label").text = tr("INSTALLING")
+		node.get_node("VBoxContainer/Status/HBoxContainer/Label").text = tr("INITIALIZE")
 		node.get_node("VBoxContainer/Status").max_value = delay
-		node.get_node("Icon").set_texture(load(prog.icon))
-		node.get_node("Code").text = tr("INSTALLING")+"\n"+tr("INSTALLING")+"\n"+tr("INSTALLING")
+		node.get_node("Icon").set_texture(load(prgm.icon))
+		node.get_node("Code").text = "\n"+tr("INITIALIZE_LINE"+str((randi()%5)+1))+"\n"+tr("INITIALIZE_LINE"+str((randi()%5)+1))
 	
 	func remove():
 		gamestate.cpu[owner] += cpu
@@ -202,7 +204,7 @@ class Program:
 		delay = 0.0
 		node.get_node("VBoxContainer/Status").value = 0
 		node.get_node("VBoxContainer/Duration").text = tr("REMAINING_TIME")%0.0
-		node.get_node("VBoxContainer/Status/HBoxContainer/Label").text = tr("TERMINATING")
+		node.get_node("VBoxContainer/Status/HBoxContainer/Label").text = tr("TERMINATE")
 		node.get_node("AnimationPlayer").play("delete")
 		for s in stack.values():
 			for p in s.particles:
@@ -220,38 +222,32 @@ class Program:
 		cpu -= stack[line].cpu
 		stack.erase(line)
 	
-# warning-ignore:shadowed_variable
-	func finish_action(line):
-		var code = prog.code[line]
+	func finish_action(pos,failed=false):
+		var current = nodes[pos]
 		for i in range(stack.size()-1,-1,-1):
-			var l = stack.keys()[i]
-			if typeof(stack[l].sustained)==TYPE_STRING && stack[l].sustained in code:
-				clear_command(l)
+			var p = stack.keys()[i]
+			if typeof(stack[p].sustained)==TYPE_STRING && stack[p].sustained==current.type:
+				clear_command(p)
 				break
-		if !stack.has(line):
+		if !stack.has(pos):
 			return
-		var cmd = stack[line].command
-		if !stack[line].sustained:
+		var cmd = stack[pos].command
+		var dir = stack[pos].dir
+		if !stack[pos].sustained && !failed:
 			if cmd=="attack":
-				var array = stack[line].args.split(" ",false)
-				if array.size()>1:
+				var array = stack[pos].args
+				if array.size()>0:
 					if targets.size()>0:
-						var dam = str2var(array[1])/targets.size()
+						var dam = array[0]/targets.size()
 						for target in targets:
 							gamestate.nodes[target].attack(owner,10*dam)
-					else:
-						var dam = str2var(array[1])
-						gamestate.nodes[ID].attack(owner,10*dam)
 			elif cmd=="protect":
-				var array = stack[line].args.split(" ",false)
-				if array.size()>1:
+				var array = stack[pos].args
+				if array.size()>0:
 					if targets.size()>0:
-						var dam = 0.5*str2var(array[1])/targets.size()
+						var dam = 0.5*array[0]/targets.size()
 						for target in targets:
 							gamestate.nodes[target].cancel_defense(owner,10*dam)
-					else:
-						var dam = 0.5*str2var(array[1])
-						gamestate.nodes[ID].cancel_defense(owner,10*dam)
 			elif cmd=="translocate":
 				var index := -1
 				var move_to = targets[randi()%targets.size()]
@@ -263,27 +259,31 @@ class Program:
 				gamestate.Main.get_node("GUI/Tooltips").remove_child(tooltip)
 				if index>=0:
 # warning-ignore:integer_division
-					var dir = 2*Vector2((index+1)%2,int(index/2))-Vector2(1,1)
-					tooltip.rect_position = dir*Vector2(192,128)
+					var d = 2*Vector2((index+1)%2,int(index/2))-Vector2(1,1)
+					tooltip.rect_position = d*Vector2(192,128)
 					tooltip.self_modulate = gamestate.colors[owner]
 					tooltip.node = gamestate.points[ID].node
 					gamestate.Main.get_node("GUI/Tooltips").add_child(tooltip)
 			elif cmd=="copy":
 				gamestate.Main.add_program(owner,type,ID)
-			clear_command(line)
+			elif cmd=="terminate":
+				stop()
+			clear_command(pos)
 	
 # warning-ignore:shadowed_variable
-	func init_command(type,desc=null,args=null):
-		var code_str := ""
+	func init_command(pos,desc=null):
+		var type = nodes[pos].type
+		var args = nodes[pos].arguments
+		var dirs = nodes[pos].dir
+		var dir := -1
 		var cpu_used := 0
 		if typeof(Programs.COMMANDS[type].cpu)==TYPE_STRING:
 			cpu_used = Programs.call(Programs.COMMANDS[type].cpu,args)
 		else:
 			cpu_used = Programs.COMMANDS[type].cpu
 		if type=="sleep":
-			var array = args.split(" ",false)
-			if array.size()>1:
-				delay = str2var(array[1])
+			if args.size()>0:
+				delay = args[0]
 			else:
 				delay = 1.0
 		elif typeof(Programs.COMMANDS[type].delay)==TYPE_STRING:
@@ -291,7 +291,6 @@ class Program:
 		else:
 			delay = Programs.COMMANDS[type].delay
 		if gamestate.cpu[owner]<cpu_used:
-#			print("Allocating "+str(cpu_used)+" cpu failed!")
 			delay = 0.1
 			node.get_node("VBoxContainer/Status/HBoxContainer/Label").text = tr("IDLE")
 			finish_action(last)
@@ -299,28 +298,164 @@ class Program:
 		cpu += cpu_used
 		gamestate.cpu[owner] -= cpu_used
 		current_command = type
-		stack[line] = {"cpu":cpu_used,"command":type,"sustained":Programs.COMMANDS[type].sustained,"args":args,"particles":[]}
+		if type=="if":
+			dir = dirs[int(1-int(evaluate_statement(args)))]
+		elif dirs.size()>0:
+			dir = dirs[0]
+		stack[pos] = {"cpu":cpu_used,"command":type,"sustained":Programs.COMMANDS[type].sustained,"args":args,"dir":dir,"particles":[]}
 		if desc!=null:
 			node.get_node("VBoxContainer/Status/HBoxContainer/Label").text = tr(desc)
+		else:
+			node.get_node("VBoxContainer/Status/HBoxContainer/Label").text = ""
 		node.get_node("VBoxContainer/Status").max_value = delay
-		for i in range(-1,2):
-			if line+i>=0 && line+i<prog.code.size():
-				code_str += prog.code[line+i]+"\n"
-			else:
-				code_str += "\n"
-		node.get_node("Code").text = code_str
+#		node.get_node("Code").text = "..."
 		finish_action(last)
-		last = line
+		goto(dir)
+		last = pos
 		return true
 	
-	func goto(new):
-		line = new
-		finish_action(last)
-		last = line
+	func goto(dir):
+		focus += Programs.get_offset(dir,focus)
+#		finish_action(last)
+		last = focus
+	
+	func skip():
+		finish_action(last,true)
+		if nodes[focus].dir.size()>0:
+			goto(nodes[focus].dir[0])
+		else:
+			stop()
 	
 	func stop():
 		gamestate.nodes[ID].remove_program(self)
 		remove()
+	
+	
+	func update(delta):
+		status_delay -= delta
+		if status_delay<=0.0:
+			var pos = node.get_node("Code").text.find("\n")
+			pos = node.get_node("Code").text.find("\n",pos+1)
+			node.get_node("Code").text = node.get_node("Code").text.insert(pos,".")
+			status_delay = 0.2
+			ticks += 1
+			if ticks>3:
+				ticks = 0
+				pos = node.get_node("Code").text.find("\n")
+				node.get_node("Code").text = node.get_node("Code").text.substr(pos+1,node.get_node("Code").text.length()-pos-1)+"\n"+tr(nodes[focus].type.to_upper()+"_LINE"+str((randi()%5)+1))
+	
+	
+	func evaluate_statement(array):
+		if array.size()==0:
+			return false
+		var type = array[0]
+		if type=="true":
+			return true
+		elif type=="false":
+			return false
+		elif type=="connected":
+			return targets.size()>0
+		elif type=="connected_enemy":
+			for target in targets:
+				if gamestate.nodes[target].owner!=owner:
+					return true
+			return false
+		elif type=="connected_controled":
+			for target in targets:
+				if gamestate.nodes[target].owner==owner:
+					return true
+			return false
+		elif type=="enemy_adjacent":
+			for p in gamestate.nodes[ID].connections:
+				if gamestate.nodes[p].owner!=owner:
+					return true
+			return false
+		elif type=="controled_adjacent":
+			for p in gamestate.nodes[ID].connections:
+				if gamestate.nodes[p].owner==owner:
+					return true
+			return false
+		elif type=="unconnected_enemy":
+			for p in gamestate.nodes[ID].connections:
+				if gamestate.nodes[p].owner!=owner && !(p in targets):
+					return true
+			return false
+		elif type=="unconnected_controled":
+			for p in gamestate.nodes[ID].connections:
+				if gamestate.nodes[p].owner==owner && !(p in targets):
+					return true
+			return false
+		elif type=="hostile_program_adjacent":
+			for p in gamestate.nodes[ID].connections:
+				for prog in gamestate.nodes[p].programs:
+					if prog.owner!=owner:
+						return true
+			return false
+		elif type==">":
+			if array.size()>2:
+				return evaluate_var(array[1])>evaluate_var(array[2])
+		elif type==">=":
+			if array.size()>2:
+				return evaluate_var(array[1])>=evaluate_var(array[2])
+		elif type=="<":
+			if array.size()>2:
+				return evaluate_var(array[1])<evaluate_var(array[2])
+		elif type=="<=":
+			if array.size()>2:
+				return evaluate_var(array[1])<=evaluate_var(array[2])
+		elif type=="==":
+			if array.size()>2:
+				return evaluate_var(array[1])==evaluate_var(array[2])
+		elif type=="!=":
+			if array.size()>2:
+				return evaluate_var(array[1])!=evaluate_var(array[2])
+		return false
+	
+	func evaluate_var(s):
+		if typeof(s)==TYPE_INT || typeof(s)==TYPE_REAL:
+			return s
+		elif typeof(s)==TYPE_STRING:
+			if s=="cpu":
+				return gamestate.cpu[owner]
+			elif s=="control":
+				var ret := 0.0
+				for target in targets:
+					var ctrl = gamestate.nodes[target].control[owner]
+					for i in range(owner-1)+range(owner+1,gamestate.nodes[target].control.size()):
+						ctrl -= gamestate.nodes[target].control[i]
+					ret += ctrl
+				return ret
+			else:
+				return str2var(s)
+		return 0
+	
+	func acquire_target(s):
+		var target := -1
+		if s=="local":
+			target = ID
+		elif s=="random_enemy":
+			var array = []
+			for p in gamestate.nodes[ID].connections:
+				if gamestate.nodes[p].owner!=owner && !(p in targets):
+					array.push_back(p)
+			if array.size()>0:
+				target = array[randi()%array.size()]
+		elif s=="random_controled":
+			var array = []
+			for p in gamestate.nodes[ID].connections:
+				if gamestate.nodes[p].owner==owner && !(p in targets):
+					array.push_back(p)
+			if array.size()>0:
+				target = array[randi()%array.size()]
+		elif s=="random_node":
+			var array = []
+			for p in gamestate.nodes[ID].connections:
+				if !(p in targets):
+					array.push_back(p)
+			if array.size()>0:
+				target = array[randi()%array.size()]
+		
+		return target
 	
 
 
@@ -355,10 +490,10 @@ func add_program(player,type,ID):
 	tooltip.rect_position = dir*Vector2(192,128)
 	tooltip.self_modulate = colors[player]
 	tooltip.node = points[ID].node
-	if player==0:
-		tooltip.get_node("VBoxContainer/Status/HBoxContainer/ButtonCancel").connect("pressed",points[ID],"remove_program",[prgm])
-	else:
-		tooltip.get_node("VBoxContainer/Status/HBoxContainer/ButtonCancel").hide()
+#	if player==0:
+#		tooltip.get_node("VBoxContainer/Status/HBoxContainer/ButtonCancel").connect("pressed",points[ID],"remove_program",[prgm])
+#	else:
+	tooltip.get_node("VBoxContainer/Status/HBoxContainer/ButtonCancel").hide()
 	$GUI/Tooltips.add_child(tooltip)
 	prgm.tooltip = tooltip
 	
@@ -404,64 +539,68 @@ func get_winner():
 	return player
 
 
+func hint():
+	var valid_points := []
+	var timer = Timer.new()
+	for i in range(points.size()):
+		if points[i].owner==0:
+			valid_points.push_back(i)
+	if valid_points.size()>0:
+		var pi = click_particle.instance()
+		var p = points[valid_points[randi()%valid_points.size()]]
+		p.node.add_child(pi)
+	if node_selected>=0 && points[node_selected].owner==0:
+		var pi = click_particle.instance()
+		var icons = $GUI/Actions/GridContainer.get_children()
+		icons[randi()%icons.size()].add_child(pi)
+	timer.wait_time = rand_range(2.0,8.0)
+	timer.one_shot = true
+	add_child(timer)
+	timer.start()
+	yield(timer,"timeout")
+	timer.queue_free()
+	hint()
+
+
 func parse(prgm):
 	# Parse the program.
-	var code = prgm.prog.code
-	var line = code[prgm.line]
+	var nodes = prgm.nodes
+	if !prgm.nodes.has(prgm.focus):
+		print("No valid node at "+str(prgm.focus)+"!")
+		prgm.stop()
+		return
+	var pos = prgm.focus
+	var node = prgm.nodes[pos]
+	var type = node.type
 	var wait := false
-#	print("parsing "+prgm.type+" line "+str(prgm.line)+": "+line+" ...")
 	
-	if !("//" in line):
-		if "return" in line:
-			# Stop program.
-			wait = !prgm.init_command("return","TERMINATING")
-			prgm.stop()
-			return
-		elif "disconnect" in line:
-			# Clear target.
-			wait = !prgm.init_command("disconnect","DISCONNECTED")
-			if !wait:
-				prgm.targets = [prgm.ID]
-		elif "connect" in line:
-			# Set target.
-			var new_target = prgm.owner
-			wait = !prgm.init_command("connect","CONNECTING")
-			if !wait:
-				if "local" in line:
-					new_target = prgm.ID
-				elif "random_enemy" in line:
-					var array = []
-					for p in prgm.gamestate.nodes[prgm.ID]["connections"]:
-						if prgm.gamestate.nodes[p].owner!=prgm.owner:
-							array.push_back(p)
-					if array.size()>0:
-						new_target = array[randi()%array.size()]
-				elif "random_controled" in line:
-					var array = []
-					for p in prgm.gamestate.nodes[prgm.ID]["connections"]:
-						if prgm.gamestate.nodes[p].owner==prgm.owner:
-							array.push_back(p)
-					if array.size()>0:
-						new_target = array[randi()%array.size()]
-				elif "random_node" in line:
-					var p = prgm.gamestate.nodes[prgm.ID]["connections"]+[prgm.ID]
-					new_target = p[randi()%p.size()]
-				else:
-					new_target = get_args(prgm)
-					if new_target==null || !(new_target in prgm.gamestate.nodes[prgm.ID]["connections"]):
-						new_target = prgm.ID
-				if !(new_target in prgm.targets):
-					var pi = connection_particle.instance()
-					prgm.targets.push_back(new_target)
-					pi.from = gamestate.nodes[prgm.ID].node
-					pi.to = gamestate.nodes[new_target].node
-					pi.duration = prgm.delay
-					$ControlPoints.add_child(pi)
-					if prgm.stack.has(prgm.line):
-						prgm.stack[prgm.line].particles.push_back(pi)
-		elif "attack" in line && prgm.targets.size()>0:
+	if type=="disconnect":
+		# Clear targets.
+		wait = !prgm.init_command(prgm.focus,"DISCONNECTED")
+		if !wait:
+			prgm.targets = []
+	elif type=="connect":
+		# Add a target.
+		var new_target = prgm.owner
+		wait = !prgm.init_command(prgm.focus,"CONNECTING")
+		if !wait:
+			if node.arguments.size()>0:
+				new_target = prgm.acquire_target(node.arguments[0])
+				if new_target==-1:
+					new_target = prgm.owner
+			if !(new_target in prgm.targets):
+				var pi = connection_particle.instance()
+				prgm.targets.push_back(new_target)
+				pi.from = gamestate.nodes[prgm.ID].node
+				pi.to = gamestate.nodes[new_target].node
+				pi.duration = prgm.delay
+				$ControlPoints.add_child(pi)
+				if prgm.stack.has(pos):
+					prgm.stack[pos].particles.push_back(pi)
+	elif type=="attack":
+		if prgm.targets.size()>0:
 			# Attack!
-			wait = !prgm.init_command("attack","ATTACKING",line)
+			wait = !prgm.init_command(prgm.focus,"ATTACKING")
 			if !wait:
 				for target in prgm.targets:
 					var pi = pulse_particle.instance()
@@ -469,247 +608,37 @@ func parse(prgm):
 					pi.to = gamestate.nodes[target].node
 					pi.duration = prgm.delay
 					$ControlPoints.add_child(pi)
-					prgm.stack[prgm.line].particles.push_back(pi)
-		elif "protect" in line && prgm.targets.size()>0:
+					if prgm.stack.has(pos):
+						prgm.stack[pos].particles.push_back(pi)
+		else:
+			prgm.skip()
+	elif type=="protect":
+		if prgm.targets.size()>0:
 			# Protect
-			wait = !prgm.init_command("protect","PROTECT",line)
+			wait = !prgm.init_command(prgm.focus,"PROTECT")
 			if !wait:
-				var array = line.split(" ",false)
-				if array.size()>1:
+				if node.arguments.size()>0:
 					for target in prgm.targets:
 						var pi = fire_wall_particle.instance()
-						var dam = str2var(array[1])
+						var dam = node.arguments[0]
 						prgm.gamestate.nodes[target].defend(prgm.owner,10*dam)
 						pi.node = gamestate.nodes[target].node
 						$ControlPoints.add_child(pi)
-						prgm.stack[prgm.line].particles.push_back(pi)
-					if prgm.targets.size()==0:
-						var pi = fire_wall_particle.instance()
-						var dam = str2var(array[1])
-						prgm.gamestate.nodes[prgm.ID].defend(prgm.owner,10*dam)
-						pi.node = gamestate.nodes[prgm.ID].node
-						$ControlPoints.add_child(pi)
-						prgm.stack[prgm.line].particles.push_back(pi)
-		elif "translocate" in line && prgm.targets.size()>0:
-			# Move to another node.
-			wait = !prgm.init_command("translocate","TRANSLOCATE",line)
-			if !wait:
-				pass
-		elif "clone" in line:
-			# Make a copy of the program.
-			wait = !prgm.init_command("clone","CLONE",line)
-			if !wait:
-				pass
-		elif "sleep" in line:
-			wait = !prgm.init_command("sleep","IDLE",line)
-		elif "if" in line:
-			# Do not execute the rest of the block if statement is false.
-			wait = !prgm.init_command("if")
-			if !wait:
-				var val = evaluate_statement(prgm,line)
-				if !val:
-					skip_block(prgm)
-					return
-		elif "else" in line:
-			# Do not execute the rest of the block if the previous if statement was true.
-			wait = !prgm.init_command("else")
-			if !wait:
-				var val = !evaluate_last_statement(prgm,prgm.line)
-				if !val:
-					skip_block(prgm)
-					return
-		elif "for" in line:
-			# For loop.
-			var set = []
-			wait = !prgm.init_command("for",null,{"set":set,"index":0})
-			if !wait:
-				if "enemy_nodes" in line:
-					for p in gamestate.nodes[prgm.ID]["connections"]:
-						if prgm.gamestate.nodes[p].owner!=prgm.owner:
-							set.push_back(p)
-				elif "controled_nodes" in line:
-					for p in prgm.gamestate.nodes[prgm.ID]["connections"]:
-						if prgm.gamestate.nodes[p].owner==prgm.owner:
-							set.push_back(p)
-				elif "all_nodes" in line:
-					set += prgm.gamestate.nodes[prgm.ID]["connections"]
-				else:
-					var array = line.split("in")
-					if array.size()>1:
-						var num = str2var(array[1])
-						if typeof(num)==TYPE_INT || typeof(num)==TYPE_REAL:
-							set = range(int(num))
-				if set.size()==0:
-					skip_block(prgm)
-		elif "while" in line:
-			# While loop.
-			wait = !prgm.init_command("while")
-			if !wait:
-				var val = evaluate_statement(prgm,line)
-				if !val:
-					skip_block(prgm)
-		elif "end" in line:
-			var offset = 0
-			for l in range(prgm.line-1,-1,-1):
-				if "end" in code[l]:
-					offset += 1
-				if "if" in code[l] || "for" in code[l] || "while" in code[l]:
-					offset -= 1
-				if offset<0:
-					if "if" in code[l]:
-						prgm.finish_action(prgm.line)
-						break
-					elif "for" in code[l]:
-						for_loop(prgm,l)
-						return
-					elif "while" in code[l]:
-						while_loop(prgm,l)
-						return
-		elif "continue" in line:
-			skip_block(prgm)
-		elif "break" in line:
-			skip_block(prgm,1)
-		
-	
-	if !wait:
-		prgm.line += 1
-		if prgm.line>=prgm.prog.code.size():
-			prgm.stop()
-#	else:
-#		printt("can't proceed...")
-	pass
-
-func evaluate_statement(prgm,line):
-	if "_true" in line:
-		return true
-	elif "_false" in line:
-		return false
-	elif "connected" in line:
-		return prgm.targets.size()>1 && (prgm.targets.size()>2 || prgm.targets[0]!=prgm.owner)
-	elif "controled" in line:
-		for target in prgm.targets:
-			if gamestate.nodes[target].owner==prgm.owner:
-				return true
-		return false
-	elif "enemy_adjacent" in line:
-		for p in gamestate.nodes[prgm.ID].connections:
-			if gamestate.nodes[p].owner!=prgm.owner:
-				return true
-	elif "controled_adjacent" in line:
-		for p in gamestate.nodes[prgm.ID].connections:
-			if gamestate.nodes[p].owner==prgm.owner:
-				return true
-	elif "hostile_program_adjacent" in line:
-		for p in gamestate.nodes[prgm.ID].connections:
-			for prog in gamestate.nodes[p].programs:
-				if prog.owner!=prgm.owner:
-					return true
-	elif ">" in line:
-		var array = line.replace("if","").split(">")
-		if array.size()==2:
-			return evaluate_var(prgm,array[0])>evaluate_var(prgm,array[1])
-	elif ">=" in line:
-		var array = line.replace("if","").split(">=")
-		if array.size()==2:
-			return evaluate_var(prgm,array[0])>=evaluate_var(prgm,array[1])
-	elif "<" in line:
-		var array = line.replace("if","").split("<")
-		if array.size()==2:
-			return evaluate_var(prgm,array[0])<evaluate_var(prgm,array[1])
-	elif "<=" in line:
-		var array = line.replace("if","").split("<=")
-		if array.size()==2:
-			return evaluate_var(prgm,array[0])<=evaluate_var(prgm,array[1])
-	elif "==" in line:
-		var array = line.replace("if","").split("==")
-		if array.size()==2:
-			return evaluate_var(prgm,array[0])==evaluate_var(prgm,array[1])
-	elif "!=" in line:
-		var array = line.replace("if","").split("!=")
-		if array.size()==2:
-			return evaluate_var(prgm,array[0])!=evaluate_var(prgm,array[1])
-	return false
-
-func evaluate_last_statement(prgm,line):
-	var code = prgm.prog.code
-	var offset = 0
-	for l in range(line-1,-1,-1):
-		if "end" in code[l]:
-			offset -= 1
-		elif "if" in code[l] || "for" in code[l] || "while" in code[l]:
-			offset += 1
-		if offset>0:
-			return evaluate_statement(prgm,code[l])
-
-func evaluate_var(prgm,s):
-	if "cpu" in s:
-		return gamestate.cpu[prgm.owner]
-	elif "control" in s:
-		var ret := 0.0
-		for target in prgm.targets:
-			var ctrl = gamestate.nodes[target].control[prgm.owner]
-			for i in range(prgm.owner-1)+range(prgm.owner+1,gamestate.nodes[target].control.size()):
-				ctrl -= gamestate.nodes[target].control[i]
-			ret += ctrl
-		return ret
-	else:
-		var ret = str2var(s)
-		if typeof(ret)==TYPE_REAL || typeof(ret)==TYPE_INT:
-			return ret
+						if prgm.stack.has(pos):
+							prgm.stack[pos].particles.push_back(pi)
 		else:
-			return 0
-
-func skip_block(prgm,ofs=0):
-	var code = prgm.prog.code
-	var offset = 0
-	for l in range(prgm.line+1,code.size()):
-		prgm.line = l
-		if "end" in code[l]:
-			offset -= 1
-		elif ("elif" in code[l] || "else" in code[l]) && offset==0:
-#			if !evaluate_last_statement(prgm,prgm.line):
-			prgm.line -= 1
-			break
-		elif "if" in code[l] || "for" in code[l] || "while" in code[l]:
-			offset += 1
-		
-		if offset<0:
-			break
-	prgm.line += ofs
-#	printt("goto ->",prgm.line)
-
-
-
-func for_loop(prgm,start):
-	prgm.stack[start].args.index += 1
-	if prgm.stack[start].args.index>=prgm.stack[start].args.set.size():
-		prgm.line += 1
-		prgm.finish_action(start)
-		return
-	prgm.goto(start+1)
-
-func while_loop(prgm,start):
-	var val = evaluate_statement(prgm,prgm.prog.code[start])
-	if !val:
-		prgm.line += 1
-		prgm.finish_action(start)
-		return
-	prgm.goto(start+1)
-
-func get_args(prgm):
-	var code = prgm.prog.code
-	var line = code[prgm.line]
-	var array = line.split(" ")
-	if array.size()<2:
-		return
-	var id = array[1]
-	for l in range(prgm.line-1,-1,-1):
-		if "for" in code[l] && id in code[l] && prgm.stack.has(l):
-			if prgm.stack[l].args.set.size()==0:
-				return
-			else:
-				return prgm.stack[l].args.set[prgm.stack[l].args.index]
-	return
+			prgm.skip()
+	elif type=="translocate":
+		if prgm.targets.size()>0:
+			# Move to another node.
+			wait = !prgm.init_command(prgm.focus,"TRANSLOCATE")
+		else:
+			prgm.skip()
+	elif type=="if":
+		wait = !prgm.init_command(prgm.focus,"EVALUATING")
+	else:
+		wait = !prgm.init_command(prgm.focus,type.to_upper())
+	
 
 
 func _process(delta):
@@ -737,8 +666,6 @@ func _process(delta):
 	
 	for p in points:
 		for e in p.programs:
-#			var code_str = ""
-#			var code = e.prog.code
 			var scale = p.control[e.owner]
 			var t = 100.0
 			for i in range(e.owner)+range(e.owner+1,num_players):
@@ -750,6 +677,7 @@ func _process(delta):
 				parse(e)
 			e.node.get_node("VBoxContainer/Duration").text = tr("REMAINING_TIME")%(e.delay/scale)
 			e.node.get_node("VBoxContainer/Status").value = e.node.get_node("VBoxContainer/Status").max_value-e.delay
+			e.update(delta)
 
 func _input(event):
 	if event is InputEventMouseMotion && Input.is_action_pressed("screen_drag"):

@@ -16,6 +16,11 @@ func play(file:String,dB:=0.0):
 	player.volume_db = dB
 	player.play()
 
+func stop():
+	if player.playing:
+		animation.play("fade_out")
+		yield(animation,"animation_finished")
+	player.stop()
 
 func play_default():
 	play(DEFAULT[randi()%DEFAULT.size()])

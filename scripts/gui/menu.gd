@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-const VERSION = "v0.0-alpha"
+const VERSION = "v0.1-alpha"
 const MAX_MSG = 100
 const PROGRAM_ICONS = [
 	"anti_virus_green","anti_virus_purple","beam_cannon","bombardment",
@@ -31,15 +31,17 @@ var upgrades := []
 var upgraded := {}
 var compile_cpu := 0
 var can_scan := false
-var current_code := []
 var new_line_pos := 0
-var code_name
-var code_icon
+var program_name
+var program_icon
 var game_instance
 var program_icon_selected := 0
+var program_nodes := {}
+var program_grid_size = Vector2(20,10)
+var intro_sequence := false
 
 # warning-ignore:unused_class_variable
-onready var textbox = $Textbox
+onready var textbox := $Textbox
 
 var main_scene = preload("res://scenes/main/main.tscn")
 var icon_shutdown = preload("res://images/gui/shutdown.png")
@@ -53,6 +55,8 @@ var icons_personality = {
 	"focus":preload("res://images/gui/focus.png"),
 	"cunning":preload("res://images/gui/cunning.png")
 }
+var hex_node = preload("res://scenes/gui/hex_node.tscn")
+var hex_bg = preload("res://scenes/gui/hex_bg.tscn")
 
 
 func reset():
@@ -118,6 +122,7 @@ func _start_new_game(name=null):
 	$Left/ScrollContainer/VBoxContainer/Button1.disabled = true
 	$Left/ScrollContainer/VBoxContainer/Button2.disabled = true
 	$Left/ScrollContainer/VBoxContainer/Button3.disabled = true
+	$Left/ScrollContainer/VBoxContainer/Button11.disabled = true
 	$Top/HBoxContainer/ButtonClose.disabled = true
 	$Login/HBoxContainer.show()
 	$Login/HBoxContainer/AnimationPlayer.play("loading",-1,1.5)
@@ -125,16 +130,22 @@ func _start_new_game(name=null):
 	Objects.init_world(self)
 	Programs.known_programs = {"pulse":Programs.programs.pulse}
 	Programs.known_commands = [
-		"// ","connect","disconnect","if","for","while","attack","sleep","return",
-		"all_nodes","enemy_nodes","controled_nodes",
-		"local","random_node","random_enemy","random_controled",
-		"_true","enemy_adjacent","hostile_program_adjacent","controled_adjacent","==","!=",">","<",">=","<="
+		"initialize","terminate",
+		"connect","disconnect",
+		"if",
+		"attack",
+		"sleep"
 	]
-	upgrades = ["cpu","memory","compile_cpu"]
+	upgrades = [
+		"cpu","memory",
+		"compile_cpu"
+	]
 	timer.one_shot = true
 	timer.wait_time = 2.0
 	add_child(timer)
 	timer.start()
+	$Glitch.show()
+	$Glitch/AnimationPlayer.play("sequence1")
 	
 	yield(timer,"timeout")
 	timer.queue_free()
@@ -143,24 +154,58 @@ func _start_new_game(name=null):
 	$Left/ScrollContainer/VBoxContainer/Button1.hide()
 	$Left/ScrollContainer/VBoxContainer/Button2.show()
 	$Left/ScrollContainer/VBoxContainer/Button3.show()
-	$Left/ScrollContainer/VBoxContainer/Button4.show()
+	$Left/ScrollContainer/VBoxContainer/Button4.hide()
 	$Left/ScrollContainer/VBoxContainer/Button5.hide()
 	$Left/ScrollContainer/VBoxContainer/Button6.hide()
 	$Left/ScrollContainer/VBoxContainer/Button8.hide()
 	$Left/ScrollContainer/VBoxContainer/Button9.hide()
 	$Left/ScrollContainer/VBoxContainer/Button11.hide()
+	$Login/HBoxContainer.hide()
+	$Login/HBoxContainer/AnimationPlayer.stop()
+	intro_sequence = true
+	
+	var mi = main_scene.instance()
+	var player = Objects.actors.player
+	get_tree().get_root().add_child(mi)
+	_show_hack()
+	mi.start(2,20.0,[20,10],[{"pulse":6,"wave":4,"phalanx":2},{"pulse":3,"anti_virus":3}],["human","ai_random"],[player.color,Color(1.0,0.15,0.05)],mi.callv("create_layered_system",[3,2,6]))
+	mi.hint()
+	Music.play("Of_Far_Different_Nature-Escape-11-Jellyfish.ogg")
+	
+	yield(mi,"timeout")
+	$Glitch/AnimationPlayer.play("sequence2")
+	mi.queue_free()
+	mi = main_scene.instance()
+	mi.hint()
+	get_tree().get_root().add_child(mi)
+	mi.start(2,25.0,[20,12],[{"pulse":6,"wave":4,"phalanx":2},{"pulse":4,"anti_virus":2,"fire_wall":2}],["human","ai_random"],[player.color,Color(1.0,0.05,0.15)],mi.callv("create_layered_system",[4,2,9]))
+	
+	yield(mi,"timeout")
+	$Glitch/AnimationPlayer.play("sequence3")
+	mi.queue_free()
+	mi = main_scene.instance()
+	mi.hint()
+	get_tree().get_root().add_child(mi)
+	mi.start(2,30.0,[20,14],[{"pulse":6,"wave":4,"phalanx":2},{"pulse":4,"anti_virus":2,"fire_wall":2}],["human","ai_random"],[player.color,Color(0.8,0.05,0.05)],mi.callv("create_radial_system",[3,2,5,2]))
+	
+	yield(mi,"timeout")
+	intro_sequence = false
+	mi.queue_free()
+	$Glitch/AnimationPlayer.play("burst_of")
 	$Login/Input/LineEdit.editable = true
 	$Login/Input/ButtonConfirm.disabled = false
 	$Left/ScrollContainer/VBoxContainer/Button0.disabled = false
 	$Left/ScrollContainer/VBoxContainer/Button1.disabled = false
 	$Left/ScrollContainer/VBoxContainer/Button2.disabled = false
 	$Left/ScrollContainer/VBoxContainer/Button3.disabled = false
+	$Left/ScrollContainer/VBoxContainer/Button11.disabled = false
 	$Top/HBoxContainer/ButtonClose.disabled = false
-	$Login/HBoxContainer.hide()
-	$Login/HBoxContainer/AnimationPlayer.stop()
-	
+	_close(true)
 	Events.start()
+	$Left/ScrollContainer/VBoxContainer/Button4.show()
 	$Left/ScrollContainer/VBoxContainer/Button10.show()
+	Music.stop()
+	
 	return true
 
 
@@ -555,9 +600,6 @@ func _hack_ended(winner):
 
 func _confirm_hack_result():
 	$Hack/Result.hide()
-#	_close(true)
-#	if has_node("/root/Main"):
-#		$"/root/Main".queue_free()
 
 func add_msg(contact,text,from_player=false):
 	if !chat_log.has(contact):
@@ -865,8 +907,6 @@ func add_program(dict):
 		Objects.actors.player.programs[dict["type"]] = 1
 
 func update_code():
-	for c in $Code/Code/VBoxContainer.get_children():
-		c.hide()
 	for c in $Code/ScrollContainer/VBoxContainer.get_children():
 		c.hide()
 	if has_node("Code/PopupMenu"):
@@ -885,281 +925,272 @@ func update_code():
 		button.text = tr(Programs.known_programs.values()[i].name)
 		button.get_node("Icon").texture = load("res://images/cards/"+Programs.known_programs.values()[i].icon+".png")
 		button.show()
-	var popup_menu = PopupMenu.new()
-	popup_menu.name = "PopupMenu"
-	$Code.add_child(popup_menu)
-	for i in range(Programs.known_commands.size()):
-		var c = Programs.known_commands[i]
-		if c in Programs.MAIN_COMMANDS:
-			popup_menu.add_item(c,i)
-	popup_menu.connect("id_pressed",self,"_add_new_line")
 	update_program()
 	connect_ui_sounds_recursively($Code)
 
 func _load_program(ID):
-	current_code = Programs.known_programs.values()[ID].code.duplicate(true)
-	code_name = Programs.known_programs.keys()[ID]
-	code_icon = Programs.known_programs.values()[ID].icon
-	$Code/Code/VBoxContainer/Name.text = code_name
+	program_nodes = Programs.known_programs.values()[ID].code
+	program_name = Programs.known_programs.keys()[ID]
+	program_icon = Programs.known_programs.values()[ID].icon
+	$Code/Top/Name.text = program_name
 	update_program()
 
 func _save_program():
-	if code_name in Programs.programs.keys():
+	var code := {}
+	if program_name in Programs.programs.keys():
 		var n = 2
-		while code_name+" "+str(n) in Programs.known_programs.keys():
+		while program_name+" "+str(n) in Programs.known_programs.keys():
 			n += 1
-		code_name += " "+str(n)
-	Programs.programs[code_name] = {"name":code_name,"code":current_code,"icon":code_icon}
-	Programs.known_programs[code_name] = Programs.programs[code_name]
+		program_name += " "+str(n)
+	for p in program_nodes.keys():
+		code[p] = program_nodes[p].to_dict()
+	Programs.programs[program_name] = {"name":program_name,"code":code,"icon":program_icon}
+	Programs.known_programs[program_name] = Programs.programs[program_name]
 	update_code()
 
 func _new_program():
-	current_code = ["// "+tr("ADD_COMMENT")]
-	code_name = "new program"
-	code_icon = "template"
-	$Code/Code/VBoxContainer/Name.text = code_name
+	program_nodes = {program_grid_size/2:Programs.PrgmNode.new(program_grid_size/2,{"type":"initialize","dir":[0]})}
+	program_name = "new program"
+	program_icon = "template"
+	$Code/Top/Name.text = program_name
 	update_program()
+	$Code/Code/ScrollContainer.scroll_horizontal = $Code/Code/ScrollContainer/BG.rect_min_size.x/2-$Code/Code/ScrollContainer.rect_size.x/2+172/2
+	$Code/Code/ScrollContainer.scroll_vertical = $Code/Code/ScrollContainer/BG.rect_min_size.y/2-$Code/Code/ScrollContainer.rect_size.y/2+196/2
 
 func _delete_program():
-	if Programs.predefined_programs.has(code_name):
+	if Programs.predefined_programs.has(program_name):
 		return
-	Programs.known_programs.erase(code_name)
+	Programs.known_programs.erase(program_name)
 	update_code()
 
 func _select_program_icon(ID):
 	program_icon_selected = ID
-	code_icon = PROGRAM_ICONS[ID]
+	program_icon = PROGRAM_ICONS[ID]
 	$Code/Icon.hide()
 
 func _set_program_icon():
-	code_icon = PROGRAM_ICONS[program_icon_selected]
+	program_icon = PROGRAM_ICONS[program_icon_selected]
 
-func _set_code_name(text):
+func _set_program_name(text):
 	if text in Programs.programs.keys():
 		return
-	code_name = text
+	program_name = text
 
 func update_program():
-	var intend = 0
-	var prgm = Programs.Program.new({"code":current_code})
-	if current_code.size()==0 || !("return" in current_code[current_code.size()-1]):
-		current_code.push_back("return")
-	for c in $Code/Code/VBoxContainer.get_children():
-		c.hide()
-	$Code/Code/VBoxContainer/Name.show()
-	for i in range(current_code.size()):
-		var button
-		var line
-		if has_node("Code/Code/VBoxContainer/Add"+str(i)):
-			button = get_node("Code/Code/VBoxContainer/Add"+str(i))
-		else:
-			button = get_node("Code/Code/VBoxContainer/Add0").duplicate(Node.DUPLICATE_SCRIPTS)
-			button.connect("pressed",self,"_add_line",[i])
-			button.name = "Add"+str(i)
-			get_node("Code/Code/VBoxContainer").add_child(button)
-		if has_node("Code/Code/VBoxContainer/Line"+str(i)):
-			line = get_node("Code/Code/VBoxContainer/Line"+str(i))
-		else:
-			line = get_node("Code/Code/VBoxContainer/Line0").duplicate(Node.DUPLICATE_SCRIPTS)
-			line.get_node("ButtonDelete").connect("pressed",self,"_delete_line",[i])
-			line.name = "Line"+str(i)
-			get_node("Code/Code/VBoxContainer").add_child(line)
-		if !"//" in current_code[i] && ("end" in current_code[i] || "elif" in current_code[i] || "else" in current_code[i]):
-			intend -= 1
-		line.get_node("Number").text = str(i+1)+":"
-		line.get_node("Text").text = ""
-		for _j in range(intend):
-			line.get_node("Text").text += "    "
-		for c in line.get_node("Args").get_children():
+	for c in $Code/Code/ScrollContainer/BG.get_children():
+		c.queue_free()
+	for c in $Code/Code/ScrollContainer/Nodes.get_children():
+		if !program_nodes.has(c.pos):
 			c.queue_free()
-		if "//" in current_code[i]:
-			line.get_node("Text").text += "// "
-			var li = LineEdit.new()
-			li.text = tr(current_code[i].replace("// ",""))
-			li.connect("text_entered",self,"_set_comment",[i])
-			li.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			li.anchor_right = 1.0
-			li.margin_right = 0
-			line.get_node("Args").add_child(li)
-		else:
-			var array = current_code[i].split(" ",false)
-			line.get_node("Text").text += array[0]
-			for j in range(1,array.size()):
-				var v = str2var(array[j])
-				if typeof(v)==TYPE_INT || typeof(v)==TYPE_REAL:
-					var bi = OptionButton.new()
-					var si = SpinBox.new()
-					var vars = Programs.VARS+get_vars(i)
-					si.connect("value_changed",self,"_set_arg",[i,j])
-					si.value = v
-					si.min_value = 1
-					for k in range(vars.size()):
-						bi.add_item(tr(vars[k].to_upper()),k)
-					bi.select(0)
-					bi.connect("item_selected",self,"_set_var",[vars,i,j])
-					line.get_node("Args").add_child(bi)
-					line.get_node("Args").add_child(si)
-				elif typeof(v)==TYPE_STRING:
-					if v=="in":
-						var li = Label.new()
-						li.text = "in"
-						line.get_node("Args").add_child(li)
-					elif "for" in current_code[i] && j==1:
-						var li = Label.new()
-						li.text = tr(v.to_upper())
-						line.get_node("Args").add_child(li)
+	
+	for x in range(program_grid_size.x):
+		for y in range(program_grid_size.y):
+			var bg = hex_bg.instance()
+			var pos := Vector2(172*x,196*(y+(x%2)/2.0))
+			var p := Vector2(x,y)
+			bg.rect_position = pos
+			bg.pos = p
+			$Code/Code/ScrollContainer/BG.add_child(bg)
+			bg.show()
+			if program_nodes.has(p):
+				var prgm = program_nodes[p]
+				var pi
+				if has_node("Code/Code/ScrollContainer/Nodes/Node_"+str(p.x)+"_"+str(p.y)):
+					pi = get_node("Code/Code/ScrollContainer/Nodes/Node_"+str(p.x)+"_"+str(p.y))
+				else:
+					pi = hex_node.instance()
+					pi.rect_position = pos+Vector2(8,8)
+					$Code/Code/ScrollContainer/Nodes.add_child(pi)
+				pi.name = "Node_"+str(p.x)+"_"+str(p.y)
+				pi.rect_position = pos+Vector2(8,8)
+				pi.pos = p
+				pi.dir = prgm.dir
+				for c in pi.get_children():
+					c.hide()
+				pi.get_node("Type").show()
+				pi.get_node("Arguments").show()
+				pi.get_node("Text").show()
+				for i in range(prgm.dir.size()):
+					if !pi.has_node("Arrow"+str(i)):
+						var ai = pi.get_node("Arrow0").duplicate()
+						ai.name = "Arrow"+str(i)
+						pi.add_child(ai)
+					pi.get_node("Arrow"+str(i)).rotation = PI/6.0+PI/3.0*prgm.dir[i]
+					pi.get_node("Arrow"+str(i)).show()
+				pi.get_node("Type").clear()
+				for i in range(Programs.COMMANDS.size()):
+					if Programs.COMMANDS.keys()[i] in Programs.known_commands:
+						pi.get_node("Type").add_item(Programs.COMMANDS.keys()[i],i)
+				pi.get_node("Type").selected = pi.get_node("Type").get_item_index(Programs.COMMANDS.keys().find(prgm.type))
+				if pi.get_node("Type").is_connected("item_selected",self,"_set_prog_node_type"):
+					pi.get_node("Type").disconnect("item_selected",self,"_set_prog_node_type")
+				pi.get_node("Type").connect("item_selected",self,"_set_prog_node_type",[p,pi.get_node("Type")])
+				for i in range(2,prgm.arguments.size()-1,-1):
+					pi.get_node("Arguments/Option"+str(i)).hide()
+					pi.get_node("Arguments/SpinBox"+str(i)).hide()
+				for i in range(prgm.arguments.size()):
+					var button = pi.get_node("Arguments/Option"+str(i))
+					var spin_box = pi.get_node("Arguments/SpinBox"+str(i))
+					button.clear()
+					if typeof(prgm.arguments[i])==TYPE_INT || typeof(prgm.arguments[i])==TYPE_REAL:
+						spin_box.show()
+						spin_box.value = prgm.arguments[i]
+						if spin_box.is_connected("value_changed",self,"set_prog_node_arg_number"):
+							spin_box.disconnect("value_changed",self,"set_prog_node_arg_number")
+						spin_box.connect("value_changed",self,"set_prog_node_arg_number",[p,i])
+						for j in range(Programs.VARS.size()):
+							button.add_item(Programs.VARS[j],j)
+						button.selected = 0
 					else:
-						var bi = OptionButton.new()
-						if v in Programs.STATEMENTS:
-							for k in range(Programs.STATEMENTS.size()):
-								bi.add_item(tr(Programs.STATEMENTS[k].to_upper()),k)
-								if Programs.STATEMENTS[k] in v:
-									bi.select(k)
-							bi.connect("item_selected",self,"_set_statement",[i,j])
-						elif v in Programs.TARGETS || "connect" in current_code[i]:
-							var vars = Programs.TARGETS+get_vars(i)
-							for k in range(vars.size()):
-								bi.add_item(tr(vars[k].to_upper()),k)
-								if vars[k] in v:
-									bi.select(k)
-							bi.connect("item_selected",self,"_set_target",[i,j])
-						elif v in Programs.SETS:
-							for k in range(Programs.SETS.size()):
-								bi.add_item(tr(Programs.SETS[k].to_upper()),k)
-								if Programs.SETS[k] in v:
-									bi.select(k)
-							bi.connect("item_selected",self,"_set_set",[i,j])
-						else:
-							var vars = Programs.VARS+get_vars(i)
-							if v in vars:
-								for k in range(vars.size()):
-									bi.add_item(tr(vars[k].to_upper()),k)
-									if vars[k] in v:
-										bi.select(k)
-								bi.connect("item_selected",self,"_set_var",[vars,i,j])
-						line.get_node("Args").add_child(bi)
-		line.get_node("ButtonDelete").raise()
-		if !"//" in current_code[i] && ("if" in current_code[i] || "elif" in current_code[i] || "else" in current_code[i] || "for" in current_code[i] || "while" in current_code[i]):
-			intend += 1
-		line.show()
-		button.show()
-	$Code/Statistics/Label.text = tr("NUM_LINES")+": "+str(prgm.lines)+"\n"+tr("MEMORY")+": "+str(prgm.size)+"\n"+tr("MAX_CPU")+": "+str(prgm.max_cpu)+"\n"+tr("MEAN_CPU")+": "+str(prgm.mean_cpu).pad_decimals(1)+"\n"+tr("COST")+": "+str(prgm.cost)+"\n"
-	connect_ui_sounds_recursively($Code)
+						spin_box.hide()
+						if prgm.arguments[i] in Programs.VARS:
+							for j in range(Programs.VARS.size()):
+								button.add_item(Programs.VARS[j],j)
+							button.selected = button.get_item_index(Programs.VARS.find(prgm.arguments[i]))
+						elif prgm.arguments[i] in Programs.TARGETS:
+							for j in range(Programs.TARGETS.size()):
+								button.add_item(Programs.TARGETS[j],j)
+							button.selected = button.get_item_index(Programs.TARGETS.find(prgm.arguments[i]))
+						elif prgm.arguments[i] in Programs.STATEMENTS:
+							for j in range(Programs.STATEMENTS.size()):
+								button.add_item(Programs.STATEMENTS[j],j)
+							button.selected = button.get_item_index(Programs.STATEMENTS.find(prgm.arguments[i]))
+					if button.is_connected("item_selected",self,"_set_prog_node_arg"):
+						button.disconnect("item_selected",self,"_set_prog_node_arg")
+					button.connect("item_selected",self,"_set_prog_node_arg",[p,button,i])
+					button.show()
+				pi.get_node("Text").text = tr("CPU")+": "
+				if typeof(Programs.COMMANDS[prgm.type].cpu)==TYPE_STRING:
+					pi.get_node("Text").text += str(Programs.call(Programs.COMMANDS[prgm.type].cpu,prgm.arguments))
+				else:
+					pi.get_node("Text").text += str(Programs.COMMANDS[prgm.type].cpu)
+				pi.get_node("Text").text += "\n"+tr("DELAY")+": "
+				if typeof(Programs.COMMANDS[prgm.type].delay)==TYPE_STRING:
+					pi.get_node("Text").text += str(Programs.call(Programs.COMMANDS[prgm.type].delay,prgm.arguments))
+				else:
+					pi.get_node("Text").text += str(Programs.COMMANDS[prgm.type].delay)
+				
+	$Code/Code/ScrollContainer/BG.rect_min_size = Vector2(172,196)*(program_grid_size+Vector2(0.0,0.5))
+	
+	var num_init := 0
+	var num_terminate := 0
+	var num_unconnected := 0
+	var prgm := Programs.Program.new({"code":program_nodes,"name":program_name,"icon":program_icon})
+	for p in prgm.nodes.keys():
+		var type = prgm.nodes[p].type
+		for dir in prgm.nodes[p].dir:
+			var d = Programs.get_offset(dir,p)
+			num_unconnected += int(!(prgm.nodes.has(p+d)))
+		if type=="initialize":
+			num_init += 1
+		elif type=="terminate":
+			num_terminate += 1
+	$Code/Statistics.clear()
+	$Code/Statistics.push_color(Color(1.0,1.0,1.0))
+	$Code/Statistics.add_text(tr("NUM_NODES")+": "+str(prgm.nodes.size())+"\n"+tr("MEMORY")+": "+str(prgm.size)+"\n"+tr("MAX_CPU")+": "+str(prgm.max_cpu)+"\n"+tr("MEAN_CPU")+": "+str(prgm.mean_cpu).pad_decimals(1)+"\n"+tr("COST")+": "+str(prgm.cost)+"\n\n")
+	if num_init!=1 || num_terminate<1 || num_unconnected>0:
+		$Code/Statistics.push_color(Color(1.0,0.0,0.0))
+		$Code/Statistics.add_text(tr("WARNING")+"\n\n")
+	if num_init==0:
+		$Code/Statistics.add_text(tr("NO_INIT_NODE")+"\n")
+	elif num_init>1:
+		$Code/Statistics.add_text(tr("MULTIPLE_INIT_NODES")+"\n")
+	if num_terminate==0:
+		$Code/Statistics.add_text(tr("NO_TERMINATE_NODE")+"\n")
+	if num_unconnected>0:
+		$Code/Statistics.add_text(tr("UNCONNECTED_NODES")+"\n")
+	
 
-func _delete_line(ID):
-	if "if" in current_code[ID] || "elif" in current_code[ID] || "else" in current_code[ID] || "for" in current_code[ID] || "while" in current_code[ID]:
-		var offset = 0
-		var end = ID
-		for i in range(ID+1,current_code.size()):
-			if "end" in current_code[i]:
-				offset -= 1
-			if "if" in current_code[i] || "elif" in current_code[i] || "else" in current_code[i] || "for" in current_code[i] || "while" in current_code[i]:
-				offset += 1
-			if offset<0:
-				end = i
-				break
-		if "elif" in current_code[ID] || "else" in current_code[ID]:
-			end -= 1
-		for i in range(end,ID-1,-1):
-			current_code.remove(i)
-	elif "end" in current_code[ID]:
-		var offset = 0
-		var start = ID
-		for i in range(ID-1,-1,-1):
-			if "end" in current_code[i]:
-				offset -= 1
-			if "if" in current_code[i] || "elif" in current_code[i] || "else" in current_code[i] || "for" in current_code[i] || "while" in current_code[i]:
-				offset += 1
-			if offset>0:
-				start = i
-				break
-		for i in range(ID,start-1,-1):
-			current_code.remove(i)
-	else:
-		current_code.remove(ID)
-	update_program()
-
-func _add_line(pos):
-	new_line_pos = pos
-	$Code/PopupMenu.popup(Rect2(get_node("Code/Code/VBoxContainer/Line"+str(pos)).rect_position+$Code/Code.rect_position,get_node("Code/Code/VBoxContainer/Line"+str(pos)).rect_size))
-
-func _add_new_line(ID):
-	var line = Programs.known_commands[ID]
-	if line=="connect":
-		line += " "+Programs.TARGETS[0]
-	elif line=="attack" || line=="protect" || line=="sleep":
-		line += " 1"
-	elif line=="if" || line=="elif" || line=="while":
-		line += " _true"
-	elif line=="for":
-		var offset = 0
-		for i in range(new_line_pos):
-			if "for" in current_code[i] || "if" in current_code[i] || "elif" in current_code[i] || "else" in current_code[i] || "while" in current_code[i]:
-				offset += 1
-			if "end" in current_code[i]:
-				offset -= 1
-		line += " "+Programs.FOR_VARS[offset]+" in "+Programs.SETS[0]
-	current_code.insert(new_line_pos,line)
-	if "if" in line || "while" in line || "for" in line:
-		current_code.insert(new_line_pos+1,"end")
-	update_program()
-
-func _set_comment(text,line):
-	current_code[line] = "// "+text
-	update_program()
-
-func _set_arg(val,line,ID):
-	var array = current_code[line].split(" ",false)
-	if array.size()<=ID:
+func add_prg_node(pos):
+	if program_nodes.has(pos):
 		return
-	var code = array[0]+" "
-	array[ID] = str(val)
-	for i in range(1,array.size()):
-		code += array[i]+" "
-	current_code[line] = code
+	
+	program_nodes[pos] = Programs.PrgmNode.new(pos,{"type":"initialize","dir":[0]})
 	update_program()
 
-func _set_set(k,line,ID):
-	_set_arg(Programs.SETS[k],line,ID)
+func rm_prg_node(pos):
+	program_nodes.erase(pos)
+	update_program()
 
-func _set_target(k,line,ID):
-	_set_arg((Programs.TARGETS+get_vars(line))[k],line,ID)
-
-func _set_var(k,vars,line,ID):
-	if k==0:
-		_set_arg(1,line,ID)
-	else:
-		_set_arg(vars[k],line,ID)
-
-func _set_statement(k,line,ID):
-	var v = Programs.STATEMENTS[k]
-	var array = current_code[line].split(" ",false)
-	if array.size()<4 && ("<" in v || ">" in v || "=" in v):
-		v = "1 "+v+" 1"
-	elif array.size()>2 && !("<" in v || ">" in v || "=" in v):
-		current_code[line] = array[0]+" "+v
-		update_program()
+func _set_prog_node_type(idx,pos,node):
+	if !program_nodes.has(pos):
 		return
-	_set_arg(v,line,ID)
+	
+	var ID = node.get_item_id(idx)
+	var type = Programs.COMMANDS.keys()[ID]
+	var arg = Programs.COMMANDS[type].argument
+	program_nodes[pos].type = type
+	if arg=="none":
+		program_nodes[pos].arguments = []
+	elif arg=="number":
+		program_nodes[pos].arguments = [1]
+	elif arg=="target":
+		program_nodes[pos].arguments = ["local"]
+	elif arg=="statement":
+		program_nodes[pos].arguments = ["true"]
+	if type=="if":
+		program_nodes[pos].dir.resize(2)
+	elif type=="terminate":
+		program_nodes[pos].dir.clear()
+	else:
+		program_nodes[pos].dir.resize(1)
+	for i in range(program_nodes[pos].dir.size()):
+		if program_nodes[pos].dir[i]==null:
+			program_nodes[pos].dir[i] = i
+	update_program()
 
-func get_vars(line):
-	var ret = []
-	var offset = 0
-	var f = {}
-	for i in range(line+1):
-		if "for" in current_code[i]:
-			f[offset] = true
-			offset += 1
-		if "if" in current_code[i] || "while" in current_code[i]:
-			offset += 1
-		if "end" in current_code[i]:
-			offset -= 1
-			if offset<=0:
-				f[offset] = false
-	for k in f.keys():
-		if f[k]:
-			ret.push_back(Programs.FOR_VARS[k])
-	return ret
+func _set_prog_node_arg(idx,pos,node,index):
+	if !program_nodes.has(pos):
+		return
+	
+	var ID = node.get_item_id(idx)
+	var arg = Programs.COMMANDS[program_nodes[pos].type].argument
+	if index==0:
+		if arg=="none":
+			program_nodes[pos].arguments = []
+		elif arg=="number":
+			var new = Programs.VARS[ID]
+			if new=="number":
+				program_nodes[pos].arguments = [1]
+			else:
+				program_nodes[pos].arguments = [new]
+		elif arg=="target":
+			var new = Programs.TARGETS[ID]
+			program_nodes[pos].arguments = [new]
+		elif arg=="statement":
+			var new = Programs.STATEMENTS[ID]
+			program_nodes[pos].arguments = [new]
+			if Programs.STATEMENT_ARGS.has(new):
+				for t in Programs.STATEMENT_ARGS[new]:
+					if t=="number":
+						program_nodes[pos].arguments.push_back(1)
+					elif t=="target":
+						program_nodes[pos].arguments.push_back("local")
+	else:
+		if Programs.STATEMENT_ARGS.has(program_nodes[pos].arguments[0]) && Programs.STATEMENT_ARGS[program_nodes[pos].arguments[0]].size()>index:
+			arg = Programs.STATEMENT_ARGS[program_nodes[pos].arguments[0]][index]
+		if arg=="number":
+			var new = Programs.VARS[ID]
+			if new=="number":
+				program_nodes[pos].arguments[index] = 1
+			else:
+				program_nodes[pos].arguments[index] = new
+	update_program()
+
+func set_prog_node_arg_number(value,pos,index):
+	program_nodes[pos].arguments[index] = value
+	update_program()
+
+func prog_rotate(pos,index):
+	program_nodes[pos].dir[index] = (program_nodes[pos].dir[index]+1)%6
+	for i in range(program_nodes[pos].dir.size()):
+		if i==index:
+			continue
+		if program_nodes[pos].dir[i]==program_nodes[pos].dir[index]:
+			program_nodes[pos].dir[index] = (program_nodes[pos].dir[index]+1)%6
+			i = -1
+	update_program()
+
 
 func _scan():
 	for _i in range(5):
@@ -1223,12 +1254,12 @@ func _load(filename):
 	var file := File.new()
 	var error := file.open("user://saves/"+filename+".sav",File.READ)
 	if error!=OK:
-		printt("Error",error,"opening file","user://saves/"+filename+".sav")
+		print("Error (code "+str(error)+") while opening file 'user://saves/"+filename+".sav'")
 		return
 	
 	var currentline = JSON.parse(file.get_line()).result
 	if currentline==null || currentline["version"]!=VERSION:
-		print("incompatible version")
+		print("Incompatible version!")
 		return
 	quicksave()
 	reset()
@@ -1271,10 +1302,10 @@ func _select_file(ID):
 func quicksave():
 	if !active:
 		return
-	_save('autosave')
+	_save("autosave")
 
 func quickload():
-	_load('autosave')
+	_load("autosave")
 
 
 func _show_new_game():
@@ -1356,6 +1387,8 @@ func _show_code():
 	$Top/HBoxContainer/ButtonClose/Icon.texture = icon_close
 	_new_program()
 	update_code()
+	$Code/Code/ScrollContainer.scroll_horizontal = $Code/Code/ScrollContainer/BG.rect_min_size.x/2-$Code/Code/ScrollContainer.rect_size.x/2+172/2
+	$Code/Code/ScrollContainer.scroll_vertical = $Code/Code/ScrollContainer/BG.rect_min_size.y/2-$Code/Code/ScrollContainer.rect_size.y/2+196/2
 	Events._on_show_code()
 
 func _show_targets():
@@ -1576,6 +1609,7 @@ func _input(event):
 			_close()
 
 
+
 func get_data_str(data)->String:
 	data = int(data)
 	if data>1024*1024:
@@ -1735,7 +1769,7 @@ func connect_ui_sounds_recursively(node):
 		if c is BaseButton:
 			if !c.is_connected("mouse_entered",$SoundHover,"play"):
 				c.connect("mouse_entered",$SoundHover,"play")
-			if !c.is_connected("pressed",$SoundHover,"play"):
+			if !c.is_connected("pressed",$SoundClick,"play"):
 				c.connect("pressed",$SoundClick,"play")
 			
 		connect_ui_sounds_recursively(c)
@@ -1744,7 +1778,6 @@ func _ready():
 	var credits_text := $Credits/RichTextLabel
 	randomize()
 	reset()
-	Music.play_default()
 	
 	# connect signals #
 	get_tree().connect("screen_resized",self,"_screen_resized")
@@ -1771,13 +1804,11 @@ func _ready():
 	$Hack/Result/ButtonConfirm.connect("pressed",self,"_confirm_hack_result")
 	$Code/ScrollContainer/VBoxContainer/ButtonNew.connect("pressed",self,"_new_program")
 	$Code/ScrollContainer/VBoxContainer/Button0.connect("pressed",self,"_load_program",[0])
-	$Code/Code/VBoxContainer/Line0/ButtonDelete.connect("pressed",self,"_delete_line",[0])
-	$Code/Code/VBoxContainer/Add0.connect("pressed",self,"_add_line",[0])
 	$Code/Top/Button0.connect("pressed",self,"_new_program")
 	$Code/Top/Button1.connect("pressed",self,"_save_program")
 	$Code/Top/Button2.connect("pressed",$Code/Icon,"show")
 	$Code/Top/Button3.connect("pressed",self,"_delete_program")
-	$Code/Code/VBoxContainer/Name.connect("text_entered",self,"_set_code_name")
+	$Code/Top/Name.connect("text_changed",self,"_set_program_name")
 	$Code/Icon/HBoxContainer/Button1.connect("pressed",self,"_set_program_icon")
 	$Code/Icon/HBoxContainer/Button2.connect("pressed",$Code/Icon,"hide")
 	$Code/Icon/ScrollContainer/GridContainer/Button0.connect("pressed",self,"_select_program_icon",[0])
@@ -1786,6 +1817,7 @@ func _ready():
 	$Saves/ScrollContainer/VBoxContainer/New/LineEdit.connect("text_entered",self,"_save")
 	$Saves/ScrollContainer/VBoxContainer/New/ButtonConfirm.connect("pressed",self,"_save")
 	$Quit/ButtonClose.connect("pressed",self,"_quit")
+	
 	
 	connect_ui_sounds_recursively(self)
 	

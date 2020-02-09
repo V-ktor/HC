@@ -47,7 +47,9 @@ CONNECTING,Connecting
 DISCONNECTED,Disconnecting
 ATTACKING,Attacking
 PROTECT,Protect
-TERMINATING,Terminating
+INITIALIZE,Inizializing
+TERMINATE,Terminating
+EVALUATING,Evaluating
 REMAINING_TIME,%0.1fs remaining
 SHIELD,Shield
 DPS,DPS
@@ -87,6 +89,11 @@ FOCUS,Focus
 CUNNING,Cunning
 YES,Yes
 NO,No
+WARNING,Warning
+NO_INIT_NODE,"No initialization node!"
+MULTIPLE_INIT_NODES,"Multiple initialization nodes!"
+NO_TERMINATE_NODE,"No termination node!"
+UNCONNECTED_NODES,"Unconnected nodes!"
 MADE_WITH_GODOT,"Made with Godot game engine."
 PROGRAMMING,Programming
 GRAPHICS,Graphics

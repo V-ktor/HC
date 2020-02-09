@@ -1,4 +1,4 @@
-[gd_scene load_steps=88 format=2]
+[gd_scene load_steps=97 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -10,15 +10,16 @@
 [ext_resource path="res://images/gui/logo_mask.png" type="Texture" id=8]
 [ext_resource path="res://scenes/gui/card.tscn" type="PackedScene" id=9]
 [ext_resource path="res://fonts/kenvector_future_thin.ttf" type="DynamicFontData" id=10]
-[ext_resource path="res://images/gui/button_new_line_normal.png" type="Texture" id=11]
-[ext_resource path="res://images/gui/button_new_line_hover.png" type="Texture" id=12]
-[ext_resource path="res://images/gui/close.png" type="Texture" id=13]
+[ext_resource path="res://images/masks/noise_color.png" type="Texture" id=11]
+[ext_resource path="res://scripts/gui/code_bg.gd" type="Script" id=12]
+[ext_resource path="res://images/masks/radial.png" type="Texture" id=13]
 [ext_resource path="res://images/cards/pulse.png" type="Texture" id=14]
 [ext_resource path="res://images/cards/template.png" type="Texture" id=15]
 [ext_resource path="res://scenes/gui/textbox.tscn" type="PackedScene" id=16]
 [ext_resource path="res://fonts/logo_font_01.tres" type="DynamicFont" id=17]
 [ext_resource path="res://sounds/288955__littlerobotsoundfactory__click-electronic-05.wav" type="AudioStream" id=18]
 [ext_resource path="res://sounds/288965__littlerobotsoundfactory__click-electronic-13.wav" type="AudioStream" id=19]
+[ext_resource path="res://images/masks/noise_color_small.png" type="Texture" id=20]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
@@ -640,25 +641,299 @@ VSeparator/styles/separator = SubResource( 55 )
 bg_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=63]
+bg_color = Color( 0.878431, 0.878431, 0.878431, 1 )
+
+[sub_resource type="StyleBoxFlat" id=64]
 corner_radius_bottom_left = 50
 corner_detail = 1
 
-[sub_resource type="DynamicFont" id=64]
+[sub_resource type="DynamicFont" id=65]
 size = 20
 font_data = ExtResource( 3 )
 
-[sub_resource type="StyleBoxFlat" id=65]
+[sub_resource type="StyleBoxFlat" id=66]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="StyleBoxFlat" id=66]
+[sub_resource type="StyleBoxFlat" id=67]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
 
-[sub_resource type="DynamicFont" id=67]
+[sub_resource type="DynamicFont" id=68]
 size = 22
 outline_size = 1
 font_data = ExtResource( 3 )
 
-[sub_resource type="GDScript" id=68]
+[sub_resource type="Shader" id=69]
+code = "shader_type canvas_item;
+
+uniform float noise_scale = 0.0;
+uniform float glitch_scale = 1.0;
+uniform float glitch_blend = 0.0;
+uniform float block_scale = 0.0;
+uniform sampler2D noise;
+uniform sampler2D noise_mask;
+uniform sampler2D block_mask;
+
+void fragment()
+{
+	vec2 uv = SCREEN_UV;
+	vec2 uv2 = vec2(0.5)+0.00173*(UV-vec2(0.5))*round(vec2(3.0-1.0*fract(0.091*TIME),2.0-0.25*fract(0.073*TIME))*8.0)+round(vec2(1.0-2.0*fract(0.13*TIME),1.0-2.0*fract(0.17*TIME))*8.0)/17.9;
+	vec3 noise_color = texture(noise,(UV-vec2(0.5))*93.97+vec2(fract(919.3*TIME),fract(927.3*TIME))).rgb;
+	float noise_alpha = min(1.0-texture(noise_mask,UV).g+noise_scale-0.5,1.0);
+	float alpha = abs(1.0-2.5*fract(1.37*(uv.y+5.3*TIME*sin(37.9*TIME))))*abs(1.0-0.5*fract(0.131*(0.0071*uv.x+1.0)*TIME))*abs(1.0-2.0*uv.x);
+	uv.x += 0.5*glitch_scale*alpha*alpha*cos(2.5*alpha)*sin(floor(1.379*0.1*(uv.y-0.5)*512.0)/512.0*TIME);
+	alpha = sqrt(alpha)*glitch_blend;
+	COLOR = (1.0-alpha)*texture(SCREEN_TEXTURE,SCREEN_UV)+alpha*texture(SCREEN_TEXTURE,uv);
+	
+	noise_alpha = noise_alpha*min(noise_alpha+noise_scale,1.0)*noise_scale;
+	COLOR.rgb = (1.0-noise_alpha)*COLOR.rgb+noise_alpha*vec3(noise_color.g);
+	
+	uv2 += vec2(0.04,0.06)*uv*(1.0-2.0*fract(0.001391*TIME));
+	vec3 scale = clamp(20.0*(texture(block_mask,uv2).rgb-0.95)*round((0.5+0.5*block_scale)*((1.5+fract(7.3*TIME))*texture(block_mask,-uv2).g+block_scale)),0.0,1.0);
+	scale.gb *= float(scale.r<0.9);
+	scale.b *= float(scale.g<0.9);
+//	COLOR.rgb *= round(min(10.0*texture(noise,uv2).rgb,1.0));
+	COLOR.rgb *= 1.0+scale.rgb;
+	COLOR.gb *= 1.0-scale.r;
+	COLOR.rb *= 1.0-scale.g;
+	COLOR.rg *= 1.0-scale.b;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=70]
+shader = SubResource( 69 )
+shader_param/noise_scale = 0.0
+shader_param/glitch_scale = 0.0
+shader_param/glitch_blend = 0.0
+shader_param/block_scale = 0.0
+shader_param/noise = ExtResource( 11 )
+shader_param/noise_mask = ExtResource( 13 )
+shader_param/block_mask = ExtResource( 20 )
+
+[sub_resource type="StyleBoxFlat" id=71]
+bg_color = Color( 0, 0, 0, 0 )
+border_color = Color( 0, 0, 0, 0 )
+
+[sub_resource type="Animation" id=72]
+resource_name = "burst_of"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/noise_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.5, 0.9, 1, 1.4, 1.7, 1.9, 2, 2.1, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1.0, -1.0, 0.5, 2.0, 1.0, -1.0, -0.5, -2.0, 0.0, 0.2, -0.2, 0.3, 0.25, 0.2, -0.15, 0.1, -0.05, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material:shader_param/glitch_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2, 2.3, 2.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 10.0, 0.0, 1.0, 0.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:material:shader_param/glitch_blend")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 2, 2.3, 2.5, 2.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 10.0, 0.0, 0.2, -0.2, 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:material:shader_param/block_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8, 1.3, 1.6, 1.8, 2.4, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1.0, 0.0, 0.2, 1.0, 0.0, 0.165, 0.0, 0.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=73]
+length = 30.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/noise_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 7.1, 8.4, 9.6, 18, 18.3, 18.7, 19.1, 19.5, 19.7, 20.6, 27.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0.2, -0.2, 0.25, 0.1, 0.2, 0.25, 0.3, 0.4, -0.5, 0.3, 0.1, 0.2 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material:shader_param/glitch_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 15.3, 19.4, 21.7, 23.5, 24.9, 26.5, 28.2, 29.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0.1, 0.2, 2.0, 1.0, 0.5, 0.25, 0.125, 0.05, 0.001 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:material:shader_param/glitch_blend")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 11.2, 12.2, 13.3, 15.3, 15.8, 20.2, 21, 29.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1.0, -1.0, -2.0, 2.0, 1.0, 0.25, 0.33, 0.5, 10.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:material:shader_param/block_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 8.1, 10.1, 15.8, 18, 24.7, 24.9, 25.6, 25.7, 26, 26.1, 26.7, 27, 27.6, 28.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0.0, 0.25, 0.0, 0.175, 0.0, 0.5, 0.0, 1.0, 0.0, 2.0, 0.0, 0.2, 0.0, 0.17, 0.0 ]
+}
+
+[sub_resource type="Animation" id=74]
+length = 20.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/noise_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.6, 1, 6.2, 7.4, 10.3, 12.4, 12.8, 13.5, 16.1, 16.6, 16.7, 17.4, 17.5, 18.7, 18.8, 18.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1.0, -1.0, 0.5, -0.5, 0.25, -0.1, 0.1, 0.2, 0.25, 0.2, -0.5, 0.5, 0.1, -0.5, -10.0, 0.0, 10.0, 0.0, -10.0, 10.0, 0.1 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material:shader_param/glitch_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 0.7, 1, 4, 5.3, 5.6, 6, 6.6, 11, 11.4, 11.5, 12, 12.2, 12.6, 12.8, 14.3, 14.6, 14.7, 15.2, 15.3, 15.6, 16.4, 18.3, 18.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1.0, 0.0, 1.0, 0.1, -0.1, -0.25, -1.0, 0.5, 0.01, 1.0, 2.0, 0.5, 10.0, 0.0, 10.0, -0.01, 0.1, 1.0, 0.0, -10.0, 1.0, -0.5, 0.05, 100.0, 0.02 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:material:shader_param/glitch_blend")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.7, 4.3, 5, 5.7, 6, 6.6, 10.7, 12.6, 12.7, 12.8, 13.6, 15.3, 15.4, 15.5, 15.6, 16.4, 18.3, 18.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1.0, 0.5, -0.5, -1.0, 0.1, 0.2, 1.0, -1.0, 1.0, 0.1, 0.5, -0.5, 1.0, 0.1, -0.1, -0.5, 1.0, -1.0, -1.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:material:shader_param/block_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5, 0.7, 2, 6.5, 9.9, 14, 15, 15.1, 15.5, 16.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1.0, 0.0, 1.0, 0.18, 0.0, 0.17, 0.0, 0.2, 10.0, 0.0, 0.175, 0.0 ]
+}
+
+[sub_resource type="Animation" id=75]
+length = 20.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/noise_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 1, 1.3, 1.7, 2, 3.5, 4.6, 5.9, 6.3, 6.6, 7.1, 9.6, 10.3, 10.5, 10.7, 11.3, 11.5, 11.6, 11.8, 12.3, 12.7, 14.8, 15.6, 16.8, 17.1, 17.5, 18, 18.3, 18.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 2.0, -2.0, 0.0, 2.0, -2.0, 0.0, 0.4, -0.5, 0.25, -2.0, 2.0, 0.5, 0.2, -0.5, 2.0, -2.0, 0.0, -2.0, -4.0, 2.0, 0.0, 0.5, 0.2, -0.5, 0.4, 2.0, -2.0, 0.0, 2.0, -2.0, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:material:shader_param/glitch_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1.5, 2.3, 3.9, 4.2, 4.5, 4.9, 6.3, 6.6, 7.7, 9.1, 10.7, 11.3, 11.7, 12.4, 13.4, 13.8, 15.1, 15.8, 16.2, 17, 17.5, 18.7, 19.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0.0, 10.0, 0.1, -10.0, -100.0, 10.0, 0.01, 1.0, 0.05, 0.01, 0.1, 2.0, 10.0, 0.0, 0.1, 0.01, -0.01, -0.01, -0.1, 0.0, 0.1, 0.0, 10.0, -10.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:material:shader_param/glitch_blend")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1.5, 2.3, 3.9, 4.9, 6.3, 6.6, 7.7, 9.9, 11.3, 11.5, 11.6, 11.7, 12.4, 12.9, 13.4, 13.8, 14.1, 15.1, 15.4, 15.8, 16.2, 17, 17.5, 18.7, 18.9, 19.2, 19.4, 19.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0.0, -1.0, 0.5, -1.0, 1.0, 1.0, -1.0, 0.5, -1.0, -2.0, -10.0, 10.0, 0.0, 0.5, -0.5, 100.0, 200.0, 0.5, -100.0, 100.0, 100.0, 0.0, 100.0, 0.0, 100.0, 0.1, -0.1, -100.0, 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:material:shader_param/block_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.4, 1.4, 4.3, 4.9, 6.1, 8.4, 8.8, 9.3, 9.9, 12.1, 12.4, 12.8, 13.1, 13.6, 13.9, 14.5, 14.8, 15.5, 15.9, 16.6, 16.9, 18.1, 18.4, 19.4, 20 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0.0, 0.18, 0.0, 0.25, 0.165, 0.0, 0.185, 0.0, 0.3, 0.0, 0.25, 0.0, 0.3, 0.0, 0.2, 0.0, 0.35, 0.0, 0.165, 0.0, 0.275, 0.0, 0.5, 0.0, 2.0, 0.0 ]
+}
+
+[sub_resource type="GDScript" id=76]
 script/source = "extends Control
 
 var ring : Dictionary
@@ -1067,6 +1342,9 @@ align = 1
 valign = 1
 autowrap = true
 clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Button11" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 752.0
@@ -1093,11 +1371,17 @@ align = 1
 valign = 1
 autowrap = true
 clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Top" type="Panel" parent="."]
 anchor_right = 1.0
 margin_bottom = 36.0
 custom_styles/panel = SubResource( 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Top"]
 anchor_right = 1.0
@@ -2277,90 +2561,49 @@ margin_top = 2.0
 margin_right = -380.0
 margin_bottom = -2.0
 
-[node name="Code" type="ScrollContainer" parent="Code"]
+[node name="Code" type="Panel" parent="Code"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 2.0
 margin_top = 68.0
 margin_right = -386.0
 margin_bottom = -2.0
-scroll_horizontal_enabled = false
+theme = SubResource( 32 )
+custom_styles/panel = SubResource( 63 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Code/Code"]
-margin_right = 568.0
-margin_bottom = 494.0
-size_flags_horizontal = 7
-size_flags_vertical = 3
-custom_constants/separation = 0
-
-[node name="Name" type="LineEdit" parent="Code/Code/VBoxContainer"]
-margin_right = 568.0
-margin_bottom = 26.0
-placeholder_text = "NAME"
-
-[node name="Add0" type="TextureButton" parent="Code/Code/VBoxContainer"]
-margin_top = 26.0
-margin_right = 568.0
-margin_bottom = 34.0
-rect_min_size = Vector2( 0, 8 )
-size_flags_horizontal = 3
-size_flags_vertical = 0
-texture_normal = ExtResource( 11 )
-texture_hover = ExtResource( 12 )
-expand = true
-stretch_mode = 6
-
-[node name="Line0" type="HBoxContainer" parent="Code/Code/VBoxContainer"]
-margin_top = 34.0
-margin_right = 568.0
-margin_bottom = 56.0
-custom_constants/separation = 4
-
-[node name="Number" type="Label" parent="Code/Code/VBoxContainer/Line0"]
-margin_right = 32.0
-margin_bottom = 22.0
-rect_min_size = Vector2( 32, 0 )
-size_flags_vertical = 3
-text = "1:"
-align = 2
-valign = 1
-autowrap = true
-
-[node name="Text" type="Label" parent="Code/Code/VBoxContainer/Line0"]
-margin_left = 36.0
-margin_right = 76.0
-margin_bottom = 22.0
-size_flags_vertical = 3
-text = "TEXT"
-valign = 1
-
-[node name="Args" type="HBoxContainer" parent="Code/Code/VBoxContainer/Line0"]
-margin_left = 80.0
-margin_right = 544.0
-margin_bottom = 22.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="ButtonDelete" type="Button" parent="Code/Code/VBoxContainer/Line0"]
-margin_left = 548.0
-margin_right = 568.0
-margin_bottom = 22.0
-rect_min_size = Vector2( 20, 20 )
-
-[node name="Icon" type="TextureRect" parent="Code/Code/VBoxContainer/Line0/ButtonDelete"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Code/Code"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 13 )
-expand = true
-stretch_mode = 6
+follow_focus = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BG" type="Control" parent="Code/Code/ScrollContainer"]
+margin_right = 568.0
+margin_bottom = 494.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 12 )
+
+[node name="Nodes" type="Control" parent="Code/Code/ScrollContainer"]
+margin_right = 568.0
+margin_bottom = 494.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Top" type="HBoxContainer" parent="Code"]
 anchor_right = 1.0
 margin_left = 2.0
 margin_top = 2.0
-margin_right = -386.0
+margin_right = -384.0
 margin_bottom = 66.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Button0" type="Button" parent="Code/Top"]
 margin_right = 64.0
@@ -2465,23 +2708,26 @@ valign = 1
 autowrap = true
 clip_text = true
 
-[node name="Statistics" type="ScrollContainer" parent="Code"]
+[node name="Name" type="LineEdit" parent="Code/Top"]
+margin_left = 272.0
+margin_top = 19.0
+margin_right = 570.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "NAME"
+
+[node name="Statistics" type="RichTextLabel" parent="Code"]
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -379.0
-margin_top = 68.0
+margin_top = 2.0
 margin_right = -206.0
 margin_bottom = -2.0
-scroll_horizontal_enabled = false
-
-[node name="Label" type="Label" parent="Code/Statistics"]
-margin_right = 173.0
-margin_bottom = 494.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "TEXT"
-autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Code"]
 anchor_left = 1.0
@@ -2674,7 +2920,7 @@ margin_top = 2.0
 margin_right = -205.0
 margin_bottom = 190.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 63 )
+custom_styles/panel = SubResource( 64 )
 
 [node name="Label" type="Label" parent="Targets/Panel"]
 anchor_right = 1.0
@@ -2769,7 +3015,7 @@ custom_styles/panel = SubResource( 34 )
 [node name="Label" type="Label" parent="Targets/ScrollContainer/VBoxContainer/Button0"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 64 )
+custom_fonts/font = SubResource( 65 )
 text = "TARGET
 LINE2"
 align = 1
@@ -2792,7 +3038,7 @@ margin_top = 2.0
 margin_right = -2.0
 margin_bottom = -2.0
 rect_clip_content = true
-custom_styles/panel = SubResource( 65 )
+custom_styles/panel = SubResource( 66 )
 
 [node name="Text" type="RichTextLabel" parent="Hack/Panel"]
 anchor_right = 1.0
@@ -2969,7 +3215,7 @@ margin_right = 952.0
 margin_bottom = 76.0
 rect_min_size = Vector2( 36, 36 )
 size_flags_horizontal = 3
-custom_styles/panel = SubResource( 66 )
+custom_styles/panel = SubResource( 67 )
 
 [node name="LineEdit" type="LineEdit" parent="Saves/ScrollContainer/VBoxContainer/New"]
 anchor_right = 1.0
@@ -3026,7 +3272,7 @@ margin_top = 2.0
 margin_right = -2.0
 margin_bottom = -2.0
 focus_mode = 2
-custom_fonts/bold_font = SubResource( 67 )
+custom_fonts/bold_font = SubResource( 68 )
 custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 selection_enabled = true
@@ -3068,6 +3314,23 @@ stretch_mode = 6
 
 [node name="Textbox" parent="." instance=ExtResource( 16 )]
 
+[node name="Glitch" type="Panel" parent="."]
+visible = false
+material = SubResource( 70 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 71 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Glitch"]
+anims/burst_of = SubResource( 72 )
+anims/sequence1 = SubResource( 73 )
+anims/sequence2 = SubResource( 74 )
+anims/sequence3 = SubResource( 75 )
+
 [node name="ViewportLogo" type="Viewport" parent="."]
 size = Vector2( 256, 256 )
 transparent_bg = true
@@ -3082,7 +3345,7 @@ margin_bottom = 256.0
 rect_min_size = Vector2( 256, 256 )
 expand = true
 stretch_mode = 6
-script = SubResource( 68 )
+script = SubResource( 76 )
 
 [node name="Label" type="Label" parent="ViewportLogo/Draw"]
 anchor_right = 1.0

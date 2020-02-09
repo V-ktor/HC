@@ -110,7 +110,7 @@ cancel={
 
 [locale]
 
-translations=PoolStringArray( "res://translations/menu.en.translation", "res://translations/dialog.en.translation", "res://translations/names.en.translation", "res://translations/programs.en.translation", "res://translations/upgrades.en.translation", "res://translations/log.en.translation", "res://translations/help.en.translation", "res://translations/countries.en.translation", "res://translations/events.en.translation", "res://translations/actors.en.translation", "res://translations/groups.en.translation" )
+translations=PoolStringArray( "res://translations/menu.en.translation", "res://translations/dialog.en.translation", "res://translations/names.en.translation", "res://translations/programs.en.translation", "res://translations/upgrades.en.translation", "res://translations/log.en.translation", "res://translations/help.en.translation", "res://translations/countries.en.translation", "res://translations/events.en.translation", "res://translations/actors.en.translation", "res://translations/groups.en.translation", "res://translations/code.en.translation" )
 
 [rendering]
 

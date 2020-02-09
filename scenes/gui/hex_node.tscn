@@ -1,0 +1,144 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://images/gui/hex.png" type="Texture" id=1]
+[ext_resource path="res://images/gui/hex_arrow.png" type="Texture" id=2]
+[ext_resource path="res://scripts/gui/hex_node.gd" type="Script" id=3]
+
+[node name="HexNode" type="TextureRect"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 224, 192 )
+mouse_filter = 0
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Type" type="OptionButton" parent="."]
+anchor_right = 1.0
+margin_left = 48.0
+margin_top = 32.0
+margin_right = -48.0
+margin_bottom = 56.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arguments" type="HBoxContainer" parent="."]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 32.0
+margin_top = -12.0
+margin_right = -32.0
+margin_bottom = 12.0
+focus_mode = 2
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Option0" type="OptionButton" parent="Arguments"]
+margin_right = 50.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpinBox0" type="SpinBox" parent="Arguments"]
+visible = false
+margin_left = 83.0
+margin_right = 162.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+min_value = 1.0
+max_value = 99.0
+value = 1.0
+
+[node name="Option1" type="OptionButton" parent="Arguments"]
+margin_left = 54.0
+margin_right = 104.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpinBox1" type="SpinBox" parent="Arguments"]
+visible = false
+margin_left = 196.0
+margin_right = 270.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+min_value = 1.0
+max_value = 99.0
+value = 1.0
+
+[node name="Option2" type="OptionButton" parent="Arguments"]
+margin_left = 108.0
+margin_right = 160.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpinBox2" type="SpinBox" parent="Arguments"]
+visible = false
+margin_left = 255.0
+margin_right = 329.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+min_value = 1.0
+max_value = 99.0
+value = 1.0
+
+[node name="Text" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 56.0
+margin_top = -68.0
+margin_right = -56.0
+margin_bottom = -16.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arrow0" type="Sprite" parent="."]
+modulate = Color( 0, 1, 0, 1 )
+position = Vector2( 112, 96 )
+rotation = 0.523599
+texture = ExtResource( 2 )
+
+[node name="Arrow1" type="Sprite" parent="."]
+visible = false
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( 112, 96 )
+rotation = 0.523599
+texture = ExtResource( 2 )
+
+[node name="PopupMenu" type="PopupMenu" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -64.0
+margin_top = -32.0
+margin_right = 64.0
+margin_bottom = 32.0
+items = [ "DELETE", null, 0, false, false, 0, 0, null, "", false, "GRAB_FOCUS", null, 0, false, true, 1, 0, null, "", false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}

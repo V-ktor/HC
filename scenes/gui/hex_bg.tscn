@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://images/gui/hex_border.png" type="Texture" id=1]
+[ext_resource path="res://scripts/gui/hex_bg.gd" type="Script" id=2]
+
+[node name="hex_bg" type="TextureRect"]
+margin_right = 240.0
+margin_bottom = 208.0
+rect_min_size = Vector2( 240, 208 )
+mouse_filter = 0
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
