@@ -8,6 +8,7 @@ func chat01():
 		{"text":"REPLY_0030_3","required":{"cunning":3},"personality":{"cunning":1}}
 	],2.0)
 	Menu.add_log_msg("LOG_CRYPTO","LOG_MET_CRYPTO")
+	Music.play("Of_Far_Different_Nature-Escape-10-Control.ogg",-4)
 
 func reply_0030_1():
 	Events.send_player_msg("crypto",tr("REPLY_0030_1"))
