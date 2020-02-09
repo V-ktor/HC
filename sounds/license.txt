@@ -18,6 +18,14 @@ License: CC-BY 3.0
 Copyright: LittleRobotSoundFactory
 License: CC-BY 3.0
 
+257235__javierzumer__ui-interface-negative.wav, 257226__javierzumer__ui-interface-neutral.wav:
+Copyright: JavierZumer (www.javierzumer.com)
+License: CC-BY 3.0
+
+65428__gumballrimpoche__glitchys.ogg:
+Copyright: gumballrimpoche
+License: CC0
+
 238367__stewdio2003__cp-power-down01.wav:
 Copyright: stewdio2003
 License: CC0

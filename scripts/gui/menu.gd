@@ -126,6 +126,7 @@ func _start_new_game(name=null):
 	$Top/HBoxContainer/ButtonClose.disabled = true
 	$Login/HBoxContainer.show()
 	$Login/HBoxContainer/AnimationPlayer.play("loading",-1,1.5)
+	$Login/AnimationPlayer.play("error")
 	$Login.show()
 	Objects.init_world(self)
 	Programs.known_programs = {"pulse":Programs.programs.pulse}
@@ -145,11 +146,12 @@ func _start_new_game(name=null):
 	add_child(timer)
 	timer.start()
 	$Glitch.show()
-	$Glitch/AnimationPlayer.play("sequence1")
+	$Glitch/AnimationPlayer.play("intro")
 	
 	yield(timer,"timeout")
 	timer.queue_free()
 	_close(true)
+	$Glitch/AnimationPlayer.play("sequence1")
 	$Left/ScrollContainer/VBoxContainer/Button0.hide()
 	$Left/ScrollContainer/VBoxContainer/Button1.hide()
 	$Left/ScrollContainer/VBoxContainer/Button2.show()
