@@ -257,6 +257,7 @@ const STATEMENT_ARGS = {
 
 class Program:
 	var name
+	var description
 	var nodes
 	var max_cpu
 	var mean_cpu
@@ -272,6 +273,8 @@ class Program:
 		nodes = dict.code
 		if dict.has("name"):
 			name = dict.name
+		if dict.has("description"):
+			description = dict.description
 		if dict.has("icon"):
 			icon = "res://images/icons/"+dict.icon+".png"
 			image = "res://images/cards/"+dict.icon+".png"
@@ -280,6 +283,7 @@ class Program:
 	
 	func calc_statistics():
 		var time := 0.0
+		var total_cpu := 0
 		size = 0
 		max_cpu = 0
 		mean_cpu = 0
@@ -310,8 +314,8 @@ class Program:
 				delay = Programs.COMMANDS[node.type].delay
 			mean_cpu += cpu*delay
 			time += delay
-			
-		compile_cpu = int(2*sqrt(mean_cpu))
+			total_cpu += cpu
+		compile_cpu = int(3*sqrt(total_cpu))
 		mean_cpu /= max(time,1.0)
 		compile_time = time
 	
@@ -337,36 +341,43 @@ class PrgmNode:
 var programs = {
 	"anti_virus":{
 		"name":"ANTI_VIRUS",
+		"description":"ANTI_VIRUS_DESC",
 		"code":to_class(ANTI_VIRUS),
 		"icon":"anti_virus"
 	},
 	"pulse":{
 		"name":"PULSE",
+		"description":"PULSE_DESC",
 		"code":to_class(PULSE),
 		"icon":"pulse"
 	},
 	"wave":{
 		"name":"WAVE",
+		"description":"WAVE_DESC",
 		"code":to_class(WAVE),
 		"icon":"wave"
 	},
 	"fire_wall":{
 		"name":"FIRE_WALL",
+		"description":"FIRE_WALL_DESC",
 		"code":to_class(FIRE_WALL),
 		"icon":"fire_wall"
 	},
 	"phalanx":{
 		"name":"PHALANX",
+		"description":"PHALANX_DESC",
 		"code":to_class(PHALANX),
 		"icon":"phalanx"
 	},
 	"worm":{
 		"name":"WORM",
+		"description":"WORM_DESC",
 		"code":to_class(WORM),
 		"icon":"worm"
 	},
 	"agent":{
 		"name":"AGENT",
+		"description":"AGENT_DESC",
 		"code":to_class(AGENT),
 		"icon":"concentric_red"
 	},
@@ -419,7 +430,7 @@ func to_dict(code):
 func _save(file):
 	var dict := {}
 	for k in known_programs.keys():
-		dict[k] = {"name":known_programs[k].name,"icon":known_programs[k].icon}
+		dict[k] = {"name":known_programs[k].name,"description":known_programs[k].description,"icon":known_programs[k].icon}
 		dict[k]["code"] = to_dict(known_programs[k])
 	file.store_line(JSON.print({"known_commands":known_commands,"known_programs":dict}))
 

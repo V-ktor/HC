@@ -33,6 +33,7 @@ var compile_cpu := 0
 var can_scan := false
 var new_line_pos := 0
 var program_name
+var program_desc
 var program_icon
 var game_instance
 var program_icon_selected := 0
@@ -691,8 +692,8 @@ func research(dict):
 	for cmd in Programs.COMMANDS.keys()+Programs.STATEMENTS+Programs.SETS+Programs.TARGETS:
 		if cmd in Programs.known_commands:
 			continue
-		for line in prgm.code:
-			if cmd in line:
+		for node in prgm.code.values():
+			if node.type==cmd:
 				Programs.known_commands.push_back(cmd)
 				add_log_msg(tr("LOG_COMMAND_LEARNED")%cmd,tr("LOG_COMMAND_LEARNED")%cmd)
 				continue
@@ -928,9 +929,11 @@ func update_code():
 
 func _load_program(ID):
 	program_nodes = Programs.known_programs.values()[ID].code
-	program_name = Programs.known_programs.keys()[ID]
+	program_name = tr(Programs.known_programs.values()[ID].name)
+	program_desc =  tr(Programs.known_programs.values()[ID].description)
 	program_icon = Programs.known_programs.values()[ID].icon
 	$Code/Top/Name.text = program_name
+	$Code/Description/Description.text = program_desc
 	update_program()
 
 func _save_program():
@@ -942,15 +945,17 @@ func _save_program():
 		program_name += " "+str(n)
 	for p in program_nodes.keys():
 		code[p] = program_nodes[p].to_dict()
-	Programs.programs[program_name] = {"name":program_name,"code":code,"icon":program_icon}
+	Programs.programs[program_name] = {"name":program_name,"description":program_desc,"code":code,"icon":program_icon}
 	Programs.known_programs[program_name] = Programs.programs[program_name]
 	update_code()
 
 func _new_program():
 	program_nodes = {program_grid_size/2:Programs.PrgmNode.new(program_grid_size/2,{"type":"initialize","dir":[0]})}
-	program_name = "new program"
+	program_name = tr("NEW_PROGRAM")
+	program_desc = tr("EMPTY_PROGRAM")
 	program_icon = "template"
 	$Code/Top/Name.text = program_name
+	$Code/Description/Description.text = program_desc
 	update_program()
 	$Code/Code/ScrollContainer.scroll_horizontal = $Code/Code/ScrollContainer/BG.rect_min_size.x/2-$Code/Code/ScrollContainer.rect_size.x/2+172/2
 	$Code/Code/ScrollContainer.scroll_vertical = $Code/Code/ScrollContainer/BG.rect_min_size.y/2-$Code/Code/ScrollContainer.rect_size.y/2+196/2
@@ -973,6 +978,11 @@ func _set_program_name(text):
 	if text in Programs.programs.keys():
 		return
 	program_name = text
+
+func _set_program_desc(text):
+	if text in Programs.programs.keys():
+		return
+	program_desc = text
 
 func update_program():
 	for c in $Code/Code/ScrollContainer/BG.get_children():
@@ -1073,7 +1083,7 @@ func update_program():
 	var num_init := 0
 	var num_terminate := 0
 	var num_unconnected := 0
-	var prgm := Programs.Program.new({"code":program_nodes,"name":program_name,"icon":program_icon})
+	var prgm := Programs.Program.new({"code":program_nodes,"name":program_name,"description":program_desc,"icon":program_icon})
 	for p in prgm.nodes.keys():
 		var type = prgm.nodes[p].type
 		for dir in prgm.nodes[p].dir:
@@ -1807,6 +1817,7 @@ func _ready():
 	$Code/Top/Button2.connect("pressed",$Code/Icon,"show")
 	$Code/Top/Button3.connect("pressed",self,"_delete_program")
 	$Code/Top/Name.connect("text_changed",self,"_set_program_name")
+	$Code/Description/Description.connect("text_changed",self,"_set_program_desc")
 	$Code/Icon/HBoxContainer/Button1.connect("pressed",self,"_set_program_icon")
 	$Code/Icon/HBoxContainer/Button2.connect("pressed",$Code/Icon,"hide")
 	$Code/Icon/ScrollContainer/GridContainer/Button0.connect("pressed",self,"_select_program_icon",[0])

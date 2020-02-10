@@ -16,8 +16,6 @@ func inc_compiler_cpu(inc : int):
 	Objects.actors.ai.cpu += inc
 
 
-
-
 # definitions #
 
 func _ready():

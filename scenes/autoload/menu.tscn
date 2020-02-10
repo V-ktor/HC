@@ -1,4 +1,4 @@
-[gd_scene load_steps=109 format=2]
+[gd_scene load_steps=111 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -830,6 +830,10 @@ bg_color = Color( 0.878431, 0.878431, 0.878431, 1 )
 [sub_resource type="StyleBoxFlat" id=69]
 corner_radius_bottom_left = 50
 corner_detail = 1
+
+[sub_resource type="StyleBoxEmpty" id=83]
+
+[sub_resource type="StyleBoxEmpty" id=84]
 
 [sub_resource type="DynamicFont" id=70]
 size = 20
@@ -2959,6 +2963,9 @@ margin_left = 68.0
 margin_top = 36.0
 theme = SubResource( 66 )
 custom_styles/panel = SubResource( 67 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="VSeparator1" type="VSeparator" parent="Code"]
 anchor_left = 1.0
@@ -3197,6 +3204,33 @@ mouse_filter = 2
 texture = ExtResource( 14 )
 expand = true
 stretch_mode = 7
+
+[node name="Description" type="Panel" parent="Code"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -642.0
+margin_top = 68.0
+margin_right = -386.0
+margin_bottom = 196.0
+theme = SubResource( 37 )
+custom_styles/panel = SubResource( 69 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Description" type="TextEdit" parent="Code/Description"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -34.0
+custom_styles/focus = SubResource( 83 )
+custom_styles/normal = SubResource( 84 )
+text = "DESCRIPTION"
+smooth_scrolling = true
+wrap_enabled = true
 
 [node name="Icon" type="Panel" parent="Code"]
 visible = false
