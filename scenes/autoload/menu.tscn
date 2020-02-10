@@ -1,4 +1,4 @@
-[gd_scene load_steps=108 format=2]
+[gd_scene load_steps=109 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -25,6 +25,7 @@
 [ext_resource path="res://sounds/65428__gumballrimpoche__glitchys.ogg" type="AudioStream" id=23]
 [ext_resource path="res://fonts/kenvector_future.ttf" type="DynamicFontData" id=24]
 [ext_resource path="res://scripts/text_effects/texteffect_matrix.tres" type="RichTextEffect" id=25]
+[ext_resource path="res://sounds/238367__stewdio2003__cp-power-down01.wav" type="AudioStream" id=26]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
@@ -167,11 +168,11 @@ expand_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxEmpty" id=25]
 
-[sub_resource type="DynamicFont" id=82]
+[sub_resource type="DynamicFont" id=26]
 size = 24
 font_data = ExtResource( 24 )
 
-[sub_resource type="GDScript" id=81]
+[sub_resource type="GDScript" id=27]
 script/source = "extends RichTextLabel
 
 const TEXTS = [
@@ -199,14 +200,14 @@ func next_text():
 		index += 1
 "
 
-[sub_resource type="StyleBoxFlat" id=26]
+[sub_resource type="StyleBoxFlat" id=28]
 bg_color = Color( 0.25098, 0.501961, 0.878431, 1 )
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="Animation" id=27]
+[sub_resource type="Animation" id=29]
 length = 1.8
 loop = true
 tracks/0/type = "value"
@@ -282,15 +283,15 @@ tracks/5/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
-[sub_resource type="DynamicFont" id=80]
+[sub_resource type="DynamicFont" id=30]
 size = 96
 font_data = ExtResource( 10 )
 
-[sub_resource type="DynamicFont" id=77]
+[sub_resource type="DynamicFont" id=31]
 size = 64
 font_data = ExtResource( 10 )
 
-[sub_resource type="Animation" id=78]
+[sub_resource type="Animation" id=32]
 resource_name = "error"
 length = 2.0
 tracks/0/type = "value"
@@ -391,8 +392,44 @@ tracks/4/keys = {
 "method": "next_text"
 } ]
 }
+tracks/5/type = "value"
+tracks/5/path = NodePath("Confirmed:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 2,
+"values": [ true, true, true ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Error:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0.8, 0.9, 1, 1.2, 1.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 2,
+"values": [ true, true, true, true, true ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Error2:playing")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 1.3 ),
+"transitions": PoolRealArray( 1 ),
+"update": 2,
+"values": [ true ]
+}
 
-[sub_resource type="StyleBoxTexture" id=28]
+[sub_resource type="StyleBoxTexture" id=33]
 texture = ExtResource( 6 )
 region_rect = Rect2( 0, 0, 32, 16 )
 margin_left = 12.0
@@ -400,7 +437,7 @@ margin_right = 12.0
 expand_margin_top = 6.0
 expand_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxFlat" id=29]
+[sub_resource type="StyleBoxFlat" id=34]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 0.501961 )
 border_width_left = 2
 border_width_top = 2
@@ -412,7 +449,7 @@ expand_margin_right = 6.0
 expand_margin_top = 6.0
 expand_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxFlat" id=30]
+[sub_resource type="StyleBoxFlat" id=35]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 0.501961 )
 border_width_left = 2
 border_width_top = 2
@@ -424,7 +461,7 @@ expand_margin_right = 6.0
 expand_margin_top = 6.0
 expand_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id=31]
+[sub_resource type="StyleBoxTexture" id=36]
 texture = ExtResource( 7 )
 region_rect = Rect2( 0, 0, 16, 32 )
 margin_top = 12.0
@@ -432,7 +469,7 @@ margin_bottom = 12.0
 expand_margin_left = 6.0
 expand_margin_right = 6.0
 
-[sub_resource type="Theme" id=32]
+[sub_resource type="Theme" id=37]
 Button/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
 Button/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
 Button/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
@@ -448,11 +485,11 @@ HScrollBar/icons/decrement = null
 HScrollBar/icons/decrement_highlight = null
 HScrollBar/icons/increment = null
 HScrollBar/icons/increment_highlight = null
-HScrollBar/styles/grabber = SubResource( 28 )
-HScrollBar/styles/grabber_highlight = SubResource( 28 )
-HScrollBar/styles/grabber_pressed = SubResource( 28 )
-HScrollBar/styles/scroll = SubResource( 29 )
-HScrollBar/styles/scroll_focus = SubResource( 30 )
+HScrollBar/styles/grabber = SubResource( 33 )
+HScrollBar/styles/grabber_highlight = SubResource( 33 )
+HScrollBar/styles/grabber_pressed = SubResource( 33 )
+HScrollBar/styles/scroll = SubResource( 34 )
+HScrollBar/styles/scroll_focus = SubResource( 35 )
 Label/colors/font_color = Color( 1, 1, 1, 1 )
 Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
 Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
@@ -505,22 +542,22 @@ VScrollBar/icons/decrement = null
 VScrollBar/icons/decrement_highlight = null
 VScrollBar/icons/increment = null
 VScrollBar/icons/increment_highlight = null
-VScrollBar/styles/grabber = SubResource( 31 )
-VScrollBar/styles/grabber_highlight = SubResource( 31 )
-VScrollBar/styles/grabber_pressed = SubResource( 31 )
-VScrollBar/styles/scroll = SubResource( 29 )
-VScrollBar/styles/scroll_focus = SubResource( 30 )
+VScrollBar/styles/grabber = SubResource( 36 )
+VScrollBar/styles/grabber_highlight = SubResource( 36 )
+VScrollBar/styles/grabber_pressed = SubResource( 36 )
+VScrollBar/styles/scroll = SubResource( 34 )
+VScrollBar/styles/scroll_focus = SubResource( 35 )
 
-[sub_resource type="StyleBoxFlat" id=33]
+[sub_resource type="StyleBoxFlat" id=38]
 bg_color = Color( 0.25098, 0.25098, 0.25098, 1 )
 
-[sub_resource type="StyleBoxFlat" id=34]
+[sub_resource type="StyleBoxFlat" id=39]
 
-[sub_resource type="StyleBoxEmpty" id=35]
+[sub_resource type="StyleBoxEmpty" id=40]
 
-[sub_resource type="StyleBoxEmpty" id=36]
+[sub_resource type="StyleBoxEmpty" id=41]
 
-[sub_resource type="StyleBoxFlat" id=37]
+[sub_resource type="StyleBoxFlat" id=42]
 draw_center = false
 border_width_left = 4
 border_width_top = 4
@@ -528,15 +565,15 @@ border_width_right = 4
 border_width_bottom = 4
 border_color = Color( 0.12549, 0.25098, 0.376471, 1 )
 
-[sub_resource type="StyleBoxEmpty" id=38]
+[sub_resource type="StyleBoxEmpty" id=43]
 
-[sub_resource type="StyleBoxEmpty" id=39]
+[sub_resource type="StyleBoxEmpty" id=44]
 
-[sub_resource type="StyleBoxEmpty" id=40]
+[sub_resource type="StyleBoxEmpty" id=45]
 
-[sub_resource type="StyleBoxEmpty" id=41]
+[sub_resource type="StyleBoxEmpty" id=46]
 
-[sub_resource type="StyleBoxFlat" id=42]
+[sub_resource type="StyleBoxFlat" id=47]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
@@ -552,11 +589,11 @@ expand_margin_right = 6.0
 expand_margin_top = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxEmpty" id=43]
+[sub_resource type="StyleBoxEmpty" id=48]
 
-[sub_resource type="StyleBoxEmpty" id=44]
+[sub_resource type="StyleBoxEmpty" id=49]
 
-[sub_resource type="Shader" id=45]
+[sub_resource type="Shader" id=50]
 code = "shader_type canvas_item;
 
 uniform sampler2D mask;
@@ -567,11 +604,11 @@ void fragment()
 	COLOR.a *= texture(mask,UV).g*clamp((COLOR.r+COLOR.g+COLOR.b)/3.0*10.0,0.0,1.0);
 }"
 
-[sub_resource type="ShaderMaterial" id=46]
-shader = SubResource( 45 )
+[sub_resource type="ShaderMaterial" id=51]
+shader = SubResource( 50 )
 shader_param/mask = ExtResource( 8 )
 
-[sub_resource type="StyleBoxFlat" id=47]
+[sub_resource type="StyleBoxFlat" id=52]
 bg_color = Color( 0.376471, 0.376471, 0.376471, 1 )
 border_width_left = 2
 border_width_top = 2
@@ -579,13 +616,13 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 0.25098, 0.25098, 0.25098, 1 )
 
-[sub_resource type="StyleBoxFlat" id=48]
+[sub_resource type="StyleBoxFlat" id=53]
 bg_color = Color( 0.188235, 0.752941, 0.12549, 1 )
 
-[sub_resource type="StyleBoxFlat" id=49]
+[sub_resource type="StyleBoxFlat" id=54]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 
-[sub_resource type="StyleBoxFlat" id=50]
+[sub_resource type="StyleBoxFlat" id=55]
 bg_color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
 border_width_left = 2
 border_width_top = 2
@@ -595,7 +632,7 @@ border_color = Color( 0, 0.12549, 0, 1 )
 border_blend = true
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=51]
+[sub_resource type="StyleBoxFlat" id=56]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 draw_center = false
 border_width_left = 3
@@ -606,7 +643,7 @@ border_color = Color( 0.376471, 1, 0.376471, 1 )
 border_blend = true
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=52]
+[sub_resource type="StyleBoxFlat" id=57]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 border_width_left = 2
 border_width_top = 2
@@ -616,7 +653,7 @@ border_color = Color( 0.752941, 1, 0.752941, 1 )
 border_blend = true
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=53]
+[sub_resource type="StyleBoxFlat" id=58]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 border_width_left = 2
 border_width_top = 2
@@ -626,7 +663,7 @@ border_color = Color( 0.376471, 1, 0.376471, 1 )
 border_blend = true
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=54]
+[sub_resource type="StyleBoxFlat" id=59]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 border_width_left = 2
 border_width_top = 2
@@ -636,7 +673,7 @@ border_color = Color( 0, 1, 0, 1 )
 border_blend = true
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=55]
+[sub_resource type="StyleBoxFlat" id=60]
 bg_color = Color( 0.25098, 0.501961, 0.25098, 1 )
 corner_detail = 1
 expand_margin_left = 1.0
@@ -644,7 +681,7 @@ expand_margin_right = 1.0
 expand_margin_top = 1.0
 expand_margin_bottom = 1.0
 
-[sub_resource type="StyleBoxFlat" id=56]
+[sub_resource type="StyleBoxFlat" id=61]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
@@ -658,7 +695,7 @@ border_color = Color( 0.376471, 1, 0.376471, 1 )
 border_blend = true
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=57]
+[sub_resource type="StyleBoxFlat" id=62]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
@@ -672,7 +709,7 @@ border_color = Color( 0.25098, 0.501961, 0.25098, 1 )
 border_blend = true
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=58]
+[sub_resource type="StyleBoxFlat" id=63]
 content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
@@ -686,26 +723,26 @@ border_color = Color( 0, 0.12549, 0, 1 )
 border_blend = true
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=59]
+[sub_resource type="StyleBoxFlat" id=64]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="DynamicFont" id=60]
+[sub_resource type="DynamicFont" id=65]
 outline_color = Color( 0.376471, 1, 0.376471, 1 )
 font_data = ExtResource( 10 )
 
-[sub_resource type="Theme" id=61]
-default_font = SubResource( 60 )
+[sub_resource type="Theme" id=66]
+default_font = SubResource( 65 )
 Button/colors/font_color = Color( 0.376471, 1, 0.376471, 1 )
 Button/colors/font_color_disabled = Color( 0, 0.25098, 0, 0.2 )
 Button/colors/font_color_hover = Color( 0.752941, 1, 0.752941, 1 )
 Button/colors/font_color_pressed = Color( 0, 1, 0, 1 )
 Button/constants/hseparation = 2
 Button/fonts/font = null
-Button/styles/disabled = SubResource( 50 )
-Button/styles/focus = SubResource( 51 )
-Button/styles/hover = SubResource( 52 )
-Button/styles/normal = SubResource( 53 )
-Button/styles/pressed = SubResource( 54 )
+Button/styles/disabled = SubResource( 55 )
+Button/styles/focus = SubResource( 56 )
+Button/styles/hover = SubResource( 57 )
+Button/styles/normal = SubResource( 58 )
+Button/styles/pressed = SubResource( 59 )
 CheckBox/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
 CheckBox/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
 CheckBox/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
@@ -725,7 +762,7 @@ CheckBox/styles/hover_pressed = null
 CheckBox/styles/normal = null
 CheckBox/styles/pressed = null
 HSeparator/constants/separation = 4
-HSeparator/styles/separator = SubResource( 55 )
+HSeparator/styles/separator = SubResource( 60 )
 Label/colors/font_color = Color( 0.376471, 1, 0.376471, 1 )
 Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
 Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
@@ -744,9 +781,9 @@ LineEdit/colors/selection_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 LineEdit/constants/minimum_spaces = 12
 LineEdit/fonts/font = null
 LineEdit/icons/clear = null
-LineEdit/styles/focus = SubResource( 56 )
-LineEdit/styles/normal = SubResource( 57 )
-LineEdit/styles/read_only = SubResource( 58 )
+LineEdit/styles/focus = SubResource( 61 )
+LineEdit/styles/normal = SubResource( 62 )
+LineEdit/styles/read_only = SubResource( 63 )
 OptionButton/colors/font_color = Color( 0.376471, 1, 0.376471, 1 )
 OptionButton/colors/font_color_disabled = Color( 0, 0.25098, 0, 0.2 )
 OptionButton/colors/font_color_hover = Color( 0.752941, 1, 0.752941, 1 )
@@ -755,13 +792,13 @@ OptionButton/constants/arrow_margin = 2
 OptionButton/constants/hseparation = 2
 OptionButton/fonts/font = null
 OptionButton/icons/arrow = null
-OptionButton/styles/disabled = SubResource( 50 )
-OptionButton/styles/focus = SubResource( 51 )
-OptionButton/styles/hover = SubResource( 52 )
-OptionButton/styles/normal = SubResource( 53 )
-OptionButton/styles/pressed = SubResource( 54 )
+OptionButton/styles/disabled = SubResource( 55 )
+OptionButton/styles/focus = SubResource( 56 )
+OptionButton/styles/hover = SubResource( 57 )
+OptionButton/styles/normal = SubResource( 58 )
+OptionButton/styles/pressed = SubResource( 59 )
 Panel/styles/panel = null
-Panel/styles/panelf = SubResource( 59 )
+Panel/styles/panelf = SubResource( 64 )
 Panel/styles/panelnc = null
 PopupMenu/colors/font_color = Color( 0.376471, 1, 0.376471, 1 )
 PopupMenu/colors/font_color_accel = Color( 0.7, 0.7, 0.7, 0.8 )
@@ -778,38 +815,38 @@ PopupMenu/icons/unchecked = null
 PopupMenu/styles/hover = null
 PopupMenu/styles/labeled_separator_left = null
 PopupMenu/styles/labeled_separator_right = null
-PopupMenu/styles/panel = SubResource( 53 )
+PopupMenu/styles/panel = SubResource( 58 )
 PopupMenu/styles/panel_disabled = null
-PopupMenu/styles/separator = SubResource( 55 )
+PopupMenu/styles/separator = SubResource( 60 )
 VSeparator/constants/separation = 4
-VSeparator/styles/separator = SubResource( 55 )
+VSeparator/styles/separator = SubResource( 60 )
 
-[sub_resource type="StyleBoxFlat" id=62]
+[sub_resource type="StyleBoxFlat" id=67]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="StyleBoxFlat" id=63]
+[sub_resource type="StyleBoxFlat" id=68]
 bg_color = Color( 0.878431, 0.878431, 0.878431, 1 )
 
-[sub_resource type="StyleBoxFlat" id=64]
+[sub_resource type="StyleBoxFlat" id=69]
 corner_radius_bottom_left = 50
 corner_detail = 1
 
-[sub_resource type="DynamicFont" id=65]
+[sub_resource type="DynamicFont" id=70]
 size = 20
 font_data = ExtResource( 3 )
 
-[sub_resource type="StyleBoxFlat" id=66]
+[sub_resource type="StyleBoxFlat" id=71]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="StyleBoxFlat" id=67]
+[sub_resource type="StyleBoxFlat" id=72]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
 
-[sub_resource type="DynamicFont" id=68]
+[sub_resource type="DynamicFont" id=73]
 size = 22
 outline_size = 1
 font_data = ExtResource( 3 )
 
-[sub_resource type="Shader" id=69]
+[sub_resource type="Shader" id=74]
 code = "shader_type canvas_item;
 
 uniform float noise_scale = 0.0;
@@ -846,8 +883,8 @@ void fragment()
 }
 "
 
-[sub_resource type="ShaderMaterial" id=70]
-shader = SubResource( 69 )
+[sub_resource type="ShaderMaterial" id=75]
+shader = SubResource( 74 )
 shader_param/noise_scale = 0.0
 shader_param/glitch_scale = 0.0
 shader_param/glitch_blend = 0.0
@@ -856,12 +893,11 @@ shader_param/noise = ExtResource( 11 )
 shader_param/noise_mask = ExtResource( 13 )
 shader_param/block_mask = ExtResource( 20 )
 
-[sub_resource type="StyleBoxFlat" id=71]
+[sub_resource type="StyleBoxFlat" id=76]
 bg_color = Color( 0, 0, 0, 0 )
 border_color = Color( 0, 0, 0, 0 )
 
-[sub_resource type="Animation" id=72]
-resource_name = "burst_of"
+[sub_resource type="Animation" id=77]
 length = 3.0
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:material:shader_param/noise_scale")
@@ -948,7 +984,7 @@ tracks/6/keys = {
 "values": [ 8.0, -80.0 ]
 }
 
-[sub_resource type="Animation" id=79]
+[sub_resource type="Animation" id=78]
 resource_name = "intro"
 length = 2.0
 tracks/0/type = "value"
@@ -1036,7 +1072,7 @@ tracks/6/keys = {
 "values": [ -80.0, 0.0 ]
 }
 
-[sub_resource type="Animation" id=73]
+[sub_resource type="Animation" id=79]
 length = 30.0
 loop = true
 tracks/0/type = "value"
@@ -1112,7 +1148,7 @@ tracks/5/keys = {
 "values": [ -16.0, -8.0, -24.0, -16.0 ]
 }
 
-[sub_resource type="Animation" id=74]
+[sub_resource type="Animation" id=80]
 length = 20.0
 loop = true
 tracks/0/type = "value"
@@ -1176,7 +1212,7 @@ tracks/4/keys = {
 "values": [ -8.0, -4.0, -24.0, -8.0 ]
 }
 
-[sub_resource type="Animation" id=75]
+[sub_resource type="Animation" id=81]
 length = 20.0
 loop = true
 tracks/0/type = "value"
@@ -1240,7 +1276,7 @@ tracks/4/keys = {
 "values": [ -16.0, -4.0, -16.0, 0.0, -16.0, -8.0, -16.0, -8.0, -16.0 ]
 }
 
-[sub_resource type="GDScript" id=76]
+[sub_resource type="GDScript" id=82]
 script/source = "extends Control
 
 var ring : Dictionary
@@ -1839,12 +1875,12 @@ stretch_mode = 6
 [node name="RichTextLabel" type="RichTextLabel" parent="Login"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/normal_font = SubResource( 82 )
+custom_fonts/normal_font = SubResource( 26 )
 bbcode_enabled = true
 scroll_active = false
 scroll_following = true
 custom_effects = [ ExtResource( 25 ) ]
-script = SubResource( 81 )
+script = SubResource( 27 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1867,7 +1903,7 @@ margin_bottom = 16.0
 rect_min_size = Vector2( 16, 16 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 26 )
+custom_styles/panel = SubResource( 28 )
 
 [node name="Dot2" type="Panel" parent="Login/HBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
@@ -1877,7 +1913,7 @@ margin_bottom = 16.0
 rect_min_size = Vector2( 16, 16 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 26 )
+custom_styles/panel = SubResource( 28 )
 
 [node name="Dot3" type="Panel" parent="Login/HBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
@@ -1887,7 +1923,7 @@ margin_bottom = 16.0
 rect_min_size = Vector2( 16, 16 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 26 )
+custom_styles/panel = SubResource( 28 )
 
 [node name="Dot4" type="Panel" parent="Login/HBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
@@ -1897,7 +1933,7 @@ margin_bottom = 16.0
 rect_min_size = Vector2( 16, 16 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 26 )
+custom_styles/panel = SubResource( 28 )
 
 [node name="Dot5" type="Panel" parent="Login/HBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
@@ -1907,7 +1943,7 @@ margin_bottom = 16.0
 rect_min_size = Vector2( 16, 16 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 26 )
+custom_styles/panel = SubResource( 28 )
 
 [node name="Dot6" type="Panel" parent="Login/HBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
@@ -1917,10 +1953,10 @@ margin_bottom = 16.0
 rect_min_size = Vector2( 16, 16 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 26 )
+custom_styles/panel = SubResource( 28 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Login/HBoxContainer"]
-anims/loading = SubResource( 27 )
+anims/loading = SubResource( 29 )
 
 [node name="LabelError" type="Label" parent="Login"]
 visible = false
@@ -1928,11 +1964,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -446.0
-margin_top = -250.0
-margin_right = 322.0
-margin_bottom = -142.0
-custom_fonts/font = SubResource( 80 )
+margin_left = 162.0
+margin_top = 230.0
+margin_right = 930.0
+margin_bottom = 338.0
+custom_fonts/font = SubResource( 30 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "FATAL ERROR"
 align = 1
@@ -1947,11 +1983,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -158.0
-margin_top = -154.0
-margin_right = 162.0
-margin_bottom = -82.0
-custom_fonts/font = SubResource( 77 )
+margin_left = -446.0
+margin_top = -250.0
+margin_right = -126.0
+margin_bottom = -178.0
+custom_fonts/font = SubResource( 31 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "WARNING"
 align = 1
@@ -1971,8 +2007,13 @@ stream = ExtResource( 21 )
 volume_db = 2.0
 bus = "Sound"
 
+[node name="Error2" type="AudioStreamPlayer" parent="Login"]
+stream = ExtResource( 26 )
+volume_db = -20.0
+bus = "Sound"
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Login"]
-anims/error = SubResource( 78 )
+anims/error = SubResource( 32 )
 
 [node name="Chat" type="Panel" parent="."]
 visible = false
@@ -1980,7 +2021,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 68.0
 margin_top = 36.0
-theme = SubResource( 32 )
+theme = SubResource( 37 )
 custom_styles/panel = SubResource( 21 )
 
 [node name="Panel2" type="Panel" parent="Chat"]
@@ -1992,7 +2033,7 @@ margin_top = 2.0
 margin_right = -2.0
 margin_bottom = -2.0
 rect_clip_content = true
-custom_styles/panel = SubResource( 33 )
+custom_styles/panel = SubResource( 38 )
 
 [node name="VSeparator" type="VSeparator" parent="Chat"]
 visible = false
@@ -2012,7 +2053,7 @@ margin_top = 2.0
 margin_right = -204.0
 margin_bottom = -2.0
 rect_clip_content = true
-custom_styles/panel = SubResource( 34 )
+custom_styles/panel = SubResource( 39 )
 
 [node name="Portrait" type="Control" parent="Chat/Panel"]
 anchor_left = 0.6
@@ -2052,7 +2093,7 @@ show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 34 )
+custom_styles/panel = SubResource( 39 )
 
 [node name="Tween" type="Tween" parent="Chat/Text0"]
 
@@ -2075,11 +2116,11 @@ size_flags_horizontal = 3
 margin_right = 198.0
 margin_bottom = 26.0
 rect_min_size = Vector2( 32, 24 )
-custom_styles/hover = SubResource( 35 )
-custom_styles/pressed = SubResource( 36 )
-custom_styles/focus = SubResource( 37 )
-custom_styles/disabled = SubResource( 38 )
-custom_styles/normal = SubResource( 39 )
+custom_styles/hover = SubResource( 40 )
+custom_styles/pressed = SubResource( 41 )
+custom_styles/focus = SubResource( 42 )
+custom_styles/disabled = SubResource( 43 )
+custom_styles/normal = SubResource( 44 )
 custom_fonts/font = SubResource( 19 )
 custom_colors/font_color_disabled = Color( 1, 0.188235, 0.12549, 1 )
 custom_colors/font_color = Color( 0.752941, 0.752941, 0.752941, 1 )
@@ -2092,7 +2133,7 @@ show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 34 )
+custom_styles/panel = SubResource( 39 )
 
 [node name="Notice" type="TextureRect" parent="Chat/ScrollContainer/VBoxContainer/Button0"]
 visible = false
@@ -2146,11 +2187,11 @@ margin_right = 29.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 4
-custom_styles/hover = SubResource( 40 )
-custom_styles/pressed = SubResource( 41 )
-custom_styles/focus = SubResource( 42 )
-custom_styles/disabled = SubResource( 43 )
-custom_styles/normal = SubResource( 44 )
+custom_styles/hover = SubResource( 45 )
+custom_styles/pressed = SubResource( 46 )
+custom_styles/focus = SubResource( 47 )
+custom_styles/disabled = SubResource( 48 )
+custom_styles/normal = SubResource( 49 )
 custom_colors/font_color_disabled = Color( 1, 0.188235, 0.12549, 1 )
 custom_colors/font_color = Color( 0.752941, 0.752941, 0.752941, 1 )
 custom_colors/font_color_hover = Color( 0.878431, 1, 1, 1 )
@@ -2174,7 +2215,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 68.0
 margin_top = 36.0
-theme = SubResource( 32 )
+theme = SubResource( 37 )
 custom_styles/panel = SubResource( 21 )
 
 [node name="VSeparator" type="VSeparator" parent="Log"]
@@ -2202,7 +2243,7 @@ margin_right = 200.0
 margin_bottom = 560.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/bg = SubResource( 33 )
+custom_styles/bg = SubResource( 38 )
 
 [node name="Text" type="ScrollContainer" parent="Log"]
 anchor_right = 1.0
@@ -2226,7 +2267,7 @@ rect_min_size = Vector2( 0, 192 )
 size_flags_horizontal = 3
 
 [node name="Logo" type="TextureRect" parent="Log/Text/VBoxContainer/HBoxContainer"]
-material = SubResource( 46 )
+material = SubResource( 51 )
 margin_right = 371.0
 margin_bottom = 192.0
 size_flags_horizontal = 3
@@ -2270,7 +2311,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 24.0
 rect_clip_content = true
-custom_styles/panel = SubResource( 33 )
+custom_styles/panel = SubResource( 38 )
 
 [node name="Panel2" type="Panel" parent="Deck"]
 anchor_top = 0.5
@@ -2279,7 +2320,7 @@ anchor_bottom = 0.5
 margin_top = -2.0
 margin_right = -2.0
 margin_bottom = 24.0
-custom_styles/panel = SubResource( 33 )
+custom_styles/panel = SubResource( 38 )
 
 [node name="HSeparator1" type="HSeparator" parent="Deck"]
 visible = false
@@ -2405,7 +2446,7 @@ margin_left = -48.0
 margin_top = -16.0
 margin_right = 48.0
 margin_bottom = 16.0
-custom_styles/panel = SubResource( 47 )
+custom_styles/panel = SubResource( 52 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Deck/Deck/HBoxContainer/Card0/Panel"]
 anchor_right = 1.0
@@ -2482,7 +2523,7 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_clip_content = true
-custom_styles/panel = SubResource( 33 )
+custom_styles/panel = SubResource( 38 )
 
 [node name="Panel2" type="Panel" parent="Compile"]
 anchor_top = 0.5
@@ -2490,7 +2531,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 margin_top = -26.0
 margin_right = -2.0
-custom_styles/panel = SubResource( 33 )
+custom_styles/panel = SubResource( 38 )
 
 [node name="HSeparator1" type="HSeparator" parent="Compile"]
 visible = false
@@ -2642,7 +2683,7 @@ margin_right = 948.0
 margin_bottom = 54.0
 rect_min_size = Vector2( 0, 54 )
 size_flags_horizontal = 3
-custom_styles/panel = SubResource( 47 )
+custom_styles/panel = SubResource( 52 )
 
 [node name="Label" type="Label" parent="Compile/ScrollContainer/GridContainer/Stack0"]
 anchor_right = 1.0
@@ -2661,8 +2702,8 @@ margin_left = 52.0
 margin_top = 24.0
 margin_right = -2.0
 margin_bottom = -2.0
-custom_styles/fg = SubResource( 48 )
-custom_styles/bg = SubResource( 49 )
+custom_styles/fg = SubResource( 53 )
+custom_styles/bg = SubResource( 54 )
 value = 50.0
 percent_visible = false
 
@@ -2702,7 +2743,7 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_clip_content = true
-custom_styles/panel = SubResource( 33 )
+custom_styles/panel = SubResource( 38 )
 
 [node name="Panel2" type="Panel" parent="Gear"]
 anchor_top = 0.5
@@ -2710,7 +2751,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 margin_top = -26.0
 margin_right = -2.0
-custom_styles/panel = SubResource( 33 )
+custom_styles/panel = SubResource( 38 )
 
 [node name="HSeparator1" type="HSeparator" parent="Gear"]
 visible = false
@@ -2862,7 +2903,7 @@ margin_right = 948.0
 margin_bottom = 54.0
 rect_min_size = Vector2( 0, 54 )
 size_flags_horizontal = 3
-custom_styles/panel = SubResource( 47 )
+custom_styles/panel = SubResource( 52 )
 
 [node name="Label" type="Label" parent="Gear/ScrollContainer/GridContainer/Stack0"]
 anchor_right = 1.0
@@ -2881,8 +2922,8 @@ margin_left = 52.0
 margin_top = 24.0
 margin_right = -2.0
 margin_bottom = -2.0
-custom_styles/fg = SubResource( 48 )
-custom_styles/bg = SubResource( 49 )
+custom_styles/fg = SubResource( 53 )
+custom_styles/bg = SubResource( 54 )
 value = 50.0
 percent_visible = false
 
@@ -2915,8 +2956,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 68.0
 margin_top = 36.0
-theme = SubResource( 61 )
-custom_styles/panel = SubResource( 62 )
+theme = SubResource( 66 )
+custom_styles/panel = SubResource( 67 )
 
 [node name="VSeparator1" type="VSeparator" parent="Code"]
 anchor_left = 1.0
@@ -2943,8 +2984,8 @@ margin_left = 2.0
 margin_top = 68.0
 margin_right = -386.0
 margin_bottom = -2.0
-theme = SubResource( 32 )
-custom_styles/panel = SubResource( 63 )
+theme = SubResource( 37 )
+custom_styles/panel = SubResource( 68 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -3135,11 +3176,11 @@ text = "NEW_FILE"
 margin_right = 200.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 32, 24 )
-custom_styles/hover = SubResource( 35 )
-custom_styles/pressed = SubResource( 36 )
-custom_styles/focus = SubResource( 37 )
-custom_styles/disabled = SubResource( 38 )
-custom_styles/normal = SubResource( 39 )
+custom_styles/hover = SubResource( 40 )
+custom_styles/pressed = SubResource( 41 )
+custom_styles/focus = SubResource( 42 )
+custom_styles/disabled = SubResource( 43 )
+custom_styles/normal = SubResource( 44 )
 custom_colors/font_color_disabled = Color( 1, 0.188235, 0.12549, 1 )
 custom_colors/font_color = Color( 0.752941, 0.752941, 0.752941, 1 )
 custom_colors/font_color_hover = Color( 0.878431, 1, 1, 1 )
@@ -3160,7 +3201,7 @@ stretch_mode = 7
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 62 )
+custom_styles/panel = SubResource( 67 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Code/Icon"]
 anchor_right = 1.0
@@ -3236,7 +3277,7 @@ margin_top = 2.0
 margin_right = -2.0
 margin_bottom = -2.0
 rect_clip_content = true
-custom_styles/panel = SubResource( 33 )
+custom_styles/panel = SubResource( 38 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Targets"]
 anchor_right = 1.0
@@ -3255,7 +3296,7 @@ rect_min_size = Vector2( 0, 192 )
 size_flags_horizontal = 3
 
 [node name="Logo" type="TextureRect" parent="Targets/VBoxContainer/HBoxContainer"]
-material = SubResource( 46 )
+material = SubResource( 51 )
 margin_right = 221.0
 margin_bottom = 192.0
 size_flags_horizontal = 3
@@ -3295,7 +3336,7 @@ margin_top = 2.0
 margin_right = -205.0
 margin_bottom = 190.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 64 )
+custom_styles/panel = SubResource( 69 )
 
 [node name="Label" type="Label" parent="Targets/Panel"]
 anchor_right = 1.0
@@ -3370,11 +3411,11 @@ margin_top = 34.0
 margin_right = 198.0
 margin_bottom = 86.0
 rect_min_size = Vector2( 32, 52 )
-custom_styles/hover = SubResource( 35 )
-custom_styles/pressed = SubResource( 36 )
-custom_styles/focus = SubResource( 37 )
-custom_styles/disabled = SubResource( 38 )
-custom_styles/normal = SubResource( 39 )
+custom_styles/hover = SubResource( 40 )
+custom_styles/pressed = SubResource( 41 )
+custom_styles/focus = SubResource( 42 )
+custom_styles/disabled = SubResource( 43 )
+custom_styles/normal = SubResource( 44 )
 custom_colors/font_color_disabled = Color( 1, 0.188235, 0.12549, 1 )
 custom_colors/font_color = Color( 0.752941, 0.752941, 0.752941, 1 )
 custom_colors/font_color_hover = Color( 0.878431, 1, 1, 1 )
@@ -3385,12 +3426,12 @@ show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 34 )
+custom_styles/panel = SubResource( 39 )
 
 [node name="Label" type="Label" parent="Targets/ScrollContainer/VBoxContainer/Button0"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 65 )
+custom_fonts/font = SubResource( 70 )
 text = "TARGET
 LINE2"
 align = 1
@@ -3413,7 +3454,7 @@ margin_top = 2.0
 margin_right = -2.0
 margin_bottom = -2.0
 rect_clip_content = true
-custom_styles/panel = SubResource( 66 )
+custom_styles/panel = SubResource( 71 )
 
 [node name="Text" type="RichTextLabel" parent="Hack/Panel"]
 anchor_right = 1.0
@@ -3590,7 +3631,7 @@ margin_right = 952.0
 margin_bottom = 76.0
 rect_min_size = Vector2( 36, 36 )
 size_flags_horizontal = 3
-custom_styles/panel = SubResource( 67 )
+custom_styles/panel = SubResource( 72 )
 
 [node name="LineEdit" type="LineEdit" parent="Saves/ScrollContainer/VBoxContainer/New"]
 anchor_right = 1.0
@@ -3636,7 +3677,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 68.0
 margin_top = 36.0
-theme = SubResource( 32 )
+theme = SubResource( 37 )
 custom_styles/panel = SubResource( 21 )
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Credits"]
@@ -3647,7 +3688,7 @@ margin_top = 2.0
 margin_right = -2.0
 margin_bottom = -2.0
 focus_mode = 2
-custom_fonts/bold_font = SubResource( 68 )
+custom_fonts/bold_font = SubResource( 73 )
 custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 selection_enabled = true
@@ -3691,11 +3732,11 @@ stretch_mode = 6
 
 [node name="Glitch" type="Panel" parent="."]
 visible = false
-material = SubResource( 70 )
+material = SubResource( 75 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 71 )
+custom_styles/panel = SubResource( 76 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -3705,11 +3746,11 @@ stream = ExtResource( 23 )
 volume_db = -80.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Glitch"]
-anims/burst_of = SubResource( 72 )
-anims/intro = SubResource( 79 )
-anims/sequence1 = SubResource( 73 )
-anims/sequence2 = SubResource( 74 )
-anims/sequence3 = SubResource( 75 )
+anims/burst_of = SubResource( 77 )
+anims/intro = SubResource( 78 )
+anims/sequence1 = SubResource( 79 )
+anims/sequence2 = SubResource( 80 )
+anims/sequence3 = SubResource( 81 )
 
 [node name="ViewportLogo" type="Viewport" parent="."]
 size = Vector2( 256, 256 )
@@ -3725,7 +3766,7 @@ margin_bottom = 256.0
 rect_min_size = Vector2( 256, 256 )
 expand = true
 stretch_mode = 6
-script = SubResource( 76 )
+script = SubResource( 82 )
 
 [node name="Label" type="Label" parent="ViewportLogo/Draw"]
 anchor_right = 1.0
