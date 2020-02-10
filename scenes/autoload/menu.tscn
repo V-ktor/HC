@@ -1069,7 +1069,7 @@ tracks/6/keys = {
 "times": PoolRealArray( 0, 2 ),
 "transitions": PoolRealArray( 0.5, 1 ),
 "update": 0,
-"values": [ -80.0, 0.0 ]
+"values": [ -80.0, 12.0 ]
 }
 
 [sub_resource type="Animation" id=79]
@@ -1145,7 +1145,7 @@ tracks/5/keys = {
 "times": PoolRealArray( 0, 12, 20, 30 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ -16.0, -8.0, -24.0, -16.0 ]
+"values": [ -12.0, -2.0, -24.0, -12.0 ]
 }
 
 [sub_resource type="Animation" id=80]
@@ -1209,7 +1209,7 @@ tracks/4/keys = {
 "times": PoolRealArray( 0, 5, 11, 20 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ -8.0, -4.0, -24.0, -8.0 ]
+"values": [ -6.0, 2.0, -16.0, -6.0 ]
 }
 
 [sub_resource type="Animation" id=81]
@@ -1270,10 +1270,10 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 4, 7, 10, 12, 15, 17.5, 18.2, 20 ),
+"times": PoolRealArray( 0, 4, 7, 10, 12, 14.9, 17.5, 18.2, 20 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ -16.0, -4.0, -16.0, 0.0, -16.0, -8.0, -16.0, -8.0, -16.0 ]
+"values": [ -8.0, 2.0, -8.0, 4.0, -8.0, -2.0, -8.0, -4.0, -8.0 ]
 }
 
 [sub_resource type="GDScript" id=82]
@@ -1834,7 +1834,7 @@ anchor_bottom = 0.5
 margin_left = -200.0
 margin_top = 2.0
 margin_right = 200.0
-margin_bottom = 34.0
+margin_bottom = 36.0
 custom_styles/panel = SubResource( 22 )
 
 [node name="LineEdit" type="LineEdit" parent="Login/Input"]
@@ -1847,6 +1847,7 @@ margin_bottom = -4.0
 custom_styles/read_only = SubResource( 23 )
 custom_styles/focus = SubResource( 24 )
 custom_styles/normal = SubResource( 25 )
+custom_fonts/font = SubResource( 19 )
 
 [node name="ButtonConfirm" type="Button" parent="Login/Input"]
 anchor_left = 1.0

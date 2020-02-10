@@ -311,7 +311,7 @@ class Program:
 			mean_cpu += cpu*delay
 			time += delay
 			
-		compile_cpu = int(3*sqrt(mean_cpu))
+		compile_cpu = int(2*sqrt(mean_cpu))
 		mean_cpu /= max(time,1.0)
 		compile_time = time
 	
@@ -412,14 +412,15 @@ func to_class(code):
 
 func to_dict(code):
 	var dict = {}
-	for pos in code.keys():
-		dict[pos] = code[pos].do_dict()
+	for pos in code.code.keys():
+		dict[pos] = code.code[pos].to_dict()
 	return dict
 
 func _save(file):
 	var dict := {}
 	for k in known_programs.keys():
-		dict[k] = to_dict(known_programs[k])
+		dict[k] = {"name":known_programs[k].name,"icon":known_programs[k].icon}
+		dict[k]["code"] = to_dict(known_programs[k])
 	file.store_line(JSON.print({"known_commands":known_commands,"known_programs":dict}))
 
 func _load(file):

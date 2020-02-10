@@ -779,8 +779,8 @@ func get_random_color(color,color_alt) -> Color:
 func init_world(Menu):
 	randomize()
 	
-	var player = Actor.new(Menu.get_node("Login/Input/LineEdit").text,Color(0.1,0.3,1.0),"","",15,65,60.0,{"pulse":8},1000,0,37,{},100)
-	var ai = Actor.new("Hally",Color(0.13,0.5,1.0),"res://scenes/portraits/character01.tscn","res://scenes/gui/chat_bg/AI.tscn",15,60,60.0,{"pulse":8,"fire_wall":2},0,0,21,{},100)
+	var player = Actor.new(Menu.get_node("Login/Input/LineEdit").text,Color(0.1,0.3,1.0),"","",15,100,50.0,{"pulse":8},1000,0,37,{},100)
+	var ai = Actor.new("Hally",Color(0.13,0.5,1.0),"res://scenes/portraits/character01.tscn","res://scenes/gui/chat_bg/AI.tscn",15,150,60.0,{"pulse":6,"wave":2,"fire_wall":2},0,0,21,{},100)
 	ai.desc = "AI_DESC"
 	
 	actors["player"] = player

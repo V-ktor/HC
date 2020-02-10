@@ -46,5 +46,6 @@ func _menu_pressed(ID):
 
 func _ready():
 	connect("gui_input",self,"_gui_input")
+	connect("mouse_entered",self,"raise")
 	$PopupMenu.connect("id_pressed",self,"_menu_pressed")
 	initial_position = rect_position

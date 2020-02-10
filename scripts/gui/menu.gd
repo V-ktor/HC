@@ -222,15 +222,15 @@ func update_inventory():
 			ci = get_node("Deck/Inventory/HBoxContainer/"+prog)
 		else:
 			var prgm = Programs.Program.new(Programs.programs[prog])
-			var first_line = Programs.programs[prog].code[0]
+#			var first_line = Programs.programs[prog].code[0]
 			ci = $Deck/Deck/HBoxContainer/Card0.duplicate(0)
 			ci.name = prog
 			ci.get_node("Card/Image").set_texture(load("res://images/cards/"+Programs.programs[prog].icon+".png"))
 			ci.get_node("Card/Name").text = tr(Programs.programs[prog].name)
-			if "//" in first_line:
-				ci.get_node("Card/Desc").text = first_line.substr(3,first_line.length()-3)
-			else:
-				ci.get_node("Card/Desc").text = ""
+#			if "//" in first_line:
+#				ci.get_node("Card/Desc").text = first_line.substr(3,first_line.length()-3)
+#			else:
+			ci.get_node("Card/Desc").text = ""
 			ci.get_node("Card/Cpu").text = str(round(prgm.mean_cpu))+"("+str(prgm.max_cpu)+")"
 			ci.get_node("Card/Size").text = str(prgm.size)
 			get_node("Deck/Inventory/HBoxContainer").add_child(ci)
@@ -282,15 +282,15 @@ func update_deck():
 			ci = get_node("Deck/Deck/HBoxContainer/"+prog)
 		else:
 			var prgm = Programs.Program.new(Programs.programs[prog])
-			var first_line = Programs.programs[prog].code[0]
+#			var first_line = Programs.programs[prog].code[0]
 			ci = $Deck/Deck/HBoxContainer/Card0.duplicate(0)
 			ci.name = prog
 			ci.get_node("Card/Image").set_texture(load("res://images/cards/"+Programs.programs[prog].icon+".png"))
 			ci.get_node("Card/Name").text = tr(Programs.programs[prog].name)
-			if "//" in first_line:
-				ci.get_node("Card/Desc").text = first_line.substr(3,first_line.length()-3)
-			else:
-				ci.get_node("Card/Desc").text = ""
+#			if "//" in first_line:
+#				ci.get_node("Card/Desc").text = first_line.substr(3,first_line.length()-3)
+#			else:
+			ci.get_node("Card/Desc").text = ""
 			ci.get_node("Card/Cpu").text = str(round(prgm.mean_cpu))+"("+str(prgm.max_cpu)+")"
 			ci.get_node("Card/Size").text = str(prgm.size)
 			$Deck/Deck/HBoxContainer.add_child(ci)
@@ -859,7 +859,6 @@ func update_compile():
 		var type = all_programs.keys()[i]
 		var prog = Programs.programs[type]
 		var prgm = Programs.Program.new(prog)
-		var first_line = prog.code[0]
 		if has_node("Compile/Techs/HBoxContainer/Tech"+str(i)):
 			ci = get_node("Compile/Techs/HBoxContainer/Tech"+str(i))
 		else:
@@ -868,10 +867,7 @@ func update_compile():
 			$Compile/Techs/HBoxContainer.add_child(ci)
 		ci.get_node("Card/Image").set_texture(load("res://images/cards/"+prog.icon+".png"))
 		ci.get_node("Card/Name").text = tr(prog.name)
-		if "//" in first_line:
-			ci.get_node("Card/Desc").text = first_line.substr(3,first_line.length()-3)
-		else:
-			ci.get_node("Card/Desc").text = ""
+		ci.get_node("Card/Desc").text = ""
 		ci.get_node("Card/Cpu").text = str(round(prgm.mean_cpu))+"("+str(prgm.max_cpu)+")"
 		ci.get_node("Card/Size").text = str(prgm.size)
 		if ci.get_node("Button").is_connected("pressed",self,"_research"):

@@ -404,9 +404,12 @@ autoplay = "rotate"
 anims/rotate = SubResource( 4 )
 
 [node name="Rect" type="ReferenceRect" parent="."]
-margin_top = -50.0
-margin_right = 1700.0
-margin_bottom = 2050.0
+margin_top = -100.0
+margin_right = 1600.0
+margin_bottom = 1900.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "fade_in"
