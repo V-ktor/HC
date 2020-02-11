@@ -374,7 +374,6 @@ func _save(file):
 	var acts := {}
 	var tg := {}
 	var grp := {}
-	var cts := {}
 	var evt := []
 	evt.resize(events.size())
 	for ID in targets.keys():
@@ -383,14 +382,11 @@ func _save(file):
 		acts[ID] = actors[ID].to_dict()
 	for ID in groups.keys():
 		grp[ID] = groups[ID].to_dict()
-	for ID in countries.keys():
-		cts[ID] = countries[ID].to_dict()
 	for i in range(events.size()):
 		evt[i] = events[i].to_dict()
 	file.store_line(JSON.print(tg))
 	file.store_line(JSON.print(acts))
 	file.store_line(JSON.print(grp))
-	file.store_line(JSON.print(cts))
 	file.store_line(JSON.print(evt))
 	
 
@@ -450,8 +446,6 @@ func _load(file):
 					logo.poly[j].points[i] = Vector2(array[0],array[1])
 		obj = Group.new(dict.name,dict.desc,dict.form,dict.departments,color,color_alt,logo,dict.location,dict.influence,dict.traits,dict.data)
 		groups[ID] = obj
-	currentline = JSON.parse(file.get_line()).result
-	countries.clear()
 	currentline = JSON.parse(file.get_line()).result
 	events.resize(currentline.size())
 	for i in range(currentline.size()):
