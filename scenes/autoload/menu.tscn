@@ -1,4 +1,4 @@
-[gd_scene load_steps=111 format=2]
+[gd_scene load_steps=115 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -26,6 +26,7 @@
 [ext_resource path="res://fonts/kenvector_future.ttf" type="DynamicFontData" id=24]
 [ext_resource path="res://scripts/text_effects/texteffect_matrix.tres" type="RichTextEffect" id=25]
 [ext_resource path="res://sounds/238367__stewdio2003__cp-power-down01.wav" type="AudioStream" id=26]
+[ext_resource path="res://images/icons/pulse.png" type="Texture" id=27]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
@@ -831,26 +832,40 @@ bg_color = Color( 0.878431, 0.878431, 0.878431, 1 )
 corner_radius_bottom_left = 50
 corner_detail = 1
 
-[sub_resource type="StyleBoxEmpty" id=83]
+[sub_resource type="StyleBoxFlat" id=85]
+bg_color = Color( 0.25098, 0, 0, 0.501961 )
 
-[sub_resource type="StyleBoxEmpty" id=84]
+[sub_resource type="StyleBoxFlat" id=86]
+bg_color = Color( 0.501961, 0.752941, 0.878431, 0.501961 )
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.501961, 0.752941, 0.878431, 0.501961 )
 
-[sub_resource type="DynamicFont" id=70]
+[sub_resource type="StyleBoxEmpty" id=87]
+
+[sub_resource type="StyleBoxEmpty" id=70]
+
+[sub_resource type="StyleBoxEmpty" id=71]
+
+[sub_resource type="DynamicFont" id=72]
 size = 20
 font_data = ExtResource( 3 )
 
-[sub_resource type="StyleBoxFlat" id=71]
+[sub_resource type="StyleBoxFlat" id=73]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="StyleBoxFlat" id=72]
+[sub_resource type="StyleBoxFlat" id=74]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
 
-[sub_resource type="DynamicFont" id=73]
+[sub_resource type="DynamicFont" id=75]
 size = 22
 outline_size = 1
 font_data = ExtResource( 3 )
 
-[sub_resource type="Shader" id=74]
+[sub_resource type="Shader" id=76]
 code = "shader_type canvas_item;
 
 uniform float noise_scale = 0.0;
@@ -887,8 +902,8 @@ void fragment()
 }
 "
 
-[sub_resource type="ShaderMaterial" id=75]
-shader = SubResource( 74 )
+[sub_resource type="ShaderMaterial" id=77]
+shader = SubResource( 76 )
 shader_param/noise_scale = 0.0
 shader_param/glitch_scale = 0.0
 shader_param/glitch_blend = 0.0
@@ -897,11 +912,11 @@ shader_param/noise = ExtResource( 11 )
 shader_param/noise_mask = ExtResource( 13 )
 shader_param/block_mask = ExtResource( 20 )
 
-[sub_resource type="StyleBoxFlat" id=76]
+[sub_resource type="StyleBoxFlat" id=78]
 bg_color = Color( 0, 0, 0, 0 )
 border_color = Color( 0, 0, 0, 0 )
 
-[sub_resource type="Animation" id=77]
+[sub_resource type="Animation" id=79]
 length = 3.0
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:material:shader_param/noise_scale")
@@ -988,8 +1003,7 @@ tracks/6/keys = {
 "values": [ 8.0, -80.0 ]
 }
 
-[sub_resource type="Animation" id=78]
-resource_name = "intro"
+[sub_resource type="Animation" id=80]
 length = 2.0
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:visible")
@@ -1076,7 +1090,7 @@ tracks/6/keys = {
 "values": [ -80.0, 12.0 ]
 }
 
-[sub_resource type="Animation" id=79]
+[sub_resource type="Animation" id=81]
 length = 30.0
 loop = true
 tracks/0/type = "value"
@@ -1152,7 +1166,7 @@ tracks/5/keys = {
 "values": [ -12.0, -2.0, -24.0, -12.0 ]
 }
 
-[sub_resource type="Animation" id=80]
+[sub_resource type="Animation" id=82]
 length = 20.0
 loop = true
 tracks/0/type = "value"
@@ -1216,7 +1230,7 @@ tracks/4/keys = {
 "values": [ -6.0, 2.0, -16.0, -6.0 ]
 }
 
-[sub_resource type="Animation" id=81]
+[sub_resource type="Animation" id=83]
 length = 20.0
 loop = true
 tracks/0/type = "value"
@@ -1280,7 +1294,7 @@ tracks/4/keys = {
 "values": [ -8.0, 2.0, -8.0, 4.0, -8.0, -2.0, -8.0, -4.0, -8.0 ]
 }
 
-[sub_resource type="GDScript" id=82]
+[sub_resource type="GDScript" id=84]
 script/source = "extends Control
 
 var ring : Dictionary
@@ -2429,7 +2443,7 @@ scroll_vertical_enabled = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Deck/Deck"]
 margin_right = 948.0
-margin_bottom = 250.0
+margin_bottom = 262.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -2619,7 +2633,7 @@ scroll_vertical_enabled = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Compile/Techs"]
 margin_right = 948.0
-margin_bottom = 250.0
+margin_bottom = 262.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -2684,7 +2698,7 @@ size_flags_vertical = 3
 columns = 2
 
 [node name="Stack0" type="Panel" parent="Compile/ScrollContainer/GridContainer"]
-margin_right = 948.0
+margin_right = 474.0
 margin_bottom = 54.0
 rect_min_size = Vector2( 0, 54 )
 size_flags_horizontal = 3
@@ -2839,7 +2853,7 @@ scroll_vertical_enabled = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Gear/Techs"]
 margin_right = 948.0
-margin_bottom = 250.0
+margin_bottom = 262.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -2904,7 +2918,7 @@ size_flags_vertical = 3
 columns = 2
 
 [node name="Stack0" type="Panel" parent="Gear/ScrollContainer/GridContainer"]
-margin_right = 948.0
+margin_right = 474.0
 margin_bottom = 54.0
 rect_min_size = Vector2( 0, 54 )
 size_flags_horizontal = 3
@@ -2990,7 +3004,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 2.0
 margin_top = 68.0
-margin_right = -386.0
+margin_right = -384.0
 margin_bottom = -2.0
 theme = SubResource( 37 )
 custom_styles/panel = SubResource( 68 )
@@ -3007,14 +3021,14 @@ __meta__ = {
 }
 
 [node name="BG" type="Control" parent="Code/Code/ScrollContainer"]
-margin_right = 568.0
+margin_right = 570.0
 margin_bottom = 494.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 12 )
 
 [node name="Nodes" type="Control" parent="Code/Code/ScrollContainer"]
-margin_right = 568.0
+margin_right = 570.0
 margin_bottom = 494.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -3132,15 +3146,6 @@ valign = 1
 autowrap = true
 clip_text = true
 
-[node name="Name" type="LineEdit" parent="Code/Top"]
-margin_left = 272.0
-margin_top = 19.0
-margin_right = 570.0
-margin_bottom = 45.0
-size_flags_horizontal = 3
-size_flags_vertical = 4
-text = "NAME"
-
 [node name="Statistics" type="RichTextLabel" parent="Code"]
 anchor_left = 1.0
 anchor_right = 1.0
@@ -3208,9 +3213,9 @@ stretch_mode = 7
 [node name="Description" type="Panel" parent="Code"]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -642.0
+margin_left = -640.0
 margin_top = 68.0
-margin_right = -386.0
+margin_right = -384.0
 margin_bottom = 196.0
 theme = SubResource( 37 )
 custom_styles/panel = SubResource( 69 )
@@ -3219,15 +3224,41 @@ __meta__ = {
 "_editor_description_": ""
 }
 
+[node name="Icon" type="TextureRect" parent="Code/Description"]
+anchor_right = 1.0
+margin_bottom = 32.0
+texture = ExtResource( 27 )
+expand = true
+stretch_mode = 7
+
+[node name="Name" type="LineEdit" parent="Code/Description/Icon"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+custom_styles/read_only = SubResource( 85 )
+custom_styles/focus = SubResource( 86 )
+custom_styles/normal = SubResource( 87 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "NAME"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Description" type="TextEdit" parent="Code/Description"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 4.0
+margin_left = 48.0
+margin_top = 36.0
 margin_right = -4.0
-margin_bottom = -34.0
-custom_styles/focus = SubResource( 83 )
-custom_styles/normal = SubResource( 84 )
+margin_bottom = -4.0
+custom_styles/focus = SubResource( 70 )
+custom_styles/normal = SubResource( 71 )
 text = "DESCRIPTION"
 smooth_scrolling = true
 wrap_enabled = true
@@ -3372,6 +3403,9 @@ margin_right = -205.0
 margin_bottom = 190.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 69 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="Targets/Panel"]
 anchor_right = 1.0
@@ -3466,7 +3500,7 @@ custom_styles/panel = SubResource( 39 )
 [node name="Label" type="Label" parent="Targets/ScrollContainer/VBoxContainer/Button0"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 70 )
+custom_fonts/font = SubResource( 72 )
 text = "TARGET
 LINE2"
 align = 1
@@ -3489,7 +3523,7 @@ margin_top = 2.0
 margin_right = -2.0
 margin_bottom = -2.0
 rect_clip_content = true
-custom_styles/panel = SubResource( 71 )
+custom_styles/panel = SubResource( 73 )
 
 [node name="Text" type="RichTextLabel" parent="Hack/Panel"]
 anchor_right = 1.0
@@ -3666,7 +3700,7 @@ margin_right = 952.0
 margin_bottom = 76.0
 rect_min_size = Vector2( 36, 36 )
 size_flags_horizontal = 3
-custom_styles/panel = SubResource( 72 )
+custom_styles/panel = SubResource( 74 )
 
 [node name="LineEdit" type="LineEdit" parent="Saves/ScrollContainer/VBoxContainer/New"]
 anchor_right = 1.0
@@ -3723,7 +3757,7 @@ margin_top = 2.0
 margin_right = -2.0
 margin_bottom = -2.0
 focus_mode = 2
-custom_fonts/bold_font = SubResource( 73 )
+custom_fonts/bold_font = SubResource( 75 )
 custom_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
 selection_enabled = true
@@ -3767,11 +3801,11 @@ stretch_mode = 6
 
 [node name="Glitch" type="Panel" parent="."]
 visible = false
-material = SubResource( 75 )
+material = SubResource( 77 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 76 )
+custom_styles/panel = SubResource( 78 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -3781,11 +3815,11 @@ stream = ExtResource( 23 )
 volume_db = -80.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Glitch"]
-anims/burst_of = SubResource( 77 )
-anims/intro = SubResource( 78 )
-anims/sequence1 = SubResource( 79 )
-anims/sequence2 = SubResource( 80 )
-anims/sequence3 = SubResource( 81 )
+anims/burst_of = SubResource( 79 )
+anims/intro = SubResource( 80 )
+anims/sequence1 = SubResource( 81 )
+anims/sequence2 = SubResource( 82 )
+anims/sequence3 = SubResource( 83 )
 
 [node name="ViewportLogo" type="Viewport" parent="."]
 size = Vector2( 256, 256 )
@@ -3801,7 +3835,7 @@ margin_bottom = 256.0
 rect_min_size = Vector2( 256, 256 )
 expand = true
 stretch_mode = 6
-script = SubResource( 82 )
+script = SubResource( 84 )
 
 [node name="Label" type="Label" parent="ViewportLogo/Draw"]
 anchor_right = 1.0

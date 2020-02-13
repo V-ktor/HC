@@ -1,14 +1,128 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://images/gui/hex.png" type="Texture" id=1]
 [ext_resource path="res://images/gui/hex_arrow.png" type="Texture" id=2]
 [ext_resource path="res://scripts/gui/hex_node.gd" type="Script" id=3]
+[ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=10]
+size = 20
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.0941176, 0.0313726, 0.0313726, 0.501961 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0313726, 0.12549, 0.188235, 0.501961 )
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.0627451, 0.188235, 0.25098, 0.501961 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.0627451, 0.188235, 0.25098, 0.501961 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.0313726, 0.12549, 0.188235, 0.501961 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.0313726, 0.0941176, 0.12549, 0.501961 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.25098, 0.313726, 0.376471, 0.501961 )
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.0313726, 0.12549, 0.188235, 0.501961 )
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.0941176, 0.0313726, 0.0313726, 0.501961 )
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 1
+
+[sub_resource type="Theme" id=6]
+Label/colors/font_color = Color( 1, 1, 1, 1 )
+Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
+Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
+Label/constants/line_spacing = 3
+Label/constants/shadow_as_outline = 0
+Label/constants/shadow_offset_x = 1
+Label/constants/shadow_offset_y = 1
+Label/fonts/font = SubResource( 10 )
+Label/styles/normal = null
+OptionButton/colors/font_color = Color( 0.88, 0.88, 0.88, 1 )
+OptionButton/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
+OptionButton/colors/font_color_hover = Color( 0.94, 0.94, 0.94, 1 )
+OptionButton/colors/font_color_pressed = Color( 1, 1, 1, 1 )
+OptionButton/constants/arrow_margin = 2
+OptionButton/constants/hseparation = 2
+OptionButton/fonts/font = null
+OptionButton/icons/arrow = null
+OptionButton/styles/disabled = SubResource( 1 )
+OptionButton/styles/focus = SubResource( 2 )
+OptionButton/styles/hover = SubResource( 3 )
+OptionButton/styles/normal = SubResource( 4 )
+OptionButton/styles/pressed = SubResource( 5 )
+PopupMenu/colors/font_color = Color( 0.88, 0.88, 0.88, 1 )
+PopupMenu/colors/font_color_accel = Color( 0.7, 0.7, 0.7, 0.8 )
+PopupMenu/colors/font_color_disabled = Color( 0.4, 0.4, 0.4, 0.8 )
+PopupMenu/colors/font_color_hover = Color( 0.88, 0.88, 0.88, 1 )
+PopupMenu/constants/hseparation = 4
+PopupMenu/constants/vseparation = 4
+PopupMenu/fonts/font = null
+PopupMenu/icons/checked = null
+PopupMenu/icons/radio_checked = null
+PopupMenu/icons/radio_unchecked = null
+PopupMenu/icons/submenu = null
+PopupMenu/icons/unchecked = null
+PopupMenu/styles/hover = SubResource( 9 )
+PopupMenu/styles/labeled_separator_left = null
+PopupMenu/styles/labeled_separator_right = null
+PopupMenu/styles/panel = SubResource( 7 )
+PopupMenu/styles/panel_disabled = SubResource( 8 )
+PopupMenu/styles/separator = null
 
 [node name="HexNode" type="TextureRect"]
 margin_right = 40.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 224, 192 )
 mouse_filter = 0
+theme = SubResource( 6 )
 texture = ExtResource( 1 )
 script = ExtResource( 3 )
 __meta__ = {
@@ -25,24 +139,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Arguments" type="HBoxContainer" parent="."]
+[node name="Arguments" type="GridContainer" parent="."]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = 32.0
-margin_top = -12.0
+margin_top = -16.0
 margin_right = -32.0
-margin_bottom = 12.0
+margin_bottom = 40.0
 focus_mode = 2
 mouse_filter = 2
+columns = 3
 __meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
+"_edit_use_anchors_": false
 }
 
 [node name="Option0" type="OptionButton" parent="Arguments"]
 margin_right = 50.0
-margin_bottom = 24.0
+margin_bottom = 52.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -63,7 +177,7 @@ value = 1.0
 [node name="Option1" type="OptionButton" parent="Arguments"]
 margin_left = 54.0
 margin_right = 104.0
-margin_bottom = 24.0
+margin_bottom = 52.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -83,8 +197,8 @@ value = 1.0
 
 [node name="Option2" type="OptionButton" parent="Arguments"]
 margin_left = 108.0
-margin_right = 160.0
-margin_bottom = 24.0
+margin_right = 158.0
+margin_bottom = 52.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -93,9 +207,9 @@ __meta__ = {
 
 [node name="SpinBox2" type="SpinBox" parent="Arguments"]
 visible = false
-margin_left = 255.0
-margin_right = 329.0
-margin_bottom = 24.0
+margin_top = 30.0
+margin_right = 74.0
+margin_bottom = 56.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 min_value = 1.0
@@ -107,9 +221,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 56.0
-margin_top = -68.0
+margin_top = -58.0
 margin_right = -56.0
-margin_bottom = -16.0
+margin_bottom = -4.0
 align = 1
 valign = 1
 __meta__ = {
@@ -118,6 +232,7 @@ __meta__ = {
 
 [node name="Arrow0" type="Sprite" parent="."]
 modulate = Color( 0, 1, 0, 1 )
+self_modulate = Color( 1, 1, 1, 0.752941 )
 position = Vector2( 112, 96 )
 rotation = 0.523599
 texture = ExtResource( 2 )
@@ -125,6 +240,7 @@ texture = ExtResource( 2 )
 [node name="Arrow1" type="Sprite" parent="."]
 visible = false
 modulate = Color( 1, 0, 0, 1 )
+self_modulate = Color( 1, 1, 1, 0.752941 )
 position = Vector2( 112, 96 )
 rotation = 0.523599
 texture = ExtResource( 2 )

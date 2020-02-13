@@ -932,7 +932,8 @@ func _load_program(ID):
 	program_name = tr(Programs.known_programs.values()[ID].name)
 	program_desc =  tr(Programs.known_programs.values()[ID].description)
 	program_icon = Programs.known_programs.values()[ID].icon
-	$Code/Top/Name.text = program_name
+	$Code/Description/Icon/Name.text = program_name
+	$Code/Description/Icon.texture = load("res://images/icons/"+Programs.known_programs.values()[ID].icon+".png")
 	$Code/Description/Description.text = program_desc
 	update_program()
 
@@ -954,7 +955,8 @@ func _new_program():
 	program_name = tr("NEW_PROGRAM")
 	program_desc = tr("EMPTY_PROGRAM")
 	program_icon = "template"
-	$Code/Top/Name.text = program_name
+	$Code/Description/Icon/Name.text = program_name
+	$Code/Description/Icon.texture = load("res://images/icons/"+program_icon+".png")
 	$Code/Description/Description.text = program_desc
 	update_program()
 	$Code/Code/ScrollContainer.scroll_horizontal = $Code/Code/ScrollContainer/BG.rect_min_size.x/2-$Code/Code/ScrollContainer.rect_size.x/2+172/2
@@ -969,10 +971,12 @@ func _delete_program():
 func _select_program_icon(ID):
 	program_icon_selected = ID
 	program_icon = PROGRAM_ICONS[ID]
+	$Code/Description/Icon.texture = load("res://images/icons/"+program_icon+".png")
 	$Code/Icon.hide()
 
 func _set_program_icon():
 	program_icon = PROGRAM_ICONS[program_icon_selected]
+	$Code/Description/Icon.texture = load("res://images/icons/"+program_icon+".png")
 
 func _set_program_name(text):
 	if text in Programs.programs.keys():
@@ -1816,7 +1820,7 @@ func _ready():
 	$Code/Top/Button1.connect("pressed",self,"_save_program")
 	$Code/Top/Button2.connect("pressed",$Code/Icon,"show")
 	$Code/Top/Button3.connect("pressed",self,"_delete_program")
-	$Code/Top/Name.connect("text_changed",self,"_set_program_name")
+	$Code/Description/Icon/Name.connect("text_changed",self,"_set_program_name")
 	$Code/Description/Description.connect("text_changed",self,"_set_program_desc")
 	$Code/Icon/HBoxContainer/Button1.connect("pressed",self,"_set_program_icon")
 	$Code/Icon/HBoxContainer/Button2.connect("pressed",$Code/Icon,"hide")
