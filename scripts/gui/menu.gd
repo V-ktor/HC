@@ -581,7 +581,7 @@ func _hack_ended(winner):
 			$Hack/Panel/Text.push_color(Color(1.0,1.0,1.0))
 			$Hack/Panel/Text.add_text(":~/"+directory+"$")
 			gr.data += data
-			$Hack/Result/LabelReward.text += tr("DATA")+": "+get_data_str(data)
+			$Hack/Result/LabelReward.text += tr("DATA")+": "+String.humanize_size(data)
 		else:
 			var user : String = Objects.actors.player.name+"@"+OS.get_model_name()+": "
 			$Hack/Panel/Text.push_color(Color(0.1,1.0,0.1))
@@ -1034,6 +1034,7 @@ func update_program():
 					if Programs.COMMANDS.keys()[i] in Programs.known_commands:
 						pi.get_node("Type").add_item(Programs.COMMANDS.keys()[i],i)
 				pi.get_node("Type").selected = pi.get_node("Type").get_item_index(Programs.COMMANDS.keys().find(prgm.type))
+				pi.get_node("Type").icon = load(Programs.COMMANDS[prgm.type].icon)
 				if pi.get_node("Type").is_connected("item_selected",self,"_set_prog_node_type"):
 					pi.get_node("Type").disconnect("item_selected",self,"_set_prog_node_type")
 				pi.get_node("Type").connect("item_selected",self,"_set_prog_node_type",[p,pi.get_node("Type")])
@@ -1622,15 +1623,6 @@ func _input(event):
 
 
 
-func get_data_str(data)->String:
-	data = int(data)
-	if data>1024*1024:
-		return str(data/1024/1024).pad_decimals(1)+"GB"
-	elif data>1024:
-		return str(data/1024).pad_decimals(1)+"MB"
-	else:
-		return str(data).pad_decimals(1)+"kB"
-
 func _log_item_selected():
 	var type = $Log/ScrollContainer/Tree.get_selected().type
 	var ID = $Log/ScrollContainer/Tree.get_selected().ID
@@ -1689,7 +1681,7 @@ func select_log(type,ID):
 		text.newline()
 		text.add_text(tr("RELATIONS")+": "+str(int(actor.relation)))
 		text.newline()
-		text.add_text(tr("DATA")+": "+get_data_str(actor.data))
+		text.add_text(tr("DATA")+": "+String.humanize_size(actor.data))
 		text.newline()
 		text.newline()
 		text.add_text(tr("PERSONALITY")+":\n")
@@ -1743,7 +1735,7 @@ func select_log(type,ID):
 		text.newline()
 		text.add_text(tr("RELATION")+": "+str(int(group.relation)))
 		text.newline()
-		text.add_text(tr("DATA")+": "+str(get_data_str(group.data)))
+		text.add_text(tr("DATA")+": "+str(String.humanize_size(group.data)))
 		text.newline()
 		text.newline()
 		group.print_desc(text)
@@ -1765,7 +1757,7 @@ func select_log(type,ID):
 		text.add_text(date)
 		text.newline()
 		text.newline()
-		text.add_text(tr("DATA")+": "+str(get_data_str(event.data)))
+		text.add_text(tr("DATA")+": "+str(String.humanize_size(event.data)))
 		text.newline()
 		text.newline()
 		event.print_desc(text)

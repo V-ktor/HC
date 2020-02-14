@@ -1,15 +1,20 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://images/gui/hex.png" type="Texture" id=1]
 [ext_resource path="res://images/gui/hex_arrow.png" type="Texture" id=2]
 [ext_resource path="res://scripts/gui/hex_node.gd" type="Script" id=3]
 [ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://images/gui/hex_button_normal.png" type="Texture" id=5]
+[ext_resource path="res://images/gui/hex_button_focus.png" type="Texture" id=6]
+[ext_resource path="res://images/gui/hex_button_hover.png" type="Texture" id=7]
+[ext_resource path="res://images/gui/hex_button_pressed.png" type="Texture" id=8]
+[ext_resource path="res://images/gui/cmd_init.png" type="Texture" id=9]
 
-[sub_resource type="DynamicFont" id=10]
+[sub_resource type="DynamicFont" id=1]
 size = 20
 font_data = ExtResource( 4 )
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.0941176, 0.0313726, 0.0313726, 0.501961 )
 corner_radius_top_left = 4
 corner_radius_top_right = 4
@@ -17,7 +22,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.0313726, 0.12549, 0.188235, 0.501961 )
 draw_center = false
 border_width_left = 2
@@ -31,7 +36,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.0627451, 0.188235, 0.25098, 0.501961 )
 corner_radius_top_left = 4
 corner_radius_top_right = 4
@@ -39,7 +44,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.0313726, 0.12549, 0.188235, 0.501961 )
 corner_radius_top_left = 4
 corner_radius_top_right = 4
@@ -47,7 +52,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0.0313726, 0.0941176, 0.12549, 0.501961 )
 corner_radius_top_left = 4
 corner_radius_top_right = 4
@@ -55,11 +60,11 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0.25098, 0.313726, 0.376471, 0.501961 )
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.0313726, 0.12549, 0.188235, 0.501961 )
 corner_radius_top_left = 8
 corner_radius_top_right = 8
@@ -67,7 +72,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=9]
 bg_color = Color( 0.0941176, 0.0313726, 0.0313726, 0.501961 )
 corner_radius_top_left = 8
 corner_radius_top_right = 8
@@ -75,7 +80,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 corner_detail = 1
 
-[sub_resource type="Theme" id=6]
+[sub_resource type="Theme" id=10]
 Label/colors/font_color = Color( 1, 1, 1, 1 )
 Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
 Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
@@ -83,7 +88,7 @@ Label/constants/line_spacing = 3
 Label/constants/shadow_as_outline = 0
 Label/constants/shadow_offset_x = 1
 Label/constants/shadow_offset_y = 1
-Label/fonts/font = SubResource( 10 )
+Label/fonts/font = SubResource( 1 )
 Label/styles/normal = null
 OptionButton/colors/font_color = Color( 0.88, 0.88, 0.88, 1 )
 OptionButton/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
@@ -93,11 +98,11 @@ OptionButton/constants/arrow_margin = 2
 OptionButton/constants/hseparation = 2
 OptionButton/fonts/font = null
 OptionButton/icons/arrow = null
-OptionButton/styles/disabled = SubResource( 1 )
-OptionButton/styles/focus = SubResource( 2 )
-OptionButton/styles/hover = SubResource( 3 )
-OptionButton/styles/normal = SubResource( 4 )
-OptionButton/styles/pressed = SubResource( 5 )
+OptionButton/styles/disabled = SubResource( 2 )
+OptionButton/styles/focus = SubResource( 3 )
+OptionButton/styles/hover = SubResource( 4 )
+OptionButton/styles/normal = SubResource( 5 )
+OptionButton/styles/pressed = SubResource( 6 )
 PopupMenu/colors/font_color = Color( 0.88, 0.88, 0.88, 1 )
 PopupMenu/colors/font_color_accel = Color( 0.7, 0.7, 0.7, 0.8 )
 PopupMenu/colors/font_color_disabled = Color( 0.4, 0.4, 0.4, 0.8 )
@@ -110,19 +115,37 @@ PopupMenu/icons/radio_checked = null
 PopupMenu/icons/radio_unchecked = null
 PopupMenu/icons/submenu = null
 PopupMenu/icons/unchecked = null
-PopupMenu/styles/hover = SubResource( 9 )
+PopupMenu/styles/hover = SubResource( 7 )
 PopupMenu/styles/labeled_separator_left = null
 PopupMenu/styles/labeled_separator_right = null
-PopupMenu/styles/panel = SubResource( 7 )
-PopupMenu/styles/panel_disabled = SubResource( 8 )
+PopupMenu/styles/panel = SubResource( 8 )
+PopupMenu/styles/panel_disabled = SubResource( 9 )
 PopupMenu/styles/separator = null
+
+[sub_resource type="StyleBoxTexture" id=11]
+texture = ExtResource( 7 )
+region_rect = Rect2( 0, 0, 192, 192 )
+
+[sub_resource type="StyleBoxTexture" id=12]
+texture = ExtResource( 8 )
+region_rect = Rect2( 0, 0, 192, 192 )
+
+[sub_resource type="StyleBoxTexture" id=13]
+texture = ExtResource( 6 )
+region_rect = Rect2( 0, 0, 192, 192 )
+
+[sub_resource type="StyleBoxTexture" id=14]
+texture = ExtResource( 5 )
+region_rect = Rect2( 0, 0, 192, 192 )
+
+[sub_resource type="DynamicFont" id=15]
 
 [node name="HexNode" type="TextureRect"]
 margin_right = 40.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 224, 192 )
 mouse_filter = 0
-theme = SubResource( 6 )
+theme = SubResource( 10 )
 texture = ExtResource( 1 )
 script = ExtResource( 3 )
 __meta__ = {
@@ -130,11 +153,21 @@ __meta__ = {
 }
 
 [node name="Type" type="OptionButton" parent="."]
-anchor_right = 1.0
-margin_left = 48.0
-margin_top = 32.0
-margin_right = -48.0
-margin_bottom = 56.0
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -48.0
+margin_top = 8.0
+margin_right = 48.0
+margin_bottom = 104.0
+custom_styles/hover = SubResource( 11 )
+custom_styles/pressed = SubResource( 12 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/normal = SubResource( 14 )
+custom_fonts/font = SubResource( 15 )
+icon = ExtResource( 9 )
+clip_text = true
+align = 1
+expand_icon = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
