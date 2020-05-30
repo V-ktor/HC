@@ -251,13 +251,18 @@ script = ExtResource( 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Left" type="Panel" parent="."]
-editor/display_folded = true
 anchor_bottom = 1.0
 margin_top = 36.0
 margin_right = 68.0
 custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Left"]
 anchor_right = 1.0
@@ -544,7 +549,6 @@ autowrap = true
 clip_text = true
 
 [node name="Top" type="Panel" parent="."]
-editor/display_folded = true
 anchor_right = 1.0
 margin_bottom = 36.0
 custom_styles/panel = SubResource( 7 )
@@ -624,7 +628,6 @@ expand = true
 stretch_mode = 6
 
 [node name="Login" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -764,7 +767,6 @@ custom_styles/panel = SubResource( 12 )
 anims/loading = SubResource( 13 )
 
 [node name="Chat" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -902,7 +904,6 @@ align = 1
 valign = 1
 
 [node name="Deck" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1089,7 +1090,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Compile" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1293,7 +1293,6 @@ margin_left = 68.0
 margin_top = 36.0
 
 [node name="Targets" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1398,7 +1397,6 @@ mouse_filter = 2
 custom_styles/panel = SubResource( 14 )
 
 [node name="Hack" type="Control" parent="."]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1472,7 +1470,6 @@ margin_bottom = -28.0
 text = "TEXT"
 
 [node name="Saves" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1585,7 +1582,6 @@ expand = true
 stretch_mode = 6
 
 [node name="Quit" type="Panel" parent="."]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1618,4 +1614,3 @@ size_flags_vertical = 3
 texture = ExtResource( 3 )
 expand = true
 stretch_mode = 6
-

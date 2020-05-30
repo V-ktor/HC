@@ -345,7 +345,7 @@ class Program:
 				node.get_node("Code").text = node.get_node("Code").text.substr(pos+1,node.get_node("Code").text.length()-pos-1)+"\n"+tr(nodes[focus].type.to_upper()+"_LINE"+str((randi()%5)+1))
 	
 	
-	func evaluate_statement(array):
+	func evaluate_statement(array) -> bool:
 		if array.size()==0:
 			return false
 		var type = array[0]

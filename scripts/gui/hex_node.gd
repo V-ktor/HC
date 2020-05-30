@@ -11,6 +11,9 @@ var scale := 1.0
 func get_drag_data(position):
 	dragged = true
 	mouse_filter = MOUSE_FILTER_IGNORE
+	$Type.mouse_filter = MOUSE_FILTER_IGNORE
+	$PopupMenu.hide()
+	$Arguments.hide()
 	raise()
 	set_drag_preview(self)
 	return pos
@@ -43,6 +46,8 @@ func _gui_input(event):
 func _menu_pressed(ID):
 	if ID==0:
 		Menu.rm_prg_node(pos)
+	elif ID==1:
+		Menu.debug_grab_focus(pos)
 
 func _ready():
 	connect("gui_input",self,"_gui_input")

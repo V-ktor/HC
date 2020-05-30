@@ -222,6 +222,11 @@ const STATEMENT_ARGS = {
 	"<=":["number","number"]
 }
 
+const NODE_LOCAL = 0
+const NOCE_NEUTRAL = 1
+const NODE_CONTROLED = 2
+const NODE_ENEMY = 3
+
 
 class Program:
 	var name
@@ -357,20 +362,21 @@ var known_programs := {}
 var known_commands := []
 
 
-func get_offset(dir : int,pos : Vector2) -> Vector2:
+func get_offset(dir : int, pos : Vector2) -> Vector2:
 	var offset := Vector2()
-	if dir==0:
-		offset = Vector2(1,int(pos.x)%2)
-	elif dir==1:
-		offset = Vector2(0,1)
-	elif dir==2:
-		offset = Vector2(-1,int(pos.x)%2)
-	elif dir==3:
-		offset = Vector2(-1,-int(pos.x+1)%2)
-	elif dir==4:
-		offset = Vector2(0,-1)
-	elif dir==5:
-		offset = Vector2(1,-int(pos.x+1)%2)
+	match dir:
+		0:
+			offset = Vector2(1,int(pos.x)%2)
+		1:
+			offset = Vector2(0,1)
+		2:
+			offset = Vector2(-1,int(pos.x)%2)
+		3:
+			offset = Vector2(-1,-int(pos.x+1)%2)
+		4:
+			offset = Vector2(0,-1)
+		5:
+			offset = Vector2(1,-int(pos.x+1)%2)
 	return offset
 
 func attack_cpu(args):

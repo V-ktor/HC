@@ -41,26 +41,38 @@ TECHS,Techs
 USERNAME,Username
 FILENAME,Filename
 INSTALLING,Installing
+INITIALIZING,Initializing
 RUNNING,Running
 IDLE,Idle
 CONNECTING,Connecting
+CONNECTIONS,Connections
+DEBUG_CONNECTIONS,"{connections} active connections"
 DISCONNECTED,Disconnecting
 ATTACKING,Attacking
-PROTECT,Protect
+PROTECT,Protecting
 INITIALIZE,Inizializing
 TERMINATE,Terminating
 EVALUATING,Evaluating
+TRANSLOCATE,Translocating
+CLONING,Cloning
 REMAINING_TIME,%0.1fs remaining
 SHIELD,Shield
 DPS,DPS
 ATTACK,Attack
+DESCRIPTION,Description
+STATISTICS,Statistics
+DEBUG,Debug
+NUM_NODES,Number of nodes
+FOCUS_CHANGED,"Focus set to {position}."
+READY,Ready
 TIMEOUT,Timeout
+DEBUG_STOPPED,"Debug stopped"
 DRAW,Draw
 VICTORY,Victory
 LOST,Lost
-HACK_DRAW,Hack failed!
-HACK_VICTORY,Hack succesful!
-HACK_LOST,Hack failed!
+HACK_DRAW,"Hack failed!"
+HACK_VICTORY,"Hack succesful!"
+HACK_LOST,"Hack failed!"
 LOG,Log
 COMMANDS,Commands
 PERSONS,Persons

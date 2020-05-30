@@ -41,27 +41,43 @@ var program_nodes := {}
 var program_grid_size = Vector2(20,10)
 var intro_sequence := false
 
+var program_focus := Vector2()
+var program_last := Vector2()
+var program_connected := []
+var program_delay := 0.0
+var program_time := 0.0
+var program_cpu := 0
+var debug_active := false
+var debug_speed := 1.0
+var debug_dot_delay := 0.0
+var debug_enemy := true
+var debug_controled := true
+var debug_neutral := true
+var debug_hostile_prog := true
+
+
 # warning-ignore:unused_class_variable
 onready var textbox := $Textbox
 
-var main_scene = preload("res://scenes/main/main.tscn")
-var icon_shutdown = preload("res://images/gui/shutdown.png")
-var icon_close = preload("res://images/gui/close.png")
-var chat_box = preload("res://scenes/gui/chat_box.tscn")
-var chat_choice_box = preload("res://scenes/gui/chat_choice.tscn")
-var icons_personality = {
+var main_scene := preload("res://scenes/main/main.tscn")
+var icon_shutdown := preload("res://images/gui/shutdown.png")
+var icon_close := preload("res://images/gui/close.png")
+var chat_box := preload("res://scenes/gui/chat_box.tscn")
+var chat_choice_box := preload("res://scenes/gui/chat_choice.tscn")
+var icons_personality := {
 	"curiosity":preload("res://images/gui/magnifying_glass.png"),
 	"fear":preload("res://images/gui/eye.png"),
 	"charisma":preload("res://images/gui/charm.png"),
 	"focus":preload("res://images/gui/focus.png"),
 	"cunning":preload("res://images/gui/cunning.png")
 }
-var hex_node = preload("res://scenes/gui/hex_node.tscn")
-var hex_bg = preload("res://scenes/gui/hex_bg.tscn")
+var hex_node := preload("res://scenes/gui/hex_node.tscn")
+var hex_bg := preload("res://scenes/gui/hex_bg.tscn")
+var debug_icon_start := [preload("res://images/gui/debug_start.png"),preload("res://images/gui/debug_stop.png")]
 
 
 func reset():
-	var file = File.new()
+	var file := File.new()
 	if game_instance!=null:
 		game_instance.queue_free()
 		game_instance = null
@@ -105,7 +121,7 @@ func reset():
 	Music.play_default()
 
 func _start_new_game(name=null):
-	var timer = Timer.new()
+	var timer := Timer.new()
 	if name==null:
 		name = $Login/Input/LineEdit.text
 	if name.length()<1:
@@ -167,7 +183,7 @@ func _start_new_game(name=null):
 	$Login/HBoxContainer/AnimationPlayer.stop()
 	intro_sequence = true
 	
-	var mi = main_scene.instance()
+	var mi := main_scene.instance()
 	var player = Objects.actors.player
 	get_tree().get_root().add_child(mi)
 	_show_hack()
@@ -218,19 +234,15 @@ func update_inventory():
 		c.hide()
 	for prog in Objects.actors.player.programs.keys():
 		var ci
-		var number = 0
+		var number := 0
 		if has_node("Deck/Inventory/HBoxContainer/"+prog):
 			ci = get_node("Deck/Inventory/HBoxContainer/"+prog)
 		else:
 			var prgm = Programs.Program.new(Programs.programs[prog])
-#			var first_line = Programs.programs[prog].code[0]
 			ci = $Deck/Deck/HBoxContainer/Card0.duplicate(0)
 			ci.name = prog
 			ci.get_node("Card/Image").set_texture(load("res://images/cards/"+Programs.programs[prog].icon+".png"))
 			ci.get_node("Card/Name").text = tr(Programs.programs[prog].name)
-#			if "//" in first_line:
-#				ci.get_node("Card/Desc").text = first_line.substr(3,first_line.length()-3)
-#			else:
 			ci.get_node("Card/Desc").text = ""
 			ci.get_node("Card/Cpu").text = str(round(prgm.mean_cpu))+"("+str(prgm.max_cpu)+")"
 			ci.get_node("Card/Size").text = str(prgm.size)
@@ -250,7 +262,7 @@ func update_inventory():
 	connect_ui_sounds_recursively($Deck/Inventory/HBoxContainer)
 
 func update_decks():
-	var used = 0
+	var used := 0
 	if decks.size()==0:
 		decks.push_back({})
 	for c in $Deck/HBoxContainer.get_children():
@@ -260,7 +272,7 @@ func update_decks():
 		if int(c.name)>decks.size():
 			c.queue_free()
 	for i in range(decks.size()-$Deck/HBoxContainer.get_child_count()+1):
-		var ti = $Deck/HBoxContainer/Deck1.duplicate(0)
+		var ti := $Deck/HBoxContainer/Deck1.duplicate(0)
 		ti.name = "Deck"+str(i+$Deck/HBoxContainer.get_child_count())
 		ti.text = tr("DECK")+str(i+$Deck/HBoxContainer.get_child_count())
 		ti.connect("pressed",self,"_select_deck",[i+$Deck/HBoxContainer.get_child_count()-1])
@@ -274,7 +286,7 @@ func update_decks():
 	update_deck()
 
 func update_deck():
-	var used = 0
+	var used := 0
 	for c in $Deck/Deck/HBoxContainer.get_children():
 		c.hide()
 	for prog in decks[deck_selected].keys():
@@ -283,14 +295,10 @@ func update_deck():
 			ci = get_node("Deck/Deck/HBoxContainer/"+prog)
 		else:
 			var prgm = Programs.Program.new(Programs.programs[prog])
-#			var first_line = Programs.programs[prog].code[0]
 			ci = $Deck/Deck/HBoxContainer/Card0.duplicate(0)
 			ci.name = prog
 			ci.get_node("Card/Image").set_texture(load("res://images/cards/"+Programs.programs[prog].icon+".png"))
 			ci.get_node("Card/Name").text = tr(Programs.programs[prog].name)
-#			if "//" in first_line:
-#				ci.get_node("Card/Desc").text = first_line.substr(3,first_line.length()-3)
-#			else:
 			ci.get_node("Card/Desc").text = ""
 			ci.get_node("Card/Cpu").text = str(round(prgm.mean_cpu))+"("+str(prgm.max_cpu)+")"
 			ci.get_node("Card/Size").text = str(prgm.size)
@@ -312,7 +320,7 @@ func update_deck():
 
 func update_main_menu():
 	if !$Chat.visible:
-		var total_unread = 0
+		var total_unread := 0
 		for c in chat_log.keys():
 			total_unread += chat_log[c].size()-chat_read[c]
 		$Left/ScrollContainer/VBoxContainer/Button4/Notice/Label.text = str(min(total_unread,9))
@@ -331,7 +339,7 @@ func update_main_menu():
 		$Left/ScrollContainer/VBoxContainer/Button8/Notice.show()
 
 func update_log():
-	var tree = $Log/ScrollContainer/Tree
+	var tree := $Log/ScrollContainer/Tree
 	tree.name = "deleted"
 	tree.queue_free()
 	tree = Tree.new()
@@ -414,7 +422,7 @@ func _select_deck(deck):
 	update_decks()
 
 func get_memory():
-	var used = 0
+	var used := 0
 	for prog in decks[deck_selected].keys():
 		var prgm = Programs.Program.new(Programs.programs[prog])
 		used += prgm.size*decks[deck_selected][prog]
@@ -450,7 +458,7 @@ func _remove_card(prog):
 func _select_contact(contact):
 	var bg = load(Objects.actors[contact].bg).instance()
 	var portrait = load(Objects.actors[contact].portrait).instance()
-	var scale = max($Chat/Panel/Portrait.rect_size.x/portrait.get_node("Rect").rect_size.x,$Chat/Panel/Portrait.rect_size.y/portrait.get_node("Rect").rect_size.y)
+	var scale := max($Chat/Panel/Portrait.rect_size.x/portrait.get_node("Rect").rect_size.x,$Chat/Panel/Portrait.rect_size.y/portrait.get_node("Rect").rect_size.y)
 	contact_selected = contact
 	$Chat/Panel/Tween.interpolate_property($Chat/Panel,"self_modulate",$Chat/Panel.self_modulate,Objects.actors[contact].color,0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 	$Chat/Panel/Tween.start()
@@ -511,7 +519,7 @@ func _attack_target():
 		return false
 	printt("Initializing attack...")
 	
-	var mi = main_scene.instance()
+	var mi := main_scene.instance()
 	var target = Objects.targets[target_selected]
 	var player = Objects.actors.player
 	game_instance = mi
@@ -559,8 +567,8 @@ func _hack_ended(winner):
 	
 	$Hack/Panel/Text.clear()
 	if winner==0:
-		var portrait = preload("res://scenes/portraits/character01.tscn").instance()
-		var scale = max($Hack/Panel/Portrait.rect_size.x/portrait.get_node("Rect").rect_size.x,$Hack/Panel/Portrait.rect_size.y/portrait.get_node("Rect").rect_size.y)
+		var portrait := preload("res://scenes/portraits/character01.tscn").instance()
+		var scale := max($Hack/Panel/Portrait.rect_size.x/portrait.get_node("Rect").rect_size.x,$Hack/Panel/Portrait.rect_size.y/portrait.get_node("Rect").rect_size.y)
 		if Objects.targets[target_selected].group!=null:
 			var gr = Objects.groups[Objects.targets[target_selected].group]
 			var files := Objects.create_data(gr)
@@ -699,7 +707,7 @@ func research(dict):
 				continue
 
 func _upgrade(tech):
-	var lvl = 1
+	var lvl := 1
 	if upgraded.has(tech):
 		lvl += upgraded[tech]
 	if Upgrades.upgrades[tech].compile_cpu>Objects.actors["ai"].cpu-compile_cpu || Upgrades.upgrades[tech].cost>Objects.actors.player.credits:
@@ -726,10 +734,10 @@ func add_chat_box(dict,index,where="Chat"):
 	
 	var text = dict.text
 	var from_player = dict.from_player
-	var bi = chat_box.instance()
+	var bi := chat_box.instance()
 	var l = text.length()
-	var width = max(min(256+floor(sqrt(l/8))*48,get_node(where+"/Panel/ScrollContainer/VBoxContainer").rect_size.x-256),384)
-	var height = 48+floor(l*14/width)*32
+	var width := max(min(256+floor(sqrt(l/8))*48,get_node(where+"/Panel/ScrollContainer/VBoxContainer").rect_size.x-256),384)
+	var height := 48+floor(l*14/width)*32
 	bi.get_node("Panel/Label").text = text
 	bi.get_node("Panel").rect_min_size = Vector2(width,height)
 	if from_player:
@@ -773,7 +781,7 @@ func update_chat():
 	for i in range(min(chat_read[contact_selected],chat_log[contact_selected].size())):
 		add_chat_box(chat_log[contact_selected][i],i)
 	if chat_read[contact_selected]<chat_log[contact_selected].size():
-		var li = Label.new()
+		var li := Label.new()
 		li.text = " - "+tr("NEW_MESSAGES")+" - "
 		$Chat/Panel/ScrollContainer/VBoxContainer.add_child(li)
 	for i in range(chat_read[contact_selected],chat_log[contact_selected].size()):
@@ -807,7 +815,7 @@ func update_upgrades():
 		c.hide()
 	for i in range(upgrades.size()):
 		var ci
-		var lvl = 1
+		var lvl := 1
 		if upgraded.has(upgrades[i]):
 			lvl += upgraded[upgrades[i]]
 		if has_node("Gear/Techs/HBoxContainer/Tech"+str(i)):
@@ -909,7 +917,7 @@ func update_code():
 	for c in $Code/ScrollContainer/VBoxContainer.get_children():
 		c.hide()
 	if has_node("Code/PopupMenu"):
-		var popup_menu = $Code/PopupMenu
+		var popup_menu := $Code/PopupMenu
 		popup_menu.name = "deleted"
 		popup_menu.queue_free()
 	for i in range(Programs.known_programs.size()):
@@ -932,15 +940,15 @@ func _load_program(ID):
 	program_name = tr(Programs.known_programs.values()[ID].name)
 	program_desc =  tr(Programs.known_programs.values()[ID].description)
 	program_icon = Programs.known_programs.values()[ID].icon
-	$Code/Description/Icon/Name.text = program_name
-	$Code/Description/Icon.texture = load("res://images/icons/"+Programs.known_programs.values()[ID].icon+".png")
-	$Code/Description/Description.text = program_desc
+	$Code/IconName/Name.text = program_name
+	$Code/IconName.texture = load("res://images/icons/"+Programs.known_programs.values()[ID].icon+".png")
+	$Code/TabContainer/Description/Description.text = program_desc
 	update_program()
 
 func _save_program():
 	var code := {}
 	if program_name in Programs.programs.keys():
-		var n = 2
+		var n := 2
 		while program_name+" "+str(n) in Programs.known_programs.keys():
 			n += 1
 		program_name += " "+str(n)
@@ -955,9 +963,9 @@ func _new_program():
 	program_name = tr("NEW_PROGRAM")
 	program_desc = tr("EMPTY_PROGRAM")
 	program_icon = "template"
-	$Code/Description/Icon/Name.text = program_name
-	$Code/Description/Icon.texture = load("res://images/icons/"+program_icon+".png")
-	$Code/Description/Description.text = program_desc
+	$Code/IconName/Name.text = program_name
+	$Code/IconName.texture = load("res://images/icons/"+program_icon+".png")
+	$Code/TabContainer/Description/Description.text = program_desc
 	update_program()
 	$Code/Code/ScrollContainer.scroll_horizontal = $Code/Code/ScrollContainer/BG.rect_min_size.x/2-$Code/Code/ScrollContainer.rect_size.x/2+172/2
 	$Code/Code/ScrollContainer.scroll_vertical = $Code/Code/ScrollContainer/BG.rect_min_size.y/2-$Code/Code/ScrollContainer.rect_size.y/2+196/2
@@ -1098,21 +1106,22 @@ func update_program():
 			num_init += 1
 		elif type=="terminate":
 			num_terminate += 1
-	$Code/Statistics.clear()
-	$Code/Statistics.push_color(Color(1.0,1.0,1.0))
-	$Code/Statistics.add_text(tr("NUM_NODES")+": "+str(prgm.nodes.size())+"\n"+tr("MEMORY")+": "+str(prgm.size)+"\n"+tr("MAX_CPU")+": "+str(prgm.max_cpu)+"\n"+tr("MEAN_CPU")+": "+str(prgm.mean_cpu).pad_decimals(1)+"\n"+tr("COST")+": "+str(prgm.cost)+"\n\n")
+	$Code/TabContainer/Statistics/Statistics.clear()
+	$Code/TabContainer/Statistics/Statistics.push_color(Color(1.0,1.0,1.0))
+	$Code/TabContainer/Statistics/Statistics.add_text(tr("NUM_NODES")+": "+str(prgm.nodes.size())+"\n"+tr("MEMORY")+": "+str(prgm.size)+"\n"+tr("MAX_CPU")+": "+str(prgm.max_cpu)+"\n"+tr("MEAN_CPU")+": "+str(prgm.mean_cpu).pad_decimals(1)+"\n"+tr("COST")+": "+str(prgm.cost)+"\n\n")
 	if num_init!=1 || num_terminate<1 || num_unconnected>0:
-		$Code/Statistics.push_color(Color(1.0,0.0,0.0))
-		$Code/Statistics.add_text(tr("WARNING")+"\n\n")
+		$Code/TabContainer/Statistics/Statistics.push_color(Color(1.0,0.0,0.0))
+		$Code/TabContainer/Statistics/Statistics.add_text(tr("WARNING")+"\n\n")
 	if num_init==0:
-		$Code/Statistics.add_text(tr("NO_INIT_NODE")+"\n")
+		$Code/TabContainer/Statistics/Statistics.add_text(tr("NO_INIT_NODE")+"\n")
 	elif num_init>1:
-		$Code/Statistics.add_text(tr("MULTIPLE_INIT_NODES")+"\n")
+		$Code/TabContainer/Statistics/Statistics.add_text(tr("MULTIPLE_INIT_NODES")+"\n")
 	if num_terminate==0:
-		$Code/Statistics.add_text(tr("NO_TERMINATE_NODE")+"\n")
+		$Code/TabContainer/Statistics/Statistics.add_text(tr("NO_TERMINATE_NODE")+"\n")
 	if num_unconnected>0:
-		$Code/Statistics.add_text(tr("UNCONNECTED_NODES")+"\n")
+		$Code/TabContainer/Statistics/Statistics.add_text(tr("UNCONNECTED_NODES")+"\n")
 	
+	_debug_reset_program()
 
 func add_prg_node(pos):
 	if program_nodes.has(pos):
@@ -1195,14 +1204,232 @@ func set_prog_node_arg_number(value,pos,index):
 	update_program()
 
 func prog_rotate(pos,index):
-	program_nodes[pos].dir[index] = (program_nodes[pos].dir[index]+1)%6
+	program_nodes[pos].dir[index] = int(program_nodes[pos].dir[index]+1)%6
 	for i in range(program_nodes[pos].dir.size()):
 		if i==index:
 			continue
 		if program_nodes[pos].dir[i]==program_nodes[pos].dir[index]:
-			program_nodes[pos].dir[index] = (program_nodes[pos].dir[index]+1)%6
+			program_nodes[pos].dir[index] = int(program_nodes[pos].dir[index]+1)%6
 			i = -1
 	update_program()
+
+func _debug_reset_program():
+	program_connected.clear()
+	program_cpu = 0
+	program_delay = 0.0
+	program_time = 0.0
+	program_focus = Vector2()
+	program_last = Vector2()
+	debug_active = false
+	debug_speed = 1.0
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonStart/Icon.texture = debug_icon_start[0]
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonStart.pressed = false
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonSpeed1.pressed = false
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonSpeed2.pressed = false
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/Status.text = tr("READY")
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/Label.text = ""
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/Text/Label.text = ""
+	for c in $Code/Code/ScrollContainer/Nodes.get_children():
+		c.get_node("Focus").hide()
+	for x in range(program_grid_size.x):
+		for y in range(program_grid_size.y):
+			var p := Vector2(x,y)
+			if program_nodes.has(p):
+				var prgm = program_nodes[p]
+				var type = prgm.type
+				if type=="initialize":
+					program_focus = p
+					program_last = p
+					break
+
+func _debug_toggle():
+	var icon := 0
+	debug_active = $Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonStart.pressed || debug_speed>1.0
+	icon = int(debug_active)
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonStart/Icon.texture = debug_icon_start[icon]
+	debug_speed = float(debug_active)
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonSpeed1.pressed = false
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonSpeed2.pressed = false
+
+func _set_debug_speed(index):
+	if !debug_active:
+		$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonStart.pressed = true
+		_debug_toggle()
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonStart.pressed = false
+	get_node("Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonSpeed"+str(index%2+1)).pressed = true
+	get_node("Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonSpeed"+str((index+1)%2+1)).pressed = false
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonStart/Icon.texture = debug_icon_start[0]
+	debug_speed = 2.0*(index+1)
+
+func debug_update():
+	var status := tr("INACTIVE")
+	if program_nodes.has(program_last):
+		status = tr(program_nodes[program_last].type.to_upper())
+		for _i in range(2*(2.0-debug_dot_delay)):
+			status += "."
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/Status.text = status
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/Label.text = tr("RUN_TIME")+": "+str(program_time).pad_decimals(1)+"s\n"+tr("CPU")+": "+str(program_cpu)+"\n"+tr("CONNECTIONS")+": "+str(program_connected.size())
+	
+	for c in $Code/Code/ScrollContainer/Nodes.get_children():
+		c.get_node("Focus").visible = c.pos==program_last
+
+func debug_grab_focus(pos):
+	program_focus = pos
+	program_last = pos
+	debug_msg(tr("FOCUS_CHANGED").format({"position":str(int(pos.x)).pad_zeros(1)+";"+str(int(pos.y)).pad_zeros(1)}))
+	debug_progress()
+
+func debug_stop():
+	debug_active = false
+	debug_speed = 1.0
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonStart/Icon.texture = debug_icon_start[0]
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonStart.pressed = false
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonSpeed1.pressed = false
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonSpeed2.pressed = false
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/Status.text = tr("TERMINATED")
+	debug_msg("DEBUG_STOPPED")
+	debug_update()
+	for c in $Code/Code/ScrollContainer/Nodes.get_children():
+		c.get_node("Focus").hide()
+
+func debug_msg(text):
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/Text/Label.text += str(program_time).pad_decimals(1).pad_zeros(3)+": "+text+"\n"
+
+func debug_evaluate_statement(array) -> bool:
+	if array.size()==0:
+		return false
+	var type = array[0]
+	if type=="true":
+		return true
+	elif type=="false":
+		return false
+	elif type=="connected":
+		return program_connected.size()>0
+	elif type=="connected_enemy":
+		return Programs.NODE_ENEMY in program_connected
+	elif type=="connected_controled":
+		return Programs.NODE_CONTROLED in program_connected
+	elif type=="enemy_adjacent":
+		return debug_enemy
+	elif type=="controled_adjacent":
+		return debug_controled
+	elif type=="unconnected_enemy":
+		return debug_enemy && !(Programs.NODE_ENEMY in program_connected)
+	elif type=="unconnected_controled":
+		return debug_controled && !(Programs.NODE_CONTROLED in program_connected)
+	elif type=="hostile_program_adjacent":
+		return debug_hostile_prog
+	elif type==">":
+		if array.size()>2:
+			return debug_evaluate_var(array[1])>debug_evaluate_var(array[2])
+	elif type==">=":
+		if array.size()>2:
+			return debug_evaluate_var(array[1])>=debug_evaluate_var(array[2])
+	elif type=="<":
+		if array.size()>2:
+			return debug_evaluate_var(array[1])<debug_evaluate_var(array[2])
+	elif type=="<=":
+		if array.size()>2:
+			return debug_evaluate_var(array[1])<=debug_evaluate_var(array[2])
+	elif type=="==":
+		if array.size()>2:
+			return debug_evaluate_var(array[1])==debug_evaluate_var(array[2])
+	elif type=="!=":
+		if array.size()>2:
+			return debug_evaluate_var(array[1])!=debug_evaluate_var(array[2])
+	return false
+
+func debug_evaluate_var(s):
+	if typeof(s)==TYPE_INT || typeof(s)==TYPE_REAL:
+		return s
+	elif typeof(s)==TYPE_STRING:
+		if s=="cpu":
+			return Objects.actors.player.cpu-program_cpu
+		elif s=="control":
+			return 100
+		else:
+			return str2var(s)
+	return 0
+
+func _set_debug_controled(pressed):
+	debug_controled = pressed
+
+func _set_debug_enemy(pressed):
+	debug_enemy = pressed
+
+func _set_debug_neutral(pressed):
+	debug_neutral = pressed
+
+func _set_debug_hostile_prog(pressed):
+	debug_hostile_prog = pressed
+
+func debug_progress():
+	if !program_nodes.has(program_focus):
+		return
+	
+	var prog = program_nodes[program_focus]
+	if prog.dir.size()>0:
+		var dir = prog.dir[0]
+		
+		if typeof(Programs.COMMANDS[prog.type].delay)==TYPE_STRING:
+			program_delay = Programs.call(Programs.COMMANDS[prog.type].delay,prog.arguments)
+		else:
+			program_delay = Programs.COMMANDS[prog.type].delay
+		
+		if typeof(Programs.COMMANDS[prog.type].cpu)==TYPE_STRING:
+			program_cpu = Programs.call(Programs.COMMANDS[prog.type].cpu,prog.arguments)
+		else:
+			program_cpu = Programs.COMMANDS[prog.type].cpu
+		
+		match prog.type:
+			"initialize":
+				debug_msg(tr("INITIALIZING"))
+			"disconnect":
+				program_connected.clear()
+				debug_msg(tr("DISCONNECTED"))
+			"connect":
+				match prog.arguments[0]:
+					"local":
+						if !(Programs.NODE_LOCAL in program_connected):
+							program_connected.push_back(Programs.NODE_LOCAL)
+					"random_enemy":
+						if !(Programs.NODE_ENEMY in program_connected):
+							program_connected.push_back(Programs.NODE_ENEMY)
+					"random_controled":
+						if !(Programs.NODE_CONTROLED in program_connected):
+							program_connected.push_back(Programs.NODE_CONTROLED)
+					"random_node":
+						var valid := []
+						for i in range(1,4):
+							if !(i in program_connected):
+								valid.push_back(i)
+						if valid.size()>0:
+							program_connected.push_back(valid[randi()%valid.size()])
+				debug_msg(tr("CONNECTING")+" ("+tr("DEBUG_CONNECTIONS").format({"connections":program_connected.size()})+")")
+			"attack":
+				debug_msg(tr("ATTACKING")+" ("+str(prog.arguments[0]).pad_decimals(1)+" "+tr("ATTACK")+")")
+			"protect":
+				debug_msg(tr("PROTECT")+" ("+str(prog.arguments[0]).pad_decimals(1)+" "+tr("SHIELD")+")")
+			"translocate":
+				debug_msg(tr("TRANSLOCATE"))
+			"clone":
+				debug_msg(tr("CLONING"))
+			"sleep":
+				program_delay = prog.arguments[0]
+				debug_msg(tr("IDLE")+" ("+str(program_delay).pad_decimals(1)+"s)")
+			"if":
+				var statement = debug_evaluate_statement(prog.arguments)
+				dir = prog.dir[int(!statement)]
+				debug_msg(tr("EVALUATING")+"("+str(statement)+")")
+			
+		
+		program_last = program_focus
+		program_focus += Programs.get_offset(dir,program_focus)
+	else:
+		if prog.type=="terminate":
+			debug_msg(tr("TERMINATE"))
+		debug_stop()
+	
 
 
 func _scan():
@@ -1471,7 +1698,7 @@ func _show_load():
 		var bi
 		var error
 		var currentline
-		var file = File.new()
+		var file := File.new()
 		if has_node("Saves/ScrollContainer/VBoxContainer/Button"+str(i)):
 			bi = get_node("Saves/ScrollContainer/VBoxContainer/Button"+str(i))
 		else:
@@ -1593,8 +1820,16 @@ func _screen_resized():
 	
 
 
+func get_date(time:=0) -> Dictionary:
+	if time==0:
+		time = OS.get_unix_time()
+	var date := OS.get_datetime_from_unix_time(time)
+	date.year += 100
+	return date
+
+
 func _process(delta):
-	var date = OS.get_datetime()
+	var date := get_date()
 	$Top/HBoxContainer/Date.text = str(date["day"]).pad_zeros(2)+"."+str(date["month"]).pad_zeros(2)+"."+str(date["year"])
 	$Top/HBoxContainer/Time.text = str(date["hour"]).pad_zeros(2)+":"+str(date["minute"]).pad_zeros(2)
 	
@@ -1615,6 +1850,17 @@ func _process(delta):
 				elif $Gear.visible:
 					get_node("Gear/ScrollContainer/GridContainer/Stack"+str(i)+"/ProgressBar").value = building[i]["time"]-building[i]["delay"]
 					get_node("Gear/ScrollContainer/GridContainer/Stack"+str(i)+"/ProgressBar/Label").text = str(building[i]["delay"]).pad_decimals(1)+"s"
+		
+		if debug_active:
+			program_delay -= delta*debug_speed
+			program_time += delta*debug_speed
+			debug_dot_delay -= delta
+			if debug_dot_delay<=0.0:
+				debug_dot_delay += 2.0
+			if program_delay<=0.0:
+				debug_progress()
+			debug_update()
+	
 
 func _input(event):
 	if event is InputEventKey:
@@ -1657,7 +1903,7 @@ func select_log(type,ID):
 	$Log/Text/VBoxContainer/HBoxContainer.hide()
 	if type=="log":
 		for array in Events.logs:
-			var date = OS.get_datetime_from_unix_time(array[2])
+			var date := get_date(array[2])
 			text.add_text(str(date["day"]).pad_zeros(2)+"."+str(date["month"]).pad_zeros(2)+"."+str(date["year"])+" - "+str(date["hour"]).pad_zeros(2)+":"+str(date["minute"]).pad_zeros(2)+"\n")
 			text.add_text("  "+tr(array[1]))
 			text.newline()
@@ -1706,7 +1952,7 @@ func select_log(type,ID):
 		text.newline()
 		for k in Objects.countries.keys():
 			var c = Objects.countries[k]
-			var rank = -1
+			var rank := -1
 			for i in range(ranks.size()):
 				if ranks[i].ID==k:
 					rank = i
@@ -1750,8 +1996,8 @@ func select_log(type,ID):
 		$Log/Text/VBoxContainer/HBoxContainer.show()
 	elif type=="event":
 		var event = Objects.events[ID]
-		var time = OS.get_datetime_from_unix_time(event.date)
-		var date = str(time.day)+"."+str(time.month)+"."+str(time.year)
+		var time := get_date(event.date)
+		var date := str(time.day)+"."+str(time.month)+"."+str(time.year)
 		text.add_text(tr(event.name))
 		text.newline()
 		text.add_text(date)
@@ -1783,6 +2029,7 @@ func _ready():
 	randomize()
 	reset()
 	
+	
 	# connect signals #
 	get_tree().connect("screen_resized",self,"_screen_resized")
 	$Top/HBoxContainer/ButtonClose.connect("pressed",self,"_close")
@@ -1812,11 +2059,19 @@ func _ready():
 	$Code/Top/Button1.connect("pressed",self,"_save_program")
 	$Code/Top/Button2.connect("pressed",$Code/Icon,"show")
 	$Code/Top/Button3.connect("pressed",self,"_delete_program")
-	$Code/Description/Icon/Name.connect("text_changed",self,"_set_program_name")
-	$Code/Description/Description.connect("text_changed",self,"_set_program_desc")
+	$Code/IconName/Name.connect("text_changed",self,"_set_program_name")
+	$Code/TabContainer/Description/Description.connect("text_changed",self,"_set_program_desc")
 	$Code/Icon/HBoxContainer/Button1.connect("pressed",self,"_set_program_icon")
 	$Code/Icon/HBoxContainer/Button2.connect("pressed",$Code/Icon,"hide")
 	$Code/Icon/ScrollContainer/GridContainer/Button0.connect("pressed",self,"_select_program_icon",[0])
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonReset.connect("pressed",self,"_debug_reset_program")
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonStart.connect("pressed",self,"_debug_toggle")
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonSpeed1.connect("pressed",self,"_set_debug_speed",[0])
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/HBoxContainer/ButtonSpeed2.connect("pressed",self,"_set_debug_speed",[1])
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/VBoxContainer/CheckButtonControled.connect("toggled",self,"_set_debug_controled")
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/VBoxContainer/CheckButtonEnemy.connect("toggled",self,"_set_debug_enemy")
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/VBoxContainer/CheckButtonUncontroled.connect("toggled",self,"_set_debug_neutral")
+	$Code/TabContainer/Debug/ScrollContainer/VBoxContainer/VBoxContainer/CheckButtonProg.connect("toggled",self,"_set_debug_hostile_prog")
 	$Log/Text/VBoxContainer/Text.connect("meta_clicked",self,"_log_link")
 	$Saves/ScrollContainer/VBoxContainer/Button0.connect("pressed",self,"_select_file",[0])
 	$Saves/ScrollContainer/VBoxContainer/New/LineEdit.connect("text_entered",self,"_save")
