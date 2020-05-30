@@ -470,7 +470,7 @@ func _select_contact(contact):
 	for c in $Chat/Panel/Portrait.get_children():
 		c.queue_free()
 	portrait.scale = Vector2(scale,scale)
-	portrait.position = (scale*portrait.get_node("Rect").rect_size-$Chat/Panel/Portrait.rect_size)*Vector2(-0.33,0.5)
+	portrait.position = (scale*portrait.get_node("Rect").rect_size-$Chat/Panel/Portrait.rect_size)*Vector2(-0.33,0.5)-portrait.get_node("Rect").rect_position
 	$Chat/Panel/Portrait.add_child(portrait)
 	$Chat/Panel/Portrait.raise()
 	$Chat/Panel/ScrollContainer.raise()
