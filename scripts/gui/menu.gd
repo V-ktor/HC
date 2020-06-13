@@ -794,6 +794,7 @@ func add_chat_choice_box(choices,index,where="Chat"):
 					button.disabled = true
 		elif c.has("personality") && c.personality.size()>0:
 			button.get_node("HBoxContainer/Icon").texture = icons_personality[c.personality.keys()[0]]
+			button.get_node("HBoxContainer/Icon/Inc").show()
 		available += int(!button.disabled)
 		bi.get_node("Panel/VBoxContainer").add_child(button)
 		button.connect("pressed",self,"_select_choice",[c,index,bi])
