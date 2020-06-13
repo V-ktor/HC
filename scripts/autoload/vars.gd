@@ -5,6 +5,9 @@ var vars := {}
 func save_var(n,v=true):
 	vars[n] = v
 
+func clear_var(n):
+	vars.erase(n)
+
 func inc_var(n):
 	if vars.has(n) && (typeof(vars[n])==TYPE_INT || typeof(vars[n])==TYPE_REAL):
 		vars[n] += 1

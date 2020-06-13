@@ -31,12 +31,35 @@ const WAVE = {
 	Vector2( 7, 6):{"type":"terminate"}
 }
 
+const SCYTHE = {
+	Vector2( 9, 4):{"type":"initialize","dir":[0]},
+	Vector2(10, 5):{"type":"if","arguments":["unconnected_enemy"],"dir":[0,1]},
+	Vector2(11, 5):{"type":"connect","arguments":["random_enemy"],"dir":[3]},
+	Vector2(10, 6):{"type":"attack","arguments":[6],"dir":[1]},
+	Vector2(10, 7):{"type":"if","arguments":["enemy_adjacent"],"dir":[4,3]},
+	Vector2( 9, 6):{"type":"disconnect","dir":[3]},
+	Vector2( 8, 6):{"type":"terminate"}
+}
+
 const FIRE_WALL = {
 	Vector2( 9, 4):{"type":"initialize","dir":[0]},
 	Vector2(10, 5):{"type":"if","arguments":["enemy_adjacent"],"dir":[0,2]},
 	Vector2(11, 5):{"type":"connect","arguments":["local"],"dir":[5]},
 	Vector2(12, 5):{"type":"protect","arguments":[3],"dir":[3]},
 	Vector2(11, 4):{"type":"disconnect","dir":[2]},
+	Vector2( 9, 5):{"type":"terminate"}
+}
+
+const PARRY = {
+	Vector2( 9, 4):{"type":"initialize","dir":[0]},
+	Vector2(10, 5):{"type":"if","arguments":["enemy_adjacent"],"dir":[5,2]},
+	Vector2(11, 4):{"type":"if","arguments":["hostile_program_adjacent"],"dir":[1,5]},
+	Vector2(11, 5):{"type":"connect","arguments":["local"],"dir":[5]},
+	Vector2(12, 5):{"type":"protect","arguments":[3],"dir":[5]},
+	Vector2(13, 4):{"type":"disconnect","dir":[3]},
+	Vector2(12, 4):{"type":"connect","arguments":["random_enemy"],"dir":[3]},
+	Vector2(11, 3):{"type":"attack","arguments":[4],"dir":[2]},
+	Vector2(10, 4):{"type":"disconnect","dir":[1]},
 	Vector2( 9, 5):{"type":"terminate"}
 }
 
@@ -54,6 +77,25 @@ const PHALANX = {
 	Vector2(14, 7):{"type":"protect","arguments":[2],"dir":[4]},
 	Vector2(14, 6):{"type":"disconnect","dir":[3]},
 	Vector2(13, 5):{"type":"connect","arguments":["random_enemy"],"dir":[3]},
+	Vector2( 9, 5):{"type":"terminate"}
+}
+
+const LOCK = {
+	Vector2( 9, 4):{"type":"initialize","dir":[0]},
+	Vector2(10, 5):{"type":"if","arguments":["enemy_adjacent"],"dir":[0,2]},
+	Vector2(11, 5):{"type":"connect","arguments":["random_enemy"],"dir":[5]},
+	Vector2(12, 5):{"type":"disrupt","arguments":[80],"dir":[3]},
+	Vector2(11, 4):{"type":"disconnect","dir":[2]},
+	Vector2( 9, 5):{"type":"terminate"}
+}
+
+const SILENCE = {
+	Vector2( 9, 4):{"type":"initialize","dir":[0]},
+	Vector2(10, 5):{"type":"if","arguments":["hostile_program_adjacent"],"dir":[0,2]},
+	Vector2(11, 5):{"type":"if","arguments":["unconnected_enemy"],"dir":[1,5]},
+	Vector2(11, 6):{"type":"connect","arguments":["random_enemy"],"dir":[4]},
+	Vector2(12, 5):{"type":"disrupt","arguments":[205],"dir":[3]},
+	Vector2(11, 4):{"type":"disconnect","dir":[2]},
 	Vector2( 9, 5):{"type":"terminate"}
 }
 
@@ -109,7 +151,7 @@ const COMMANDS = {
 	"disconnect":{
 		"cpu":1,
 		"size":1,
-		"cost":20,
+		"cost":30,
 		"delay":0.5,
 		"argument":"none",
 		"sustained":false,
@@ -117,7 +159,7 @@ const COMMANDS = {
 	"connect":{
 		"cpu":1,
 		"size":1,
-		"cost":50,
+		"cost":60,
 		"delay":0.5,
 		"argument":"target",
 		"sustained":"disconnect",
@@ -125,7 +167,7 @@ const COMMANDS = {
 	"attack":{
 		"cpu":"attack_cpu",
 		"size":4,
-		"cost":100,
+		"cost":150,
 		"delay":"attack_delay",
 		"argument":"number",
 		"sustained":false,
@@ -133,15 +175,23 @@ const COMMANDS = {
 	"protect":{
 		"cpu":"attack_cpu",
 		"size":3,
-		"cost":100,
+		"cost":150,
 		"delay":"protect_delay",
 		"argument":"number",
 		"sustained":false,
 		"icon":"res://images/gui/cmd_protect.png"},
+	"disrupt":{
+		"cpu":"disrupt_cpu",
+		"size":5,
+		"cost":300,
+		"delay":10.0,
+		"argument":"number",
+		"sustained":false,
+		"icon":"res://images/gui/cmd_disrupt.png"},
 	"translocate":{
 		"cpu":4,
 		"size":4,
-		"cost":200,
+		"cost":300,
 		"delay":5.0,
 		"argument":"none",
 		"sustained":false,
@@ -149,7 +199,7 @@ const COMMANDS = {
 	"clone":{
 		"cpu":4,
 		"size":8,
-		"cost":350,
+		"cost":1000,
 		"delay":2.0,
 		"argument":"none",
 		"sustained":false,
@@ -157,7 +207,7 @@ const COMMANDS = {
 	"sleep":{
 		"cpu":0,
 		"size":1,
-		"cost":20,
+		"cost":30,
 		"delay":1.0,
 		"argument":"number",
 		"sustained":false,
@@ -299,7 +349,7 @@ class PrgmNode:
 	var dir := []
 	var pos := Vector2()
 	
-	func _init(p,dict):
+	func _init(_p,dict):
 		pos = pos
 		type = dict.type
 		if dict.has("dir"):
@@ -330,17 +380,41 @@ var programs = {
 		"code":to_class(WAVE),
 		"icon":"wave"
 	},
+	"scythe":{
+		"name":"SCYTHE",
+		"description":"SCYTHE_DESC",
+		"code":to_class(SCYTHE),
+		"icon":"scythe"
+	},
 	"fire_wall":{
 		"name":"FIRE_WALL",
 		"description":"FIRE_WALL_DESC",
 		"code":to_class(FIRE_WALL),
 		"icon":"fire_wall"
 	},
+	"parry":{
+		"name":"PARRY",
+		"description":"PARRY_DESC",
+		"code":to_class(PARRY),
+		"icon":"parry"
+	},
 	"phalanx":{
 		"name":"PHALANX",
 		"description":"PHALANX_DESC",
 		"code":to_class(PHALANX),
 		"icon":"phalanx"
+	},
+	"lock":{
+		"name":"LOCK",
+		"description":"LOCK_DESC",
+		"code":to_class(LOCK),
+		"icon":"lock"
+	},
+	"silence":{
+		"name":"SILENCE",
+		"description":"SILENCE_DESC",
+		"code":to_class(SILENCE),
+		"icon":"silence"
 	},
 	"worm":{
 		"name":"WORM",
@@ -388,6 +462,9 @@ func attack_delay(args):
 func protect_delay(args):
 	return 5.0+float(args[0])
 
+func disrupt_cpu(args):
+	return int(1+pow(args[0],1.5)/250.0)
+
 
 func to_class(code):
 	var nodes = {}
@@ -422,3 +499,5 @@ func _load(file):
 					var pos = Vector2(int(array[0]),int(array[1]))
 					code[pos] = known_programs[k1].code[k2]
 			known_programs[k1].code = to_class(code)
+			programs[k1] = known_programs[k1]
+	

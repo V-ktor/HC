@@ -13,6 +13,8 @@ var started := false
 var last_mouse_pos := Vector2(0,0)
 var tm := 0.0
 var gamestate
+var root_nodes := [[],[]]
+var victory_on_root_capture := false
 
 var node_selected := -1
 
@@ -36,6 +38,7 @@ class ControlPoint:
 	var programs := []
 	var used := []
 	var ID := 0
+	var slowdown := 0.0
 	var gamestate
 	var owner
 	var node
@@ -202,6 +205,13 @@ class Program:
 		gamestate.cpu[owner] += cpu
 		cpu = 0
 		delay = 0.0
+		if stack.has("pos") && stack[focus].command=="disrupt":
+			var array = stack[focus].args
+			if array.size()>0:
+				if targets.size()>0:
+					var effect = array[0]/100.0/targets.size()
+					for target in targets:
+						gamestate.nodes[target].slowdown -= effect
 		node.get_node("VBoxContainer/Status").value = 0
 		node.get_node("VBoxContainer/Duration").text = tr("REMAINING_TIME")%0.0
 		node.get_node("VBoxContainer/Status/HBoxContainer/Label").text = tr("TERMINATE")
@@ -248,6 +258,13 @@ class Program:
 						var dam = 0.5*array[0]/targets.size()
 						for target in targets:
 							gamestate.nodes[target].cancel_defense(owner,10*dam)
+			elif cmd=="disrupt":
+				var array = stack[pos].args
+				if array.size()>0:
+					if targets.size()>0:
+						var effect = array[0]/100.0/targets.size()
+						for target in targets:
+							gamestate.nodes[target].slowdown -= effect
 			elif cmd=="translocate":
 				var index := -1
 				var move_to = targets[randi()%targets.size()]
@@ -264,7 +281,7 @@ class Program:
 					tooltip.self_modulate = gamestate.colors[owner]
 					tooltip.node = gamestate.points[ID].node
 					gamestate.Main.get_node("GUI/Tooltips").add_child(tooltip)
-			elif cmd=="copy":
+			elif cmd=="clone":
 				gamestate.Main.add_program(owner,type,ID)
 			elif cmd=="terminate":
 				stop()
@@ -302,6 +319,10 @@ class Program:
 			dir = dirs[int(1-int(evaluate_statement(args)))]
 		elif dirs.size()>0:
 			dir = dirs[0]
+		if type=="disrupt":
+			var effect = args[0]/100.0/targets.size()
+			for target in targets:
+				gamestate.nodes[target].slowdown += effect
 		stack[pos] = {"cpu":cpu_used,"command":type,"sustained":Programs.COMMANDS[type].sustained,"args":args,"dir":dir,"particles":[]}
 		if desc!=null:
 			node.get_node("VBoxContainer/Status/HBoxContainer/Label").text = tr(desc)
@@ -526,11 +547,20 @@ func get_winner():
 	control.resize(num_players+1)
 	for i in range(control.size()):
 		control[i] = 0
-	for node in points:
-		if node.owner>=0:
-			control[node.owner+1] += 1
-		else:
-			control[0] += 1
+	
+	if victory_on_root_capture:
+		for j in range(num_players):
+			for i in range(root_nodes[j].size()):
+				var node = points[root_nodes[j][i]]
+				if node.owner!=j:
+					control[node.owner+1] += 1
+	else:
+		for node in points:
+			if node.owner>=0:
+				control[node.owner+1] += 1
+			else:
+				control[0] += 1
+	
 	for i in range(num_players+1):
 		if control[i]>highest:
 			highest = control[i]
@@ -581,9 +611,9 @@ func parse(prgm):
 			prgm.targets = []
 	elif type=="connect":
 		# Add a target.
-		var new_target = prgm.owner
 		wait = !prgm.init_command(prgm.focus,"CONNECTING")
 		if !wait:
+			var new_target = prgm.owner
 			if node.arguments.size()>0:
 				new_target = prgm.acquire_target(node.arguments[0])
 				if new_target==-1:
@@ -626,6 +656,12 @@ func parse(prgm):
 						$ControlPoints.add_child(pi)
 						if prgm.stack.has(pos):
 							prgm.stack[pos].particles.push_back(pi)
+		else:
+			prgm.skip()
+	elif type=="disrupt":
+		if prgm.targets.size()>0:
+			# Disrupt
+			wait = !prgm.init_command(prgm.focus,"DISRUPTING")
 		else:
 			prgm.skip()
 	elif type=="translocate":
@@ -671,7 +707,7 @@ func _process(delta):
 			for i in range(e.owner)+range(e.owner+1,num_players):
 				t += p.control[i]
 			scale /= t
-			e.delay -= delta*scale
+			e.delay -= delta*scale*max(1.0-p.slowdown,0.0)
 			if e.delay<=0.0:
 				e.delay = 0.0
 				parse(e)
@@ -776,6 +812,7 @@ func create_radial_system(num_inner,num_outer,num_central,num_layers):
 		var c1 = floor(float(i)/num_inner*num_layer[0]+num_inner)
 		var c2 = ceil(float(i)/num_inner*num_layer[0]+num_inner)
 		points[i] = {"position":Vector2(192,0).rotated(2.0*PI*i/num_inner),"connections":[c1],"owner":1}
+		root_nodes[1].push_back(i)
 		if c1!=c2:
 			points[i]["connections"].push_back(c2)
 	for j in num_layers:
@@ -809,6 +846,7 @@ func create_radial_system(num_inner,num_outer,num_central,num_layers):
 		var c1 = floor(float(i-last)/num_outer*num_layer[num_layers-1]+last-num_layer[num_layers-1])
 		var c2 = ceil(float(i-last)/num_outer*num_layer[num_layers-1]+last-num_layer[num_layers-1])
 		points[i] = {"position":Vector2(192+256*(num_layers+1),0).rotated(2.0*PI*(i-last)/num_outer),"connections":[c1],"owner":0}
+		root_nodes[0].push_back(i)
 		if c1!=c2:
 			points[i]["connections"].push_back(c2)
 	
@@ -846,6 +884,7 @@ func create_layered_system(num_layers,num_outer,num_nodes):
 		var c1 = clamp(floor(num_outer+float(i)/num_outer*num_layer[1]+rand_range(-0.4,0.4)),num_outer,num_outer+num_layer[1]-1)
 		var c2 = clamp(ceil(num_outer+float(i)/num_outer*num_layer[1]+rand_range(-0.4,0.4)),num_outer,num_outer+num_layer[1]-1)
 		points[i] = {"position":Vector2(-xoffset*(num_layers-1)/2.0,256.0*(i-num_outer/2.0)),"connections":[c1],"owner":0}
+		root_nodes[0].push_back(i)
 		if c1!=c2 && randf()<0.5:
 			points[i]["connections"].push_back(c2)
 	last = num_outer
@@ -863,6 +902,7 @@ func create_layered_system(num_layers,num_outer,num_nodes):
 		var c1 = clamp(floor(last-num_layer[num_layers-2]+float(i-last)/num_outer*num_layer[num_layers-2]+rand_range(-0.4,0.4)),last-num_layer[num_layers-2],last-1)
 		var c2 = clamp(ceil(last-num_layer[num_layers-2]+float(i-last)/num_outer*num_layer[num_layers-2]+rand_range(-0.4,0.4)),last-num_layer[num_layers-2],last-1)
 		points[i] = {"position":Vector2(xoffset*(num_layers-1)/2.0,256.0*(i-last-num_outer/2.0)),"connections":[c1],"owner":1}
+		root_nodes[1].push_back(i)
 		if c1!=c2 && randf()<0.5:
 			points[i]["connections"].push_back(c2)
 	
@@ -890,6 +930,7 @@ func create_radial_layer_system(num_inner,num_outer,num_central,num_layers):
 		var c1 = floor(float(i)/num_inner*num_layer[0]+num_inner)
 		var c2 = ceil(float(i)/num_inner*num_layer[0]+num_inner)
 		points[i] = {"position":Vector2(192,0).rotated(2.0*PI*i/num_inner),"connections":[c1],"owner":1}
+		root_nodes[1].push_back(i)
 		if c1!=c2:
 			points[i]["connections"].push_back(c2)
 	for j in num_layers:
@@ -923,6 +964,7 @@ func create_radial_layer_system(num_inner,num_outer,num_central,num_layers):
 		var c1 = floor(float(i-last)/num_outer*num_layer[num_layers-1]+last-num_layer[num_layers-1])
 		var c2 = min(ceil(float(i-last)/num_outer*num_layer[num_layers-1]+last-num_layer[num_layers-1]+0.5),last+num_outer-1)
 		points[i] = {"position":Vector2(192+256*(num_layers+1),0).rotated(2.0*PI*(i-last)/num_outer),"connections":[c1],"owner":0}
+		root_nodes[0].push_back(i)
 		if c1!=c2:
 			points[i]["connections"].push_back(c2)
 	

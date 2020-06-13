@@ -195,6 +195,8 @@ class Server extends Obj:
 	var prestige : float
 	var method_on_win : String
 	var group
+	var music_overwrite := ""
+	var optional := false
 	
 	func _init(_name,_group,_desc,_color,_layout,_layout_params,_programs,_cpu,_ai,_credits,_prestige,_method_on_win=null):
 		name = _name
@@ -476,6 +478,7 @@ func add_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,ai,cr
 	$"/root/Menu".targets.push_back(ID)
 	$"/root/Menu".new_targets += 1
 	$"/root/Menu".update_main_menu()
+	return new_target
 
 func remove_target(ID):
 	targets.erase(ID)
@@ -485,9 +488,12 @@ func remove_target(ID):
 
 func add_opt_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win=null):
 	var new_target = Server.new(name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win)
+	new_target.optional = true
 	targets[ID] = new_target
 
 func remove_opt_target(ID):
+	if !targets[ID].optional:
+		return
 	targets.erase(ID)
 	$"/root/Menu".targets.erase(ID)
 	if $"/root/Menu/Targets".visible:
@@ -518,13 +524,13 @@ func create_group_target(strength):
 	var memory := 0
 	var str_eff = sqrt(strength)
 	var programs := {
-		"pulse":int(rand_range(0.33,1.25)*str_eff+2),
+		"pulse":int(rand_range(0.4,1.25)*str_eff+2),
 		"wave":int(rand_range(0.2,0.75)*max(str_eff-2,0.0)),
 		"anti_virus":int(rand_range(0.25,1.0)*max(str_eff-1,0)),
 		"agent":int(rand_range(0.125,0.5)*max(str_eff-5,0.0))
 	}
-	var cpu := int(rand_range(1.1,1.5)*strength+rand_range(0.5,3.0))
-	var credits := int(rand_range(40,60)*strength+rand_range(50,250))
+	var cpu := int(rand_range(1.2,1.4)*strength+rand_range(0.5,3.0))
+	var credits := int(rand_range(80,100)*strength+rand_range(100,300))
 	var prestige := int(rand_range(3.0,3.5)*sqrt(strength))
 	var params := [5,4,max(int(rand_range(10.0,16.0)+strength*rand_range(0.1,0.2)),1),max(int(sqrt(strength)*rand_range(0.25,0.6)+rand_range(0.0,0.75)),1)]
 	var best_match := 999
@@ -543,9 +549,12 @@ func create_group_target(strength):
 	action_strength = programs["pulse"]+1.2*programs["wave"]+0.75*programs["anti_virus"]
 	programs["fire_wall"] = int(rand_range(0.25,0.75)*(strength-action_strength))
 	action_strength += 1.5*programs["fire_wall"]
-	if cpu>12:
+	if cpu>25:
+		programs["worm"] = max(int(1.3*strength-action_strength-rand_range(0.0,2.5)),0)
+	if cpu>20:
+		programs["agent"] = max(int(1.2*strength-action_strength-rand_range(0.0,1.5)),0)
+	if cpu>15:
 		programs["phalanx"] = max(int(1.1*strength-action_strength),0)
-#	programs["worm"] = max(int(1.2*strength-action_strength-rand_range(0.0,2.0)),0)
 	for type in programs.keys():
 		var prog = Programs.Program.new(Programs.programs[type])
 		memory += prog.size*programs[type]

@@ -202,7 +202,7 @@ __meta__ = {
 
 [node name="Option0" type="OptionButton" parent="Arguments"]
 margin_right = 50.0
-margin_bottom = 36.0
+margin_bottom = 38.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -211,19 +211,19 @@ __meta__ = {
 
 [node name="SpinBox0" type="SpinBox" parent="Arguments"]
 visible = false
-margin_left = 83.0
-margin_right = 162.0
+margin_left = 43.0
+margin_right = 117.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 min_value = 1.0
-max_value = 99.0
+max_value = 999.0
 value = 1.0
 
 [node name="Option1" type="OptionButton" parent="Arguments"]
 margin_left = 54.0
 margin_right = 104.0
-margin_bottom = 36.0
+margin_bottom = 38.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -238,13 +238,13 @@ margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 min_value = 1.0
-max_value = 99.0
+max_value = 999.0
 value = 1.0
 
 [node name="Option2" type="OptionButton" parent="Arguments"]
 margin_left = 108.0
 margin_right = 158.0
-margin_bottom = 36.0
+margin_bottom = 38.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -259,7 +259,7 @@ margin_bottom = 56.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 min_value = 1.0
-max_value = 99.0
+max_value = 999.0
 value = 1.0
 
 [node name="Focus" type="TextureRect" parent="."]

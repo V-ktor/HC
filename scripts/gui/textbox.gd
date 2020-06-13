@@ -8,6 +8,7 @@ onready var label := $Panel/Label
 onready var portrait := $Portrait/Portrait
 onready var animation := $AnimationPlayer
 
+signal closed
 
 func show_text(txt,clear=true,prt=null):
 	if buffer.size()==0 || (animation.is_playing() && animation.current_animation=="collapse") || visible:
@@ -51,6 +52,7 @@ func _process(delta):
 			$Idle.hide()
 			animation.play("collapse")
 			delay = 0.6
+			emit_signal("closed")
 
 func _input(event):
 	if event is InputEventMouseButton && event.pressed:

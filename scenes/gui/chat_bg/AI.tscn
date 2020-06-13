@@ -155,7 +155,7 @@ func _ready():
 		add_group()
 "
 
-[sub_resource type="Shader" id=9]
+[sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
 
 uniform float offset = 0.0;
@@ -200,7 +200,7 @@ void fragment()
 }"
 
 [sub_resource type="ShaderMaterial" id=5]
-shader = SubResource( 9 )
+shader = SubResource( 4 )
 shader_param/offset = 0.0
 shader_param/side = 2
 
@@ -274,7 +274,7 @@ tracks/2/keys = {
 "values": [ 0.0, 0.5 ]
 }
 
-[sub_resource type="Shader" id=12]
+[sub_resource type="Shader" id=9]
 code = "shader_type canvas_item;
 
 uniform float speed = 0.1;
@@ -285,20 +285,20 @@ void fragment()
 	COLOR = texture(TEXTURE,uv);
 }"
 
-[sub_resource type="ShaderMaterial" id=13]
-shader = SubResource( 12 )
+[sub_resource type="ShaderMaterial" id=10]
+shader = SubResource( 9 )
 shader_param/speed = 0.051
 
-[sub_resource type="ShaderMaterial" id=14]
-shader = SubResource( 12 )
+[sub_resource type="ShaderMaterial" id=11]
+shader = SubResource( 9 )
 shader_param/speed = 0.048
 
-[sub_resource type="ShaderMaterial" id=15]
-shader = SubResource( 12 )
+[sub_resource type="ShaderMaterial" id=12]
+shader = SubResource( 9 )
 shader_param/speed = 0.052
 
-[sub_resource type="ShaderMaterial" id=16]
-shader = SubResource( 12 )
+[sub_resource type="ShaderMaterial" id=13]
+shader = SubResource( 9 )
 shader_param/speed = 0.047
 
 [node name="Panel" type="Panel"]
@@ -354,7 +354,7 @@ __meta__ = {
 
 [node name="TextTop1" type="TextureRect" parent="ViewportBG/Background"]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
-material = SubResource( 13 )
+material = SubResource( 10 )
 anchor_right = 1.0
 margin_left = 16.0
 margin_top = 13.0
@@ -371,7 +371,7 @@ __meta__ = {
 
 [node name="TextTop2" type="TextureRect" parent="ViewportBG/Background"]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
-material = SubResource( 14 )
+material = SubResource( 11 )
 anchor_right = 1.0
 margin_left = 16.0
 margin_top = 28.0
@@ -389,7 +389,7 @@ __meta__ = {
 
 [node name="TextBottom1" type="TextureRect" parent="ViewportBG/Background"]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
-material = SubResource( 15 )
+material = SubResource( 12 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -409,7 +409,7 @@ __meta__ = {
 
 [node name="TextBottom2" type="TextureRect" parent="ViewportBG/Background"]
 modulate = Color( 0.501961, 0.752941, 1, 1 )
-material = SubResource( 16 )
+material = SubResource( 13 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0

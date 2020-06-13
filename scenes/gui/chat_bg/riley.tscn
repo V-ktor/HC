@@ -1,0 +1,930 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://fonts/kenvector_future_thin.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://images/characters/background/crimson.png" type="Texture" id=2]
+[ext_resource path="res://images/characters/background/light.png" type="Texture" id=3]
+[ext_resource path="res://images/characters/background/scyscraper.png" type="Texture" id=4]
+[ext_resource path="res://images/characters/background/scyscraper_mask.png" type="Texture" id=5]
+[ext_resource path="res://images/masks/radial.png" type="Texture" id=6]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float speed = 1.0;
+uniform float size = 1.0;
+
+void fragment()
+{
+	float xscale = 8.0;
+	vec2 center = vec2(xscale/2.0,0.4);
+	vec2 uv = UV*vec2(xscale,1.0)-center;
+	float pi = 3.1415926535798;
+	float angle = atan(uv.y,uv.x)+TIME*speed;
+	float l = max(8.0*length(uv)/size-1.0,0.0);
+	uv = vec2(mod(angle/2.0/pi,1.0),1.0-l);
+	COLOR = texture(TEXTURE,uv);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/speed = 0.71
+shader_param/size = 0.8
+
+[sub_resource type="ViewportTexture" id=3]
+flags = 4
+viewport_path = NodePath("ViewportBlocks")
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 1 )
+shader_param/speed = -0.57
+shader_param/size = 1.0
+
+[sub_resource type="Shader" id=5]
+code = "shader_type canvas_item;
+
+uniform sampler2D mask;
+
+void fragment()
+{
+	float scale = texture(mask,UV).g;
+	COLOR = texture(TEXTURE,UV);
+	COLOR.rgb += scale*texture(SCREEN_TEXTURE,SCREEN_UV).rgb;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
+shader_param/mask = ExtResource( 5 )
+
+[sub_resource type="Shader" id=7]
+code = "shader_type canvas_item;
+render_mode blend_add;
+
+void fragment()
+{
+	float scale = abs(2.0*fract(TIME*0.73+0.17*fract(TIME))-1.0);
+	float angle = 1.17*TIME+fract(0.007*UV.x/max(abs(UV.y-0.5),0.01)-0.009*UV.y/max(abs(UV.x-0.5),0.01));
+	vec2 uv = (1.0+0.2*scale)*(UV-vec2(0.5))*mat2(vec2(cos(angle),-sin(angle)),vec2(sin(angle),cos(angle)))+vec2(0.5);
+	COLOR = texture(TEXTURE,uv);
+	COLOR.a *= 0.5-0.05*scale;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
+
+[sub_resource type="Animation" id=9]
+resource_name = "rotating_lights"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Light2:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 3.0, 5.0, 3.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Light3:energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5, 1.5, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 4.0, 3.0, 5.0, 4.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Light4:energy")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 5.0, 3.0, 5.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Light1:energy")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 10.0, 8.0, 10.0, 8.0, 10.0 ]
+}
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 0, 0, 1 )
+border_blend = true
+
+[sub_resource type="DynamicFont" id=11]
+font_data = ExtResource( 1 )
+
+[sub_resource type="GDScript" id=12]
+script/source = "extends Label
+
+const BASE_TEXTS = [
+	\"while (cpu > 5)\\n  if (control < 100)\\n    connect(local);\\n    attack(2);\\n    disconnect;\\n  end\\n  sleep(2);\\n  end\\nreturn\",
+	\"while (enemy_adjacent)\\n  connect(random_enemy);\\n  attack(3);\\n  disconnect;end\\nreturn\",
+	\"for i in all_nodes\\n  connect(i);\\nend\\nattack(5);\\ndisconnect;\\nreturn\",
+	\"connect(local);\\nwhile (hostile_program_adjacent)\\n  protect(3);\\nend\\ndisconnect;\\nreturn\",
+	\"while (enemy_adjacent)\\n  if (control < 80)\\n    connect(local);\\n    attack(2);\\n    disconnect;\\n  end\\n  if (hostile_program_adjacent)\\n    connect(local);\\n    protect(2);\\n    disconnect;\\n  else\\n    connect(random_enemy);\\n    attack(4);\\n    disconnect;\\n  end\\n  sleep(2);\\nend\\nreturn\",
+	\"while (cpu > 5)\\n  while (enemy_adjacent)\\n    connect(random_enemy);\\n    attack(3);\\n    disconnect;\\n  end\\n  if (control > 75)\\n    clone;\\n  else\\n    connect(local);\\n    attack(2);\\n    disconnect;\\n  end\\n  connect(random_controled);\\n  translocate;\\n  disconnect\\nend\\nreturn\",
+	\"while (controled_adjacent)\\n  while (enemy_adjacent)\\n    connect(random_enemy);\\n    attack(5);\\n    disconnect;\\n  end\\n  connect(random_controled);\\n  translocate;\\n  disconnect\\nend\\nreturn\"
+]
+const MAX_LINES = 3
+
+var _text := \"\"
+var delay := 0.1
+var hold := 0.0
+
+
+func _process(delta):
+	delay -= delta
+	if delay<=0.0:
+		if _text.length()==0:
+			hold -= delta
+			if hold<=0.0:
+				_text = BASE_TEXTS[randi()%BASE_TEXTS.size()]
+				text = \"\"
+				lines_skipped = 0
+				hold = 0.5
+		else:
+			text += _text[0]
+			lines_skipped = max(get_line_count()-MAX_LINES,0)
+			_text = _text.right(1)
+		delay = 0.05
+"
+
+[sub_resource type="Animation" id=13]
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Light:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Layer1:anchor_bottom")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 0.707107, 1 ),
+"update": 0,
+"values": [ 2.0, 0.9 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Layer2:anchor_bottom")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.3, 2 ),
+"transitions": PoolRealArray( 1, 0.707107, 1 ),
+"update": 0,
+"values": [ 1.75, 1.75, 0.9 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Layer3:anchor_bottom")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.6, 2 ),
+"transitions": PoolRealArray( 1, 0.707107, 1 ),
+"update": 0,
+"values": [ 1.75, 1.75, 0.9 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Layer4:anchor_bottom")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.9, 2 ),
+"transitions": PoolRealArray( 1, 0.707107, 1 ),
+"update": 0,
+"values": [ 1.75, 1.75, 0.9 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Light/Center/Light1:energy")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 10.0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Light/Center/Light2:energy")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 3.0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Light/Center/Light3:energy")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 4.0 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Light/Center/Light4:energy")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 5.0 ]
+}
+
+[sub_resource type="Animation" id=14]
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Light:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Layer1:anchor_bottom")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1.51572, 1 ),
+"update": 0,
+"values": [ 0.9, 2.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Layer2:anchor_bottom")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.3, 2 ),
+"transitions": PoolRealArray( 1, 1.51572, 1 ),
+"update": 0,
+"values": [ 0.9, 0.9, 1.75 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Layer3:anchor_bottom")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.6, 2 ),
+"transitions": PoolRealArray( 1, 1.51572, 1 ),
+"update": 0,
+"values": [ 0.9, 0.9, 1.75 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Layer4:anchor_bottom")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.9, 2 ),
+"transitions": PoolRealArray( 1, 1.51572, 1 ),
+"update": 0,
+"values": [ 0.9, 0.9, 1.75 ]
+}
+tracks/6/type = "method"
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Light/Center/Light1:energy")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 10.0, 0.0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Light/Center/Light2:energy")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 3.0, 0.0 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Light/Center/Light3:energy")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 4.0, 0.0 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Light/Center/Light4:energy")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 5.0, 0.0 ]
+}
+
+[node name="Panel" type="TextureRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Circle1" type="TextureRect" parent="."]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = SubResource( 3 )
+expand = true
+stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Circle2" type="TextureRect" parent="."]
+material = SubResource( 4 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = SubResource( 3 )
+expand = true
+stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Layer4" type="Control" parent="."]
+modulate = Color( 1, 1, 1, 0.376471 )
+anchor_top = 0.9
+anchor_right = 1.0
+anchor_bottom = 0.9
+margin_top = -192.0
+margin_bottom = -96.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Block1" type="TextureRect" parent="Layer4"]
+material = SubResource( 6 )
+anchor_left = 0.15
+anchor_top = 1.0
+anchor_right = 0.15
+anchor_bottom = 1.0
+margin_left = -48.0
+margin_top = -480.0
+margin_right = 98.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Block2" type="TextureRect" parent="Layer4"]
+material = SubResource( 6 )
+anchor_left = 0.3
+anchor_top = 1.0
+anchor_right = 0.3
+anchor_bottom = 1.0
+margin_left = -80.0
+margin_top = -416.0
+margin_right = 66.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Block3" type="TextureRect" parent="Layer4"]
+material = SubResource( 6 )
+anchor_left = 0.41
+anchor_top = 1.0
+anchor_right = 0.41
+anchor_bottom = 1.0
+margin_left = -88.0
+margin_top = -384.0
+margin_right = 58.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Layer3" type="Control" parent="."]
+modulate = Color( 1, 1, 1, 0.501961 )
+anchor_top = 0.9
+anchor_right = 1.0
+anchor_bottom = 0.9
+margin_top = -128.0
+margin_bottom = -32.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Block1" type="TextureRect" parent="Layer3"]
+material = SubResource( 6 )
+anchor_left = 0.1
+anchor_top = 1.0
+anchor_right = 0.1
+anchor_bottom = 1.0
+margin_left = -32.0
+margin_top = -480.0
+margin_right = 114.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Block2" type="TextureRect" parent="Layer3"]
+material = SubResource( 6 )
+anchor_left = 0.225
+anchor_top = 1.0
+anchor_right = 0.225
+anchor_bottom = 1.0
+margin_left = -16.0
+margin_top = -416.0
+margin_right = 130.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Block3" type="TextureRect" parent="Layer3"]
+material = SubResource( 6 )
+anchor_left = 0.4
+anchor_top = 1.0
+anchor_right = 0.4
+anchor_bottom = 1.0
+margin_left = -16.0
+margin_top = -352.0
+margin_right = 130.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Layer2" type="Control" parent="."]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_top = -9.0
+anchor_right = 1.0
+anchor_bottom = 0.9
+margin_top = 32.0
+margin_bottom = 128.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Block1" type="TextureRect" parent="Layer2"]
+material = SubResource( 6 )
+anchor_left = 0.05
+anchor_top = 1.0
+anchor_right = 0.05
+anchor_bottom = 1.0
+margin_top = -448.0
+margin_right = 146.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Block2" type="TextureRect" parent="Layer2"]
+material = SubResource( 6 )
+anchor_left = 0.175
+anchor_top = 1.0
+anchor_right = 0.175
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = -512.0
+margin_right = 162.0
+margin_bottom = -3.05176e-05
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Block3" type="TextureRect" parent="Layer2"]
+material = SubResource( 6 )
+anchor_left = 0.3
+anchor_top = 1.0
+anchor_right = 0.3
+anchor_bottom = 1.0
+margin_left = 48.0
+margin_top = -416.0
+margin_right = 194.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Block4" type="TextureRect" parent="Layer2"]
+material = SubResource( 6 )
+anchor_left = 0.44
+anchor_top = 1.0
+anchor_right = 0.44
+anchor_bottom = 1.0
+margin_left = 32.0
+margin_top = -352.0
+margin_right = 178.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Layer1" type="Control" parent="."]
+anchor_top = 0.9
+anchor_right = 1.0
+anchor_bottom = 0.9
+margin_top = 128.0
+margin_bottom = 224.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Block1" type="TextureRect" parent="Layer1"]
+material = SubResource( 6 )
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -480.0
+margin_right = 146.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="Block2" type="TextureRect" parent="Layer1"]
+material = SubResource( 6 )
+anchor_left = 0.125
+anchor_top = 1.0
+anchor_right = 0.125
+anchor_bottom = 1.0
+margin_top = -384.0
+margin_right = 146.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="Block3" type="TextureRect" parent="Layer1"]
+material = SubResource( 6 )
+anchor_left = 0.25
+anchor_top = 1.0
+anchor_right = 0.25
+anchor_bottom = 1.0
+margin_top = -416.0
+margin_right = 146.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="Block4" type="TextureRect" parent="Layer1"]
+material = SubResource( 6 )
+anchor_left = 0.375
+anchor_top = 1.0
+anchor_right = 0.375
+anchor_bottom = 1.0
+margin_left = -32.0
+margin_top = -336.0
+margin_right = 114.0
+margin_bottom = 176.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="Block5" type="TextureRect" parent="Layer1"]
+material = SubResource( 6 )
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_top = -240.0
+margin_right = 146.0
+margin_bottom = 272.0
+rect_min_size = Vector2( 146, 512 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="Light" type="TextureRect" parent="."]
+material = SubResource( 8 )
+anchor_right = 1.0
+anchor_bottom = 0.8
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Center" type="Control" parent="Light"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Light1" type="Light2D" parent="Light/Center"]
+position = Vector2( -0.987152, 0.159729 )
+texture = ExtResource( 6 )
+texture_scale = 4.0
+color = Color( 1, 0, 0, 1 )
+energy = 10.0
+range_height = -25.0
+range_layer_max = 100
+range_item_cull_mask = 2
+
+[node name="Light2" type="Light2D" parent="Light/Center"]
+position = Vector2( 0, -256 )
+texture = ExtResource( 6 )
+texture_scale = 3.0
+color = Color( 1, 0.25098, 0, 1 )
+energy = 3.0
+range_height = -10.0
+range_layer_max = 100
+range_item_cull_mask = 2
+
+[node name="Light3" type="Light2D" parent="Light/Center"]
+position = Vector2( 221.7, 128 )
+texture = ExtResource( 6 )
+texture_scale = 3.0
+color = Color( 1, 0, 0.25098, 1 )
+energy = 4.0
+range_height = -10.0
+range_layer_max = 100
+range_item_cull_mask = 2
+
+[node name="Light4" type="Light2D" parent="Light/Center"]
+position = Vector2( -221.7, 128 )
+texture = ExtResource( 6 )
+texture_scale = 3.0
+color = Color( 1, 0.25098, 0.25098, 1 )
+energy = 5.0
+range_height = -10.0
+range_layer_max = 100
+range_item_cull_mask = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Light/Center"]
+autoplay = "rotating_lights"
+anims/rotating_lights = SubResource( 9 )
+
+[node name="ViewportBlocks" type="Viewport" parent="."]
+size = Vector2( 1024, 128 )
+transparent_bg = true
+hdr = false
+disable_3d = true
+usage = 0
+render_target_v_flip = true
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Panel1" type="Panel" parent="ViewportBlocks"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 256.0
+margin_bottom = 96.0
+custom_styles/panel = SubResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ViewportBlocks/Panel1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+custom_fonts/font = SubResource( 11 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+autowrap = true
+clip_text = true
+script = SubResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel2" type="Panel" parent="ViewportBlocks"]
+margin_left = 384.0
+margin_top = 32.0
+margin_right = 640.0
+margin_bottom = 96.0
+custom_styles/panel = SubResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ViewportBlocks/Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+custom_fonts/font = SubResource( 11 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+autowrap = true
+clip_text = true
+script = SubResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel3" type="Panel" parent="ViewportBlocks"]
+margin_left = 768.0
+margin_top = 32.0
+margin_right = 992.0
+margin_bottom = 96.0
+custom_styles/panel = SubResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ViewportBlocks/Panel3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+custom_fonts/font = SubResource( 11 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+autowrap = true
+clip_text = true
+script = SubResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "fade_in"
+anims/fade_in = SubResource( 13 )
+anims/fade_out = SubResource( 14 )

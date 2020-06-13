@@ -1,0 +1,594 @@
+[gd_scene load_steps=23 format=2]
+
+[ext_resource path="res://images/characters/silhouette.png" type="Texture" id=1]
+[ext_resource path="res://images/characters/silhouette_blury.png" type="Texture" id=2]
+[ext_resource path="res://images/masks/noise_color_small.png" type="Texture" id=3]
+
+[sub_resource type="Shader" id=11]
+code = "shader_type canvas_item;
+
+uniform vec4 color : hint_color;
+uniform float offset = 0.0;
+uniform int side = 1;
+
+void fragment()
+{
+	float PI = 3.1415926535798;
+	vec2 uv = vec2(0.5)-UV;
+	vec3 ray_dir = normalize(vec3(0.0, -0.75, 1.0));
+	vec3 x = normalize(cross(vec3(0.0, 1.0, 0.0), ray_dir));
+	vec3 y = cross(ray_dir, x);
+	float dist = 2.0;
+	vec3 ray_point = x*uv.x + y*uv.y - ray_dir*dist;
+	float height = 0.65;
+	float radius = 0.45;
+	
+	if (abs(uv.x)<radius)
+	{
+		float local_width = sqrt(radius*radius - uv.x*uv.x);
+		vec3 front_point = ray_point - ray_dir*(local_width + ray_point.z)/ray_dir.z;
+		vec3 back_point   = ray_point + ray_dir*(local_width - ray_point.z)/ray_dir.z;
+		vec3 cylinder_point;
+		vec2 planar_pos;
+		if (side==1)
+			cylinder_point = front_point;
+		if (side==2)
+			cylinder_point = back_point;
+		planar_pos.y = 1.0 - (cylinder_point.y + height/2.0)/height;
+		planar_pos.y = 0.5 + (planar_pos.y-0.5)*(1.0+cylinder_point.z/2.0);
+		planar_pos.x = (atan(cylinder_point.z, cylinder_point.x))/2.0/PI;
+		if (planar_pos.y<1.0 && planar_pos.y>0.0)
+		{
+			planar_pos.x = mod(planar_pos.x,1.0);
+			COLOR = color;
+			COLOR.a *= clamp(8.0-24.0*abs(planar_pos.y-0.5),0.0,1.0);
+			COLOR.a *= clamp(42.0-128.0*abs(mod(UV.x+offset,1.0)-0.5),0.0,1.0);1
+		}
+		else
+			COLOR = vec4(0.0);
+	}
+	else
+		COLOR = vec4(0.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=17]
+shader = SubResource( 11 )
+shader_param/color = Color( 0.101961, 0.501961, 0.14902, 1 )
+shader_param/offset = 0.3
+shader_param/side = 2
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="ShaderMaterial" id=15]
+shader = SubResource( 11 )
+shader_param/color = Color( 0.14902, 0.4, 0.34902, 1 )
+shader_param/offset = 0.4
+shader_param/side = 2
+
+[sub_resource type="ShaderMaterial" id=13]
+shader = SubResource( 11 )
+shader_param/color = Color( 0.101961, 0.501961, 0.14902, 1 )
+shader_param/offset = 0.0
+shader_param/side = 2
+
+[sub_resource type="Shader" id=20]
+code = "shader_type canvas_item;
+
+uniform sampler2D blury;
+uniform sampler2D mask;
+
+void fragment()
+{
+	float w = abs(1.0-2.0*fract(0.37*TIME));
+	vec2 uv = UV;
+	vec2 uv2 = UV*vec2(abs(1.0-2.0*fract(0.071*TIME)),abs(1.0-2.0*fract(0.053*TIME)));
+	vec3 c = texture(mask,uv2).rgb;
+	int x = int(8.0+c.r*6.0);
+	int y = int(10.0+c.g*8.0);
+	float w2 = 0.75*c.b*abs(1.0-2.0*fract(0.037*TIME));
+	uv.x = (floor(uv.x*float(x))/float(x)+ceil(uv.x*float(x))/float(x))/2.0*w2+(1.0-w2)*uv.x;
+	uv.y = (floor(uv.y*float(y))/float(y)+ceil(uv.y*float(y))/float(y))/2.0*w2+(1.0-w2)*uv.y;
+	COLOR = texture(TEXTURE, uv)*w+(1.0-w)*texture(blury, uv);
+}
+"
+
+[sub_resource type="ShaderMaterial" id=21]
+shader = SubResource( 20 )
+shader_param/blury = ExtResource( 2 )
+shader_param/mask = ExtResource( 3 )
+
+[sub_resource type="ShaderMaterial" id=19]
+shader = SubResource( 11 )
+shader_param/color = Color( 0.101961, 0.501961, 0.14902, 1 )
+shader_param/offset = 0.7
+shader_param/side = 1
+
+[sub_resource type="ShaderMaterial" id=18]
+shader = SubResource( 11 )
+shader_param/color = Color( 0.14902, 0.4, 0.34902, 1 )
+shader_param/offset = 0.0
+shader_param/side = 1
+
+[sub_resource type="ShaderMaterial" id=16]
+shader = SubResource( 11 )
+shader_param/color = Color( 0.14902, 0.4, 0.34902, 1 )
+shader_param/offset = 0.8
+shader_param/side = 1
+
+[sub_resource type="ShaderMaterial" id=14]
+shader = SubResource( 11 )
+shader_param/color = Color( 0.101961, 0.501961, 0.14902, 1 )
+shader_param/offset = 0.2
+shader_param/side = 1
+
+[sub_resource type="ShaderMaterial" id=10]
+shader = SubResource( 11 )
+shader_param/color = Color( 0.14902, 0.4, 0.34902, 1 )
+shader_param/offset = 0.5
+shader_param/side = 1
+
+[sub_resource type="Shader" id=22]
+code = "shader_type canvas_item;
+
+uniform float block_scale = 0.0;
+uniform sampler2D block_mask;
+
+void fragment()
+{
+	vec2 uv = SCREEN_UV;
+	vec2 uv2 = vec2(0.5)+0.00173*(UV-vec2(0.5))*round(vec2(3.0-1.0*fract(0.091*TIME),2.0-0.25*fract(0.073*TIME))*8.0)+round(vec2(1.0-2.0*fract(0.13*TIME),1.0-2.0*fract(0.17*TIME))*8.0)/17.9;
+	float alpha = abs(1.0-2.5*fract(1.37*(uv.y+5.3*TIME*sin(37.9*TIME))))*abs(1.0-0.5*fract(0.131*(0.0071*uv.x+1.0)*TIME))*abs(1.0-2.0*uv.x);
+	COLOR = (1.0-alpha)*texture(SCREEN_TEXTURE,SCREEN_UV)+alpha*texture(SCREEN_TEXTURE,uv);
+	
+	uv2 += vec2(0.04,0.06)*uv*(1.0-2.0*fract(0.001391*TIME));
+	vec3 scale = clamp(20.0*(texture(block_mask,uv2).rgb-0.95)*round((0.5+0.5*block_scale)*((1.5+fract(7.3*TIME))*texture(block_mask,-uv2).g+block_scale)),0.0,1.0);
+	scale.gb *= float(scale.r<0.9);
+	scale.b *= float(scale.g<0.9);
+	COLOR.rgb *= 1.0+scale.rgb;
+	COLOR.gb *= 1.0-scale.r;
+	COLOR.rb *= 1.0-scale.g;
+	COLOR.rg *= 1.0-scale.b;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=23]
+shader = SubResource( 22 )
+shader_param/block_scale = 0.25
+shader_param/block_mask = ExtResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=24]
+bg_color = Color( 0, 0, 0, 0 )
+border_color = Color( 0, 0, 0, 0 )
+
+[sub_resource type="Animation" id=1]
+resource_name = "animation"
+length = 3.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Skeleton/Hip:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Skeleton/Hip:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 276.098, 689.01 ), Vector2( 276.098, 683.01 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Skeleton/Hip/Chest:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -2.0, 2.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Skeleton/Hip/Chest/Head:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -88.0, -92.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Skeleton/Hip/Legs:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Skeleton/Hip/Legs:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 1.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 4.328, 227.192 ), Vector2( 4.328, 235.192 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Skeleton/Hip/Legs/Feet:rotation_degrees")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 135.0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Skeleton/Hip/Legs/Feet:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -1.68921, 170.141 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Skeleton/Hip/Chest:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 1.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 14.28, -297.468 ), Vector2( 14.28, -305.468 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "fade_in"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Skeleton/Hip:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1876.1, 685.01 ), Vector2( 276.098, 685.01 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "fade_out"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Skeleton/Hip:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 276.098, 685.01 ), Vector2( 1876.1, 685.01 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "rotate"
+length = 30.0
+step = 5.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("ArcsFG/Arc1:material:shader_param/offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 30 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.5, -4.5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ArcsBG/Arc2:material:shader_param/offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 30 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 3.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("ArcsFG/Arc3:material:shader_param/offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 30 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.2, -3.2 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("ArcsBG/Arc4:material:shader_param/offset")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 30 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.4, 5.4 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("ArcsFG/Arc5:material:shader_param/offset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 30 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.8, -3.8 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("ArcsBG/Arc6:material:shader_param/offset")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 30 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.3, 3.3 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("ArcsFG/Arc7:material:shader_param/offset")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 30 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, -4.0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("ArcsFG/Arc8:material:shader_param/offset")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 30 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.7, -2.7 ]
+}
+
+[node name="Character03" type="Node2D"]
+
+[node name="ArcsBG" type="Control" parent="."]
+margin_top = -50.0
+margin_right = 800.0
+margin_bottom = 950.0
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Arc6" type="Panel" parent="ArcsBG"]
+material = SubResource( 17 )
+anchor_right = 1.0
+margin_top = 500.0
+margin_bottom = 820.0
+custom_styles/panel = SubResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arc4" type="Panel" parent="ArcsBG"]
+material = SubResource( 15 )
+anchor_right = 1.0
+margin_top = 280.0
+margin_bottom = 600.0
+custom_styles/panel = SubResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arc2" type="Panel" parent="ArcsBG"]
+material = SubResource( 13 )
+anchor_right = 1.0
+margin_top = 60.0
+margin_bottom = 380.0
+custom_styles/panel = SubResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PolygonSharp" type="Polygon2D" parent="."]
+material = SubResource( 21 )
+texture = ExtResource( 1 )
+skeleton = NodePath("../Skeleton")
+polygon = PoolVector2Array( 416, -32, 608, 96, 576, 224, 672, 320, 672, 512, 768, 832, 640, 864, 640, 1184, 416, 1344, 96.0001, 1184, 160, 1024, 192, 832, 128, 704, 160, 480, 224, 256, 192, 96, 384, 256, 416, 416, 384, 640, 384, 864, 384, 1088 )
+uv = PoolVector2Array( 416, -32, 608, 96, 576, 224, 672, 320, 672, 512, 768, 832, 640, 864, 640, 1184, 416, 1344, 96.0001, 1184, 160, 1024, 192, 832, 128, 704, 160, 480, 224, 256, 192, 96, 384, 256, 416, 416, 384, 640, 384, 864, 384, 1088 )
+polygons = [ PoolIntArray( 0, 15, 16, 1 ), PoolIntArray( 16, 15, 14 ), PoolIntArray( 16, 1, 2 ), PoolIntArray( 16, 17, 13, 14 ), PoolIntArray( 16, 17, 3, 2 ), PoolIntArray( 18, 17, 13, 12 ), PoolIntArray( 17, 18, 4, 3 ), PoolIntArray( 18, 4, 5, 6 ), PoolIntArray( 18, 12, 11 ), PoolIntArray( 18, 11, 19 ), PoolIntArray( 18, 19, 6 ), PoolIntArray( 19, 20, 7, 6 ), PoolIntArray( 19, 11, 10, 20 ), PoolIntArray( 20, 10, 9 ), PoolIntArray( 20, 7, 8, 9 ) ]
+bones = [ NodePath("Hip"), PoolRealArray( 0, 0, 0, 0, 0, 1, 0.5, 0, 0, 0, 0, 0.5, 1, 0, 0, 0, 0, 0, 1, 0.5, 0 ), NodePath("Hip/Chest"), PoolRealArray( 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0.5, 1, 0.5, 0, 0 ), NodePath("Hip/Chest/Head"), PoolRealArray( 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0 ), NodePath("Hip/Legs"), PoolRealArray( 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0.5, 1, 1 ), NodePath("Hip/Legs/Feet"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ) ]
+internal_vertex_count = 5
+
+[node name="Skeleton" type="Skeleton2D" parent="."]
+visible = false
+position = Vector2( 100, 0 )
+
+[node name="Hip" type="Bone2D" parent="Skeleton"]
+position = Vector2( 276.098, 683.577 )
+rest = Transform2D( 1, 0, 0, 1, 276.098, 685.01 )
+
+[node name="Chest" type="Bone2D" parent="Skeleton/Hip"]
+position = Vector2( 14.28, -305.269 )
+rotation = 0.0331709
+rest = Transform2D( 1, 0, 0, 1, 14.28, -301.468 )
+
+[node name="Head" type="Bone2D" parent="Skeleton/Hip/Chest"]
+position = Vector2( 0, -185.641 )
+rotation = -1.60308
+rest = Transform2D( -4.37114e-08, -1, 1, -4.37114e-08, 0, -185.641 )
+default_length = 64.0
+
+[node name="Legs" type="Bone2D" parent="Skeleton/Hip"]
+position = Vector2( 4.328, 234.436 )
+rest = Transform2D( 1, 0, 0, 1, 4.32837, 233.192 )
+
+[node name="Feet" type="Bone2D" parent="Skeleton/Hip/Legs"]
+position = Vector2( -1.68921, 170.141 )
+rotation = 2.35619
+rest = Transform2D( -0.707107, 0.707107, -0.707107, -0.707107, -1.68921, 170.141 )
+default_length = 128.0
+
+[node name="ArcsFG" type="Control" parent="."]
+margin_top = -50.0
+margin_right = 800.0
+margin_bottom = 950.0
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Arc8" type="Panel" parent="ArcsFG"]
+material = SubResource( 19 )
+anchor_right = 1.0
+margin_top = 720.0
+margin_bottom = 1040.0
+custom_styles/panel = SubResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arc7" type="Panel" parent="ArcsFG"]
+material = SubResource( 18 )
+anchor_right = 1.0
+margin_top = 610.0
+margin_bottom = 930.0
+custom_styles/panel = SubResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arc5" type="Panel" parent="ArcsFG"]
+material = SubResource( 16 )
+anchor_right = 1.0
+margin_top = 390.0
+margin_bottom = 710.0
+custom_styles/panel = SubResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arc3" type="Panel" parent="ArcsFG"]
+material = SubResource( 14 )
+anchor_right = 1.0
+margin_top = 171.0
+margin_bottom = 491.0
+custom_styles/panel = SubResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arc1" type="Panel" parent="ArcsFG"]
+material = SubResource( 10 )
+anchor_right = 1.0
+margin_top = -50.0
+margin_bottom = 270.0
+custom_styles/panel = SubResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Glitch" type="Panel" parent="."]
+material = SubResource( 23 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -50.0
+margin_top = -100.0
+margin_right = 850.0
+margin_bottom = 1000.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 24 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Rect" type="ReferenceRect" parent="."]
+margin_top = -100.0
+margin_right = 800.0
+margin_bottom = 950.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "fade_in"
+anims/animation = SubResource( 1 )
+anims/fade_in = SubResource( 2 )
+anims/fade_out = SubResource( 3 )
+next/fade_in = "animation"
+
+[node name="AnimationPlayerRotate" type="AnimationPlayer" parent="."]
+autoplay = "rotate"
+anims/rotate = SubResource( 12 )

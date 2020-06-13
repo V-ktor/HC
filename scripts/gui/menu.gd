@@ -15,10 +15,12 @@ var targets := []
 var decks := []
 var chat_log := {}
 var chat_read := {}
+var chat_add_portrait := {}
 var chat_choice := {}
 var chat_hack_log := []
 var chat_hack_read := 0
 var chat_hack_choice := []
+var hack_contact_overwrite := ""
 var new_targets := 0
 var active := false
 var contact_selected
@@ -210,7 +212,7 @@ func _start_new_game(name=null):
 	yield(mi,"timeout")
 	intro_sequence = false
 	mi.queue_free()
-	$Glitch/AnimationPlayer.play("burst_of")
+	$Glitch/AnimationPlayer.play("burst_off")
 	$Login/Input/LineEdit.editable = true
 	$Login/Input/ButtonConfirm.disabled = false
 	$Left/ScrollContainer/VBoxContainer/Button0.disabled = false
@@ -469,14 +471,26 @@ func _select_contact(contact):
 	$Chat/Panel.add_child(bg)
 	for c in $Chat/Panel/Portrait.get_children():
 		c.queue_free()
+	for c in $Chat/Panel/PortraitLeft.get_children():
+		c.queue_free()
 	portrait.scale = Vector2(scale,scale)
 	portrait.position = (scale*portrait.get_node("Rect").rect_size-$Chat/Panel/Portrait.rect_size)*Vector2(-0.33,0.5)-portrait.get_node("Rect").rect_position
 	$Chat/Panel/Portrait.add_child(portrait)
 	$Chat/Panel/Portrait.raise()
-	$Chat/Panel/ScrollContainer.raise()
 	get_node("Chat/ScrollContainer/VBoxContainer/"+contact+"/Notice").hide()
 	$Top/HBoxContainer/Title.text = tr("CHAT")+" - "+tr(Objects.actors[contact].name)
+	if chat_add_portrait.has(contact):
+		portrait = load(Objects.actors[chat_add_portrait[contact]].portrait).instance()
+		scale = max($Chat/Panel/Portrait.rect_size.x/portrait.get_node("Rect").rect_size.x,$Chat/Panel/PortraitLeft.rect_size.y/portrait.get_node("Rect").rect_size.y)
+		portrait.scale = Vector2(-scale,scale)
+		portrait.position = (scale*portrait.get_node("Rect").rect_size-$Chat/Panel/PortraitLeft.rect_size)*Vector2(0.33,0.5)
+		portrait.position.x += $Chat/Panel/PortraitLeft.rect_size.x
+		portrait.position.y -= portrait.get_node("Rect").rect_position.y
+		$Chat/Panel/PortraitLeft.add_child(portrait)
+		$Chat/Panel/PortraitLeft.raise()
+	$Chat/Panel/ScrollContainer.raise()
 	update_chat()
+	chat_read[contact] = chat_log[contact].size()
 
 func _select_choice(choice,index,panel):
 	var method = choice.text.to_lower()
@@ -528,8 +542,12 @@ func _attack_target():
 	Events._on_hack_started(target_selected)
 	mi.connect("timeout",self,"_hack_ended")
 	mi.start(2,player.time_limit,[player.cpu,target.cpu],[decks[deck_selected].duplicate(),target.programs.duplicate()],["human",target.ai],[player.color,target.color],mi.callv("create_"+target.layout+"_system",target.layout_params))
-	Music.play_action()
+	if target.music_overwrite!="":
+		Music.play(target.music_overwrite)
+	else:
+		Music.play_action()
 	
+	hack_contact_overwrite = ""
 	chat_hack_choice.clear()
 	chat_hack_log.clear()
 	chat_hack_read = 0
@@ -537,18 +555,19 @@ func _attack_target():
 
 func _hack_ended(winner):
 	var status = ["DRAW","VICTORY","LOST"][min(winner+1,2)]
+	var target = Objects.targets[target_selected]
 	if game_instance!=null:
 		game_instance.queue_free()
 		game_instance = null
 	for c in $Hack/Panel/ScrollContainer/VBoxContainer.get_children():
 		c.queue_free()
 	if winner==0:
-		Objects.actors.player.credits += Objects.targets[target_selected].credits
-		Objects.actors.player.rating += Objects.targets[target_selected].prestige
-		$Hack/Result/LabelReward.text = tr("CREDITS")+": +"+str(Objects.targets[target_selected].credits)+"\n"+tr("RANKING")+": +"+str(Objects.targets[target_selected].prestige)+"\n"
-		add_log_msg(tr("LOG_HACK_SUCCESS")%Objects.targets[target_selected].name)
+		Objects.actors.player.credits += target.credits
+		Objects.actors.player.rating += target.prestige
+		$Hack/Result/LabelReward.text = tr("CREDITS")+": +"+str(target.credits)+"\n"+tr("RANKING")+": +"+str(target.prestige)+"\n"
+		add_log_msg(tr("LOG_HACK_SUCCESS")%target.name)
 		if randf()<0.25:
-			var type = Objects.targets[target_selected].programs.keys()[randi()%Objects.targets[target_selected].programs.size()]
+			var type = target.programs.keys()[randi()%target.programs.size()]
 			if !Objects.actors.player.programs.has(type):
 				Objects.actors.player.programs[type] = 1
 				add_log_msg(tr("LOG_NEW_PROGRAM_ACQUIRED").replace("%s",tr(Programs.programs[type].name)),tr("LOG_NEW_PROGRAM_ACQUIRED").replace("%s",tr(Programs.programs[type].name)))
@@ -557,25 +576,24 @@ func _hack_ended(winner):
 				Objects.actors.player.programs[type] += 1
 			$Hack/Result/LabelReward.text += tr("TECHS")+": "+tr(Programs.programs[type].name)+"\n"
 	elif winner==1:
-		Objects.actors.player.rating = max(Objects.actors.player.rating-floor(Objects.targets[target_selected].prestige/2),0)
-		$Hack/Result/LabelReward.text = tr("RANKING")+": -"+str(floor(Objects.targets[target_selected].prestige/2))+"\n"
-		add_log_msg(tr("LOG_HACK_FAILED").replace("%s",Objects.targets[target_selected].name),tr("LOG_HACK_FAILED").replace("%s",Objects.targets[target_selected].name))
+		Objects.actors.player.rating = max(Objects.actors.player.rating-floor(target.prestige/2),0)
+		$Hack/Result/LabelReward.text = tr("RANKING")+": -"+str(floor(target.prestige/2))+"\n"
+		add_log_msg(tr("LOG_HACK_FAILED").replace("%s",target.name),tr("LOG_HACK_FAILED").replace("%s",target.name))
 	else:
 		$Hack/Result/LabelReward.text = ""
 	Music.play_default()
-	Events._on_hack_ended(winner==0,Objects.targets[target_selected])
+	Events._on_hack_ended(winner==0,target)
+	Objects.trigger_on_win(winner==0)
 	
 	$Hack/Panel/Text.clear()
 	if winner==0:
-		var portrait := preload("res://scenes/portraits/character01.tscn").instance()
-		var scale := max($Hack/Panel/Portrait.rect_size.x/portrait.get_node("Rect").rect_size.x,$Hack/Panel/Portrait.rect_size.y/portrait.get_node("Rect").rect_size.y)
-		if Objects.targets[target_selected].group!=null:
-			var gr = Objects.groups[Objects.targets[target_selected].group]
+		if target.group!=null:
+			var gr = Objects.groups[target.group]
 			var files := Objects.create_data(gr)
 			var directory := Objects.get_directory(gr)
 			var user : String = Objects.actors.player.name+"@"+OS.get_model_name()+": "
 			var data := 0
-			Events._on_create_hack_files(Objects.targets[target_selected],files)
+			Events._on_create_hack_files(target,files)
 			$Hack/Panel/Text.push_color(Color(0.1,1.0,0.1))
 			$Hack/Panel/Text.add_text(user)
 			$Hack/Panel/Text.push_color(Color(1.0,1.0,1.0))
@@ -598,8 +616,17 @@ func _hack_ended(winner):
 			$Hack/Panel/Text.add_text(":~/$")
 		for c in $Hack/Panel/Portrait.get_children():
 			c.queue_free()
+	for c in $Hack/Panel/Portrait.get_children():
+		c.queue_free()
+	if winner==0 || hack_contact_overwrite!="":
+		var portrait
+		if hack_contact_overwrite=="":
+			portrait = preload("res://scenes/portraits/character01.tscn").instance()
+		else:
+			portrait = load(Objects.actors[hack_contact_overwrite].portrait).instance()
+		var scale := max($Hack/Panel/Portrait.rect_size.x/portrait.get_node("Rect").rect_size.x,$Hack/Panel/Portrait.rect_size.y/portrait.get_node("Rect").rect_size.y)
 		portrait.scale = Vector2(scale,scale)
-		portrait.position = (scale*portrait.get_node("Rect").rect_size-$Chat/Panel/Portrait.rect_size)*Vector2(0.5,0.33)
+		portrait.position = (scale*portrait.get_node("Rect").rect_size-$Chat/Panel/Portrait.rect_size)*Vector2(0.5,0.33)-portrait.get_node("Rect").rect_position
 		$Hack/Panel/Portrait.add_child(portrait)
 	
 	$Hack.show()
@@ -607,16 +634,17 @@ func _hack_ended(winner):
 	$Hack/Result.show()
 	$Hack/Result/LabelStatus.text = tr(status)
 	$Top/HBoxContainer/Title.text = tr("HACK_"+status)
-	Objects.trigger_on_win(winner==0)
 
 func _confirm_hack_result():
 	$Hack/Result.hide()
 
-func add_msg(contact,text,from_player=false):
+func add_msg(contact,text,from_player:=false,dict:={}):
+	dict.text = text
+	dict.from_player = from_player
 	if !chat_log.has(contact):
-		chat_log[contact] = [{"text":text,"from_player":from_player}]
+		chat_log[contact] = [dict]
 	else:
-		chat_log[contact].push_back({"text":text,"from_player":from_player})
+		chat_log[contact].push_back(dict)
 	if !chat_read.has(contact):
 		chat_read[contact] = 0
 		chat_choice[contact] = []
@@ -681,13 +709,13 @@ func _research(prog):
 		Objects.actors.player.credits -= prgm.cost
 		building.push_back({"type":prog,"method":"add_program","delay":prgm.compile_time,"time":prgm.compile_time,"cpu":prgm.compile_cpu,"name":Programs.programs[prog].name,"icon":"res://images/cards/"+Programs.programs[prog].icon+".png"})
 	else:
-		if 2*prgm.cost>Objects.actors.player.credits || 2*prgm.compile_cpu>Objects.actors["ai"].cpu-compile_cpu:
+		if 2*prgm.cost>Objects.actors.player.credits || int(1.5*prgm.compile_cpu)>Objects.actors["ai"].cpu-compile_cpu:
 			return false
 		for dict in building:
 			if dict["type"]==prog:
 				return false
 		Objects.actors.player.credits -= 2*prgm.cost
-		building.push_back({"type":prog,"method":"research","delay":2*prgm.compile_time,"time":2*prgm.compile_time,"cpu":2*prgm.compile_cpu,"name":Programs.programs[prog].name,"icon":"res://images/cards/"+Programs.programs[prog].icon+".png"})
+		building.push_back({"type":prog,"method":"research","delay":2*prgm.compile_time,"time":2*prgm.compile_time,"cpu":int(1.5*prgm.compile_cpu),"name":Programs.programs[prog].name,"icon":"res://images/cards/"+Programs.programs[prog].icon+".png"})
 	update_compile()
 	return true
 
@@ -727,24 +755,28 @@ func upgrade(dict):
 		upgraded[dict["type"]] = 1
 	Upgrades.call(Upgrades.upgrades[dict["type"]]["method"],Upgrades.upgrades[dict["type"]]["args"])
 
-func add_chat_box(dict,index,where="Chat"):
+func add_chat_box(dict,index,where="Chat",contact="ai"):
 	if dict.has("choices"):
 		add_chat_choice_box(dict.choices,index)
 		return
 	
 	var text = dict.text
-	var from_player = dict.from_player
 	var bi := chat_box.instance()
 	var l = text.length()
 	var width := max(min(256+floor(sqrt(l/8))*48,get_node(where+"/Panel/ScrollContainer/VBoxContainer").rect_size.x-256),384)
 	var height := 48+floor(l*14/width)*32
 	bi.get_node("Panel/Label").text = text
 	bi.get_node("Panel").rect_min_size = Vector2(width,height)
-	if from_player:
-		bi.get_node("Control").raise()
-	if !from_player:
+	if dict.has("from_ally"):
 		var stylebox = bi.get_node("Panel").get_stylebox("panel").duplicate()
-		stylebox.border_color = Objects.actors["ai"].color
+		stylebox.border_color = Objects.actors[dict.from_ally].color
+		bi.get_node("Panel").add_stylebox_override("panel",stylebox)
+		bi.get_node("Control").raise()
+	elif dict.from_player:
+		bi.get_node("Control").raise()
+	else:
+		var stylebox = bi.get_node("Panel").get_stylebox("panel").duplicate()
+		stylebox.border_color = Objects.actors[contact].color
 		bi.get_node("Panel").add_stylebox_override("panel",stylebox)
 	get_node(where+"/Panel/ScrollContainer/VBoxContainer").add_child(bi)
 
@@ -779,13 +811,13 @@ func update_chat():
 		chat_log[contact_selected] = []
 		chat_choice[contact_selected] = []
 	for i in range(min(chat_read[contact_selected],chat_log[contact_selected].size())):
-		add_chat_box(chat_log[contact_selected][i],i)
+		add_chat_box(chat_log[contact_selected][i],i,"Chat",contact_selected)
 	if chat_read[contact_selected]<chat_log[contact_selected].size():
 		var li := Label.new()
 		li.text = " - "+tr("NEW_MESSAGES")+" - "
 		$Chat/Panel/ScrollContainer/VBoxContainer.add_child(li)
 	for i in range(chat_read[contact_selected],chat_log[contact_selected].size()):
-		add_chat_box(chat_log[contact_selected][i],i)
+		add_chat_box(chat_log[contact_selected][i],i,"Chat",contact_selected)
 	
 	$Chat/Panel/ScrollContainer.scroll_vertical = 10.0*$Chat/Panel/ScrollContainer.rect_size.y
 	update_main_menu()
@@ -794,12 +826,26 @@ func update_chat():
 	connect_ui_sounds_recursively($Chat)
 
 func update_hack_chat():
+	var contact := "ai"
+	if hack_contact_overwrite!="":
+		contact = hack_contact_overwrite
 	for c in $Hack/Panel/ScrollContainer/VBoxContainer.get_children():
 		c.queue_free()
 	for i in range(min(chat_hack_read,chat_hack_log.size())):
-		add_chat_box(chat_hack_log[i],i,"Hack")
+		add_chat_box(chat_hack_log[i],i,"Hack",contact)
 	for i in range(chat_hack_read,chat_hack_log.size()):
-		add_chat_box(chat_hack_log[i],i,"Hack")
+		add_chat_box(chat_hack_log[i],i,"Hack",contact)
+	
+	if $Hack/Panel/Portrait.get_child_count()==0:
+		var portrait
+		if hack_contact_overwrite=="":
+			portrait = preload("res://scenes/portraits/character01.tscn").instance()
+		else:
+			portrait = load(Objects.actors[hack_contact_overwrite].portrait).instance()
+		var scale := max($Hack/Panel/Portrait.rect_size.x/portrait.get_node("Rect").rect_size.x,$Hack/Panel/Portrait.rect_size.y/portrait.get_node("Rect").rect_size.y)
+		portrait.scale = Vector2(scale,scale)
+		portrait.position = (scale*portrait.get_node("Rect").rect_size-$Chat/Panel/Portrait.rect_size)*Vector2(0.5,0.33)-portrait.get_node("Rect").rect_position
+		$Hack/Panel/Portrait.add_child(portrait)
 	
 	$Hack/Panel/ScrollContainer.scroll_vertical = 2.0*$Hack/Panel/ScrollContainer.rect_size.y
 	update_main_menu()
@@ -936,7 +982,7 @@ func update_code():
 	connect_ui_sounds_recursively($Code)
 
 func _load_program(ID):
-	program_nodes = Programs.known_programs.values()[ID].code
+	program_nodes = Programs.known_programs.values()[ID].code.duplicate()
 	program_name = tr(Programs.known_programs.values()[ID].name)
 	program_desc =  tr(Programs.known_programs.values()[ID].description)
 	program_icon = Programs.known_programs.values()[ID].icon
@@ -953,7 +999,7 @@ func _save_program():
 			n += 1
 		program_name += " "+str(n)
 	for p in program_nodes.keys():
-		code[p] = program_nodes[p].to_dict()
+		code[p] = program_nodes[p]
 	Programs.programs[program_name] = {"name":program_name,"description":program_desc,"code":code,"icon":program_icon}
 	Programs.known_programs[program_name] = Programs.programs[program_name]
 	update_code()
@@ -979,12 +1025,12 @@ func _delete_program():
 func _select_program_icon(ID):
 	program_icon_selected = ID
 	program_icon = PROGRAM_ICONS[ID]
-	$Code/Description/Icon.texture = load("res://images/icons/"+program_icon+".png")
+	$Code/IconName.texture = load("res://images/icons/"+program_icon+".png")
 	$Code/Icon.hide()
 
 func _set_program_icon():
 	program_icon = PROGRAM_ICONS[program_icon_selected]
-	$Code/Description/Icon.texture = load("res://images/icons/"+program_icon+".png")
+	$Code/IconName.texture = load("res://images/icons/"+program_icon+".png")
 
 func _set_program_name(text):
 	if text in Programs.programs.keys():
@@ -1410,6 +1456,8 @@ func debug_progress():
 				debug_msg(tr("ATTACKING")+" ("+str(prog.arguments[0]).pad_decimals(1)+" "+tr("ATTACK")+")")
 			"protect":
 				debug_msg(tr("PROTECT")+" ("+str(prog.arguments[0]).pad_decimals(1)+" "+tr("SHIELD")+")")
+			"disrupt":
+				debug_msg(tr("DISRUPTING")+" ("+str(prog.arguments[0]).pad_decimals(1)+"% "+tr("EFFICIENCY")+")")
 			"translocate":
 				debug_msg(tr("TRANSLOCATE"))
 			"clone":
@@ -1433,14 +1481,11 @@ func debug_progress():
 
 
 func _scan():
-	for _i in range(5):
-		if Objects.targets.size()>0:
-			var target = Objects.targets.keys()[randi()%Objects.targets.size()]
+	for target in Objects.targets.keys():
+		if Objects.targets[target].optional:
 			Objects.remove_opt_target(target)
-		else:
-			break
 	for _i in range(5):
-		var ID = Objects.create_group_target(10+log(1.0+Objects.actors.player.rating/10.0))
+		var ID = Objects.create_group_target(10+4*log(1.0+Objects.actors.player.rating/20.0))
 		if !(ID in targets):
 			targets.push_back(ID)
 	_show_targets()
@@ -1529,6 +1574,12 @@ func _load(filename):
 	target_selected = null
 	mode = ""
 	active = true
+	
+	# Compatibility with older save files.
+	if Vars.get_var("part1_finished"):
+		Events.call_chat("ai","suggest_contact")
+		Vars.clear_var("part1_finished")
+	
 	if $Saves.visible:
 		_close(true)
 	update_main_menu()
@@ -1569,6 +1620,8 @@ func _show_chat():
 	if has_node("Chat/Panel/BG"):
 		$Chat/Panel/BG/AnimationPlayer.play("fade_out")
 	for c in $Chat/Panel/Portrait.get_children():
+		c.get_node("AnimationPlayer").play("fade_out")
+	for c in $Chat/Panel/PortraitLeft.get_children():
 		c.get_node("AnimationPlayer").play("fade_out")
 	for c in $Chat/ScrollContainer/VBoxContainer.get_children():
 		c.hide()
@@ -1678,6 +1731,7 @@ func _show_hack():
 	$Hack/Result.hide()
 	$Background.hide()
 	$Hack/Result.hide()
+	$Hack/Panel/Text.clear()
 	$Top/HBoxContainer/ButtonClose/Icon.texture = icon_close
 	if has_node("/root/Main"):
 		if $"/root/Main".time>=0.0:

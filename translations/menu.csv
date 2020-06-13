@@ -53,12 +53,14 @@ PROTECT,Protecting
 INITIALIZE,Inizializing
 TERMINATE,Terminating
 EVALUATING,Evaluating
+DISRUPTING,Disrupting
 TRANSLOCATE,Translocating
 CLONING,Cloning
 REMAINING_TIME,%0.1fs remaining
 SHIELD,Shield
 DPS,DPS
 ATTACK,Attack
+EFFICIENCY,Efficiency
 DESCRIPTION,Description
 STATISTICS,Statistics
 DEBUG,Debug

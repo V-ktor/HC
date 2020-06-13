@@ -12,10 +12,18 @@ PULSE,Pulse
 PULSE_DESC,"Basic offence program that attacks all neighboring nodes."
 WAVE,Wave
 WAVE_DESC,"Offence program that attacks all neighboring nodes."
+SCYTHE,Scythe
+SCYTHE_DESC,"Destroy everything in your path!"
 FIRE_WALL,Fire Wall
 FIRE_WALL_DESC,"Defensive program that protects it's node while hostile nodes are adjacent."
+PARRY,Parry
+PARRY_DESC,"Wait for the right moment to stike back."
 PHALANX,Phalanx
 PHALANX_DESC,"Perform defensive operations while engaged, attack a random node otherwise."
+LOCK,Lock
+LOCK_DESC,"Encrypt the hostile system, slowing down program execution."
+SILENCE,Silence
+SILENCE_DESC,"Slow them down, stop them."
 WORM,Worm
 WORM_DESC,"Attacks random hostile nodes and makes copies of itself."
 AGENT,Agent
