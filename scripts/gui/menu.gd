@@ -245,7 +245,7 @@ func update_inventory():
 			ci.name = prog
 			ci.get_node("Card/Image").set_texture(load("res://images/cards/"+Programs.programs[prog].icon+".png"))
 			ci.get_node("Card/Name").text = tr(Programs.programs[prog].name)
-			ci.get_node("Card/Desc").text = ""
+			ci.get_node("Card/Desc").text = tr(Programs.programs[prog].description)
 			ci.get_node("Card/Cpu").text = str(round(prgm.mean_cpu))+"("+str(prgm.max_cpu)+")"
 			ci.get_node("Card/Size").text = str(prgm.size)
 			get_node("Deck/Inventory/HBoxContainer").add_child(ci)
@@ -301,7 +301,7 @@ func update_deck():
 			ci.name = prog
 			ci.get_node("Card/Image").set_texture(load("res://images/cards/"+Programs.programs[prog].icon+".png"))
 			ci.get_node("Card/Name").text = tr(Programs.programs[prog].name)
-			ci.get_node("Card/Desc").text = ""
+			ci.get_node("Card/Desc").text = tr(Programs.programs[prog].description)
 			ci.get_node("Card/Cpu").text = str(round(prgm.mean_cpu))+"("+str(prgm.max_cpu)+")"
 			ci.get_node("Card/Size").text = str(prgm.size)
 			$Deck/Deck/HBoxContainer.add_child(ci)
@@ -923,7 +923,7 @@ func update_compile():
 			$Compile/Techs/HBoxContainer.add_child(ci)
 		ci.get_node("Card/Image").set_texture(load("res://images/cards/"+prog.icon+".png"))
 		ci.get_node("Card/Name").text = tr(prog.name)
-		ci.get_node("Card/Desc").text = ""
+		ci.get_node("Card/Desc").text = tr(prog.description)
 		ci.get_node("Card/Cpu").text = str(round(prgm.mean_cpu))+"("+str(prgm.max_cpu)+")"
 		ci.get_node("Card/Size").text = str(prgm.size)
 		if ci.get_node("Button").is_connected("pressed",self,"_research"):
