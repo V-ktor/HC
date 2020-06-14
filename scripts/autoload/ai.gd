@@ -13,30 +13,35 @@ func ai_random(player):
 #	if gamestate.cpu[player]-2<0.1*gamestate.max_cpu[player]:
 #		cancel_random_program(player)
 #		return
-	if nodes.size()==0 || gamestate.cpu[player]<min(0.2*gamestate.max_cpu[player],3+0.5*sqrt(gamestate.max_cpu[player])) || get_running_programs(player)>sqrt(gamestate.max_cpu[player]-3.0)/2.0+rand_range(-2.0,1.0):
+	if nodes.size()==0 || gamestate.cpu[player]<=gamestate.max_cpu[player]/10 || gamestate.cpu[player]<1.2*get_mean_program_cpu(player):
 		return
 	for program in programs:
 		var ID = nodes[randi()%nodes.size()]
-		var has_program := has_program(ID,program)
-		if has_program || gamestate.cpu[player]<Programs.Program.new(Programs.programs[program]).mean_cpu:
-			return
+		if gamestate.cpu[player]<Programs.Program.new(Programs.programs[program]).mean_cpu:
+			continue
 		if program=="pulse" || program=="wave" || program=="scythe":
 			if is_adjacent_to_unowned(player,ID):
 				Main.use_action(player,program,ID)
+				break
 		elif program=="worm":
 			if gamestate.cpu[player]>9 && is_adjacent_to_unowned(player,ID):
 				Main.use_action(player,program,ID)
+				break
 		elif program=="phalanx" || program=="parry":
 			if is_adjacent_to_enemy(player,ID):
 				Main.use_action(player,program,ID)
+				break
 		elif program=="anti_virus":
 			if is_damaged(player,ID):
 				Main.use_action(player,program,ID)
+				break
 		elif program=="fire_wall" || program=="lock" || program=="silence":
-			if is_adjacent_to_enemy(player,ID) && gamestate.cpu[player]>0.3*gamestate.max_cpu[player]:
+			if is_adjacent_to_enemy(player,ID) && gamestate.cpu[player]>gamestate.max_cpu[player]/3:
 				Main.use_action(player,program,ID)
+				break
 		else:
 			Main.use_action(player,program,ID)
+			break
 	
 
 
@@ -69,6 +74,14 @@ func get_running_programs(player) -> int:
 			if prgm.owner==player:
 				num += 1
 	return num
+
+func get_mean_program_cpu(player) -> int:
+	var cpu := 0
+	for node in gamestate.nodes:
+		for prgm in node.programs:
+			if prgm.owner==player:
+				cpu += prgm.prgm.mean_cpu
+	return cpu
 
 func is_adjacent_to_enemy(player,ID) -> bool:
 	for p in gamestate.nodes[ID]["connections"]:
