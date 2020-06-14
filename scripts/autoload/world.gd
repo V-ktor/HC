@@ -615,7 +615,7 @@ func create_group(type,country,infl):
 			elif rnd<0.8:
 				name = tr(NAMES_GOV_SUFFIX[randi()%NAMES_GOV_SUFFIX.size()])+" "+tr("OF")+" "+tr(country)
 			else:
-				name = tr(NAMES_GOV_PREFIX[randi()%NAMES_GOV_PREFIX.size()])+" "+tr(NAMES_GOV_SUFFIX[randi()%NAMES_GOV_SUFFIX.size()])+" "+tr("OF")+" "+country
+				name = tr(NAMES_GOV_PREFIX[randi()%NAMES_GOV_PREFIX.size()])+" "+tr(NAMES_GOV_SUFFIX[randi()%NAMES_GOV_SUFFIX.size()])+" "+tr("OF")+" "+tr(country)
 			ID = name.to_lower().replace(" ","_")
 			data = int(rand_range(64,768))
 			traits = ["government"]

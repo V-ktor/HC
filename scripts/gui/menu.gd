@@ -386,7 +386,7 @@ func update_log():
 		childs[k].set_script(preload("res://scripts/gui/item.gd"))
 		childs[k].type = "groups_country"
 		childs[k].ID = k
-		childs[k].set_text(0,Objects.countries[k].name)
+		childs[k].set_text(0,tr(Objects.countries[k].name))
 	for k in Objects.groups.keys():
 		var cmd
 		if !childs.has(Objects.groups[k].location):
@@ -395,7 +395,7 @@ func update_log():
 			childs[nm].set_script(preload("res://scripts/gui/item.gd"))
 			childs[nm].type = "groups_country"
 			childs[nm].ID = nm
-			childs[nm].set_text(0,nm)
+			childs[nm].set_text(0,tr(nm))
 		cmd = tree.create_item(childs[Objects.groups[k].location])
 		cmd.set_script(preload("res://scripts/gui/item.gd"))
 		cmd.type = "group"
