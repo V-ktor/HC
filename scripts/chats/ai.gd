@@ -600,14 +600,23 @@ func _riley_attack_start(target):
 		Menu.hack_contact_overwrite = "riley"
 		Menu.update_hack_chat()
 		Menu.get_node("Hack/Panel").show()
-		Menu.add_hack_msg(tr("RILEY_0020"))
-		Events.delayed_hack_msg(tr("RILEY_0021"),2.0)
 		Menu.textbox.set_portrait("res://images/gui/portraits/AI.png")
 		Menu.textbox.show_text(tr("AI_0430"))
 		Menu.textbox.show_text(tr("AI_0431"))
 		Menu.textbox.show_text(tr("AI_0432"))
 		Menu.textbox.connect("closed",Menu.get_node("Hack/Panel"),"hide",[],CONNECT_ONESHOT)
 	Events.triggered_method("on_hack_started","_riley_attack_start",[],"ai")
+	if Objects.targets[target].method_on_win=="_riley_attack":
+		var timer = Timer.new()
+		timer.wait_time = 2.0
+		timer.one_shot = true
+		Menu.add_child(timer)
+		timer.connect("timeout",Menu,"add_hack_msg",[tr("RILEY_0021")])
+		timer.connect("timeout",timer,"queue_free")
+		timer.start()
+		yield(get_tree(),"idle_frame")
+		Menu.hack_contact_overwrite = "riley"
+		Menu.add_hack_msg(tr("RILEY_0020"))
 
 func _riley_attack(victory):
 	if victory:
