@@ -24,6 +24,7 @@ var click_particle := preload("res://scenes/particles/click.tscn")
 var pulse_particle := preload("res://scenes/particles/pulse.tscn")
 var connection_particle := preload("res://scenes/particles/connection.tscn")
 var fire_wall_particle := preload("res://scenes/particles/fire.tscn")
+var disrupt_particle := preload("res://scenes/particles/disrupt.tscn")
 
 
 signal timeout(winner)
@@ -662,6 +663,14 @@ func parse(prgm):
 		if prgm.targets.size()>0:
 			# Disrupt
 			wait = !prgm.init_command(prgm.focus,"DISRUPTING")
+			if !wait:
+				for target in prgm.targets:
+					var pi = disrupt_particle.instance()
+					pi.node = gamestate.nodes[prgm.ID].node
+					pi.target = gamestate.nodes[target].node
+					$ControlPoints.add_child(pi)
+					if prgm.stack.has(pos):
+						prgm.stack[pos].particles.push_back(pi)
 		else:
 			prgm.skip()
 	elif type=="translocate":

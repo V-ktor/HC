@@ -4,6 +4,9 @@ var node
 var target
 
 
+func timeout():
+	$AnimationPlayer.play("vanish")
+
 func cancel():
 	$AnimationPlayer.play("vanish")
 
