@@ -40,51 +40,35 @@
 [ext_resource path="res://images/gui/menu_web.png" type="Texture" id=38]
 [ext_resource path="res://images/gui/menu_log.png" type="Texture" id=39]
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=21]
+bg_color = Color( 0.0941176, 0.101961, 0.109804, 1 )
+
+[sub_resource type="DynamicFont" id=19]
+size = 22
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=22]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 
-[sub_resource type="StyleBoxEmpty" id=2]
+[sub_resource type="StyleBoxEmpty" id=23]
 
-[sub_resource type="StyleBoxEmpty" id=3]
+[sub_resource type="StyleBoxFlat" id=24]
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0.12549, 0.25098, 0.376471, 1 )
+expand_margin_left = 4.0
+expand_margin_right = 4.0
+expand_margin_top = 4.0
+expand_margin_bottom = 4.0
 
-[sub_resource type="StyleBoxEmpty" id=4]
-
-[sub_resource type="StyleBoxEmpty" id=5]
-
-[sub_resource type="StyleBoxEmpty" id=6]
-
-[sub_resource type="StyleBoxEmpty" id=7]
-
-[sub_resource type="StyleBoxEmpty" id=8]
-
-[sub_resource type="StyleBoxEmpty" id=9]
-
-[sub_resource type="StyleBoxEmpty" id=10]
-
-[sub_resource type="StyleBoxEmpty" id=11]
-
-[sub_resource type="StyleBoxEmpty" id=12]
-
-[sub_resource type="Theme" id=13]
-HScrollBar/icons/decrement = null
-HScrollBar/icons/decrement_highlight = null
-HScrollBar/icons/increment = null
-HScrollBar/icons/increment_highlight = null
-HScrollBar/styles/grabber = SubResource( 2 )
-HScrollBar/styles/grabber_highlight = SubResource( 3 )
-HScrollBar/styles/grabber_pressed = SubResource( 4 )
-HScrollBar/styles/scroll = SubResource( 5 )
-HScrollBar/styles/scroll_focus = SubResource( 6 )
-ScrollContainer/styles/bg = SubResource( 7 )
-VScrollBar/icons/decrement = null
-VScrollBar/icons/decrement_highlight = null
-VScrollBar/icons/increment = null
-VScrollBar/icons/increment_highlight = null
-VScrollBar/styles/grabber = SubResource( 8 )
-VScrollBar/styles/grabber_highlight = SubResource( 9 )
-VScrollBar/styles/grabber_pressed = SubResource( 10 )
-VScrollBar/styles/scroll = SubResource( 11 )
-VScrollBar/styles/scroll_focus = SubResource( 12 )
+[sub_resource type="StyleBoxEmpty" id=25]
 
 [sub_resource type="StyleBoxFlat" id=14]
 bg_color = Color( 1, 1, 1, 0.25098 )
@@ -147,39 +131,6 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-
-[sub_resource type="DynamicFont" id=19]
-size = 22
-font_data = ExtResource( 3 )
-
-[sub_resource type="StyleBoxFlat" id=20]
-bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
-
-[sub_resource type="StyleBoxFlat" id=21]
-bg_color = Color( 0.0941176, 0.101961, 0.109804, 1 )
-
-[sub_resource type="StyleBoxFlat" id=22]
-bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-
-[sub_resource type="StyleBoxEmpty" id=23]
-
-[sub_resource type="StyleBoxFlat" id=24]
-draw_center = false
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color( 0.12549, 0.25098, 0.376471, 1 )
-expand_margin_left = 4.0
-expand_margin_right = 4.0
-expand_margin_top = 4.0
-expand_margin_bottom = 4.0
-
-[sub_resource type="StyleBoxEmpty" id=25]
 
 [sub_resource type="DynamicFont" id=26]
 size = 24
@@ -948,6 +899,9 @@ font_data = ExtResource( 3 )
 [sub_resource type="StyleBoxFlat" id=84]
 bg_color = Color( 0, 0, 0, 1 )
 
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
+
 [sub_resource type="StyleBoxFlat" id=85]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
 
@@ -955,6 +909,52 @@ bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
 size = 22
 outline_size = 1
 font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+[sub_resource type="StyleBoxEmpty" id=11]
+
+[sub_resource type="StyleBoxEmpty" id=12]
+
+[sub_resource type="Theme" id=13]
+HScrollBar/icons/decrement = null
+HScrollBar/icons/decrement_highlight = null
+HScrollBar/icons/increment = null
+HScrollBar/icons/increment_highlight = null
+HScrollBar/styles/grabber = SubResource( 2 )
+HScrollBar/styles/grabber_highlight = SubResource( 3 )
+HScrollBar/styles/grabber_pressed = SubResource( 4 )
+HScrollBar/styles/scroll = SubResource( 5 )
+HScrollBar/styles/scroll_focus = SubResource( 6 )
+ScrollContainer/styles/bg = SubResource( 7 )
+VScrollBar/icons/decrement = null
+VScrollBar/icons/decrement_highlight = null
+VScrollBar/icons/increment = null
+VScrollBar/icons/increment_highlight = null
+VScrollBar/styles/grabber = SubResource( 8 )
+VScrollBar/styles/grabber_highlight = SubResource( 9 )
+VScrollBar/styles/grabber_pressed = SubResource( 10 )
+VScrollBar/styles/scroll = SubResource( 11 )
+VScrollBar/styles/scroll_focus = SubResource( 12 )
+
+[sub_resource type="StyleBoxFlat" id=20]
+bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 
 [sub_resource type="Shader" id=87]
 code = "shader_type canvas_item;
@@ -1342,611 +1342,6 @@ mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Left" type="Panel" parent="."]
-anchor_bottom = 1.0
-margin_top = 36.0
-margin_right = 68.0
-custom_styles/panel = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Left"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -4.0
-margin_bottom = -4.0
-theme = SubResource( 13 )
-scroll_horizontal_enabled = false
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Left/ScrollContainer"]
-margin_right = 68.0
-margin_bottom = 816.0
-size_flags_horizontal = 3
-
-[node name="Space" type="Control" parent="Left/ScrollContainer/VBoxContainer"]
-margin_right = 68.0
-
-[node name="Button0" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 4.0
-margin_right = 68.0
-margin_bottom = 68.0
-rect_min_size = Vector2( 64, 64 )
-hint_tooltip = "CONTINUE"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-
-[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button0"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 34 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button0"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "CONTINUE"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button1" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 72.0
-margin_right = 68.0
-margin_bottom = 136.0
-rect_min_size = Vector2( 64, 64 )
-hint_tooltip = "NEW_GAME"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-
-[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button1"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 6 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button1"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "NEW_GAME"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-
-[node name="Button2" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 140.0
-margin_right = 68.0
-margin_bottom = 204.0
-rect_min_size = Vector2( 64, 64 )
-hint_tooltip = "LOAD"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-
-[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button2"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 7 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button2"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "LOAD"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button3" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 208.0
-margin_right = 68.0
-margin_bottom = 272.0
-rect_min_size = Vector2( 64, 64 )
-hint_tooltip = "SAVE"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-
-[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button3"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button3"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "SAVE"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button4" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 276.0
-margin_right = 68.0
-margin_bottom = 340.0
-rect_min_size = Vector2( 64, 64 )
-hint_tooltip = "CHAT"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-
-[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button4"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 32 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="Notice" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button4"]
-visible = false
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -32.0
-margin_top = -32.0
-mouse_filter = 2
-texture = ExtResource( 2 )
-expand = true
-stretch_mode = 6
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button4/Notice"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = SubResource( 19 )
-text = "0"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button4"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "CHAT"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button5" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 344.0
-margin_right = 68.0
-margin_bottom = 408.0
-rect_min_size = Vector2( 64, 64 )
-hint_tooltip = "DECK"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-
-[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button5"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 33 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button5"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "DECK"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button9" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 412.0
-margin_right = 68.0
-margin_bottom = 476.0
-rect_min_size = Vector2( 64, 64 )
-hint_tooltip = "CODE"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-
-[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button9"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 35 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button9"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "CODE"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button6" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 480.0
-margin_right = 68.0
-margin_bottom = 544.0
-rect_min_size = Vector2( 64, 64 )
-hint_tooltip = "COMPILE"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button6"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 36 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button6"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "COMPILE"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button7" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 548.0
-margin_right = 68.0
-margin_bottom = 612.0
-rect_min_size = Vector2( 64, 64 )
-hint_tooltip = "GEAR"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-
-[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button7"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 37 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button7"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "GEAR"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button8" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 616.0
-margin_right = 68.0
-margin_bottom = 680.0
-rect_min_size = Vector2( 64, 64 )
-hint_tooltip = "WEB"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button8"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "WEB"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button8"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 38 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
-
-[node name="Notice" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button8"]
-visible = false
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -32.0
-margin_top = -32.0
-mouse_filter = 2
-texture = ExtResource( 2 )
-expand = true
-stretch_mode = 6
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button8/Notice"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_fonts/font = SubResource( 19 )
-text = "0"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-
-[node name="Button10" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 684.0
-margin_right = 68.0
-margin_bottom = 748.0
-rect_min_size = Vector2( 64, 64 )
-hint_tooltip = "LOG"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button10"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 39 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button10"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "LOG"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button11" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 752.0
-margin_right = 68.0
-margin_bottom = 816.0
-rect_min_size = Vector2( 64, 64 )
-hint_tooltip = "CREDITS"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-
-[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button11"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button11"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "CREDITS"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Top" type="Panel" parent="."]
-anchor_right = 1.0
-margin_bottom = 36.0
-custom_styles/panel = SubResource( 20 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Top"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = -2.0
-margin_bottom = -2.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Icon" type="TextureRect" parent="Top/HBoxContainer"]
-margin_right = 32.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 32, 32 )
-
-[node name="Buttons" type="HBoxContainer" parent="Top/HBoxContainer"]
-margin_left = 36.0
-margin_right = 36.0
-margin_bottom = 32.0
-
-[node name="Button0" type="Button" parent="Top/HBoxContainer/Buttons"]
-visible = false
-margin_right = 64.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 64, 0 )
-
-[node name="Title" type="Label" parent="Top/HBoxContainer"]
-margin_left = 40.0
-margin_right = 884.0
-margin_bottom = 32.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = SubResource( 19 )
-text = "MAIN_MENU"
-align = 1
-valign = 1
-
-[node name="Time" type="Label" parent="Top/HBoxContainer"]
-margin_left = 888.0
-margin_right = 924.0
-margin_bottom = 32.0
-size_flags_vertical = 3
-text = "00:00"
-align = 1
-valign = 1
-
-[node name="Date" type="Label" parent="Top/HBoxContainer"]
-margin_left = 928.0
-margin_right = 984.0
-margin_bottom = 32.0
-size_flags_vertical = 3
-text = "00.00.00"
-align = 1
-valign = 1
-
-[node name="ButtonClose" type="Button" parent="Top/HBoxContainer"]
-margin_left = 988.0
-margin_right = 1020.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 32, 32 )
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
-
-[node name="Icon" type="TextureRect" parent="Top/HBoxContainer/ButtonClose"]
-modulate = Color( 1, 1, 1, 0.752941 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 4 )
-expand = true
-stretch_mode = 6
 
 [node name="Login" type="Panel" parent="."]
 visible = false
@@ -4192,6 +3587,611 @@ custom_styles/disabled = SubResource( 17 )
 custom_styles/normal = SubResource( 18 )
 
 [node name="Icon" type="TextureRect" parent="Quit/ButtonClose"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="Left" type="Panel" parent="."]
+anchor_bottom = 1.0
+margin_top = 36.0
+margin_right = 68.0
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Left"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -4.0
+margin_bottom = -4.0
+theme = SubResource( 13 )
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Left/ScrollContainer"]
+margin_right = 68.0
+margin_bottom = 816.0
+size_flags_horizontal = 3
+
+[node name="Space" type="Control" parent="Left/ScrollContainer/VBoxContainer"]
+margin_right = 68.0
+
+[node name="Button0" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 4.0
+margin_right = 68.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "CONTINUE"
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button0"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 34 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button0"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "CONTINUE"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button1" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 72.0
+margin_right = 68.0
+margin_bottom = 136.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "NEW_GAME"
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button1"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button1"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "NEW_GAME"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+
+[node name="Button2" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 140.0
+margin_right = 68.0
+margin_bottom = 204.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "LOAD"
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button2"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 7 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button2"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "LOAD"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button3" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 208.0
+margin_right = 68.0
+margin_bottom = 272.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "SAVE"
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button3"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button3"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "SAVE"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button4" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 276.0
+margin_right = 68.0
+margin_bottom = 340.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "CHAT"
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button4"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 32 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Notice" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button4"]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -32.0
+margin_top = -32.0
+mouse_filter = 2
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button4/Notice"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 19 )
+text = "0"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button4"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "CHAT"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button5" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 344.0
+margin_right = 68.0
+margin_bottom = 408.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "DECK"
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button5"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 33 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button5"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "DECK"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button9" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 412.0
+margin_right = 68.0
+margin_bottom = 476.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "CODE"
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button9"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 35 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button9"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "CODE"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button6" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 480.0
+margin_right = 68.0
+margin_bottom = 544.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "COMPILE"
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button6"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 36 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button6"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "COMPILE"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button7" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 548.0
+margin_right = 68.0
+margin_bottom = 612.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "GEAR"
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button7"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 37 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button7"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "GEAR"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button8" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 616.0
+margin_right = 68.0
+margin_bottom = 680.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "WEB"
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button8"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "WEB"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button8"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 38 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Notice" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button8"]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -32.0
+margin_top = -32.0
+mouse_filter = 2
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button8/Notice"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 19 )
+text = "0"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+
+[node name="Button10" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 684.0
+margin_right = 68.0
+margin_bottom = 748.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "LOG"
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button10"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 39 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button10"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "LOG"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button11" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 752.0
+margin_right = 68.0
+margin_bottom = 816.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "CREDITS"
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button11"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button11"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "CREDITS"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Top" type="Panel" parent="."]
+anchor_right = 1.0
+margin_bottom = 36.0
+custom_styles/panel = SubResource( 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Top"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Icon" type="TextureRect" parent="Top/HBoxContainer"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Buttons" type="HBoxContainer" parent="Top/HBoxContainer"]
+margin_left = 36.0
+margin_right = 36.0
+margin_bottom = 32.0
+
+[node name="Button0" type="Button" parent="Top/HBoxContainer/Buttons"]
+visible = false
+margin_right = 64.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 64, 0 )
+
+[node name="Title" type="Label" parent="Top/HBoxContainer"]
+margin_left = 40.0
+margin_right = 884.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 19 )
+text = "MAIN_MENU"
+align = 1
+valign = 1
+
+[node name="Time" type="Label" parent="Top/HBoxContainer"]
+margin_left = 888.0
+margin_right = 924.0
+margin_bottom = 32.0
+size_flags_vertical = 3
+text = "00:00"
+align = 1
+valign = 1
+
+[node name="Date" type="Label" parent="Top/HBoxContainer"]
+margin_left = 928.0
+margin_right = 984.0
+margin_bottom = 32.0
+size_flags_vertical = 3
+text = "00.00.00"
+align = 1
+valign = 1
+
+[node name="ButtonClose" type="Button" parent="Top/HBoxContainer"]
+margin_left = 988.0
+margin_right = 1020.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 15 )
+custom_styles/focus = SubResource( 16 )
+custom_styles/disabled = SubResource( 17 )
+custom_styles/normal = SubResource( 18 )
+
+[node name="Icon" type="TextureRect" parent="Top/HBoxContainer/ButtonClose"]
 modulate = Color( 1, 1, 1, 0.752941 )
 anchor_right = 1.0
 anchor_bottom = 1.0
