@@ -1,4 +1,4 @@
-[gd_scene load_steps=141 format=2]
+[gd_scene load_steps=142 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -912,8 +912,8 @@ font_data = ExtResource( 3 )
 [sub_resource type="StyleBoxFlat" id=84]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
+[sub_resource type="StyleBoxFlat" id=97]
+bg_color = Color( 0.25098, 0.25098, 0.25098, 0.501961 )
 
 [sub_resource type="StyleBoxFlat" id=85]
 bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
@@ -922,6 +922,9 @@ bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
 size = 22
 outline_size = 1
 font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 
 [sub_resource type="StyleBoxEmpty" id=2]
 
@@ -2450,7 +2453,7 @@ size_flags_vertical = 3
 
 [node name="Tech0" type="Panel" parent="Gear/Techs/HBoxContainer"]
 margin_right = 175.0
-margin_bottom = 262.0
+margin_bottom = 250.0
 rect_min_size = Vector2( 175, 250 )
 
 [node name="Card" parent="Gear/Techs/HBoxContainer/Tech0" instance=ExtResource( 9 )]
@@ -3414,7 +3417,10 @@ margin_left = -150.0
 margin_top = -110.0
 margin_right = 150.0
 margin_bottom = 110.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 97 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="Hack/Result"]
 anchor_right = 1.0
@@ -3480,6 +3486,9 @@ anchor_bottom = 1.0
 margin_left = 68.0
 margin_top = 36.0
 custom_styles/panel = SubResource( 21 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Saves"]
 anchor_right = 1.0
@@ -3547,8 +3556,8 @@ valign = 1
 [node name="New" type="Panel" parent="Saves/ScrollContainer/VBoxContainer"]
 margin_top = 40.0
 margin_right = 952.0
-margin_bottom = 76.0
-rect_min_size = Vector2( 36, 36 )
+margin_bottom = 80.0
+rect_min_size = Vector2( 36, 40 )
 size_flags_horizontal = 3
 custom_styles/panel = SubResource( 85 )
 
@@ -3563,6 +3572,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 19 )
 placeholder_text = "FILENAME"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ButtonConfirm" type="Button" parent="Saves/ScrollContainer/VBoxContainer/New"]
 anchor_left = 1.0

@@ -681,6 +681,7 @@ func parse(prgm):
 	else:
 		wait = !prgm.init_command(prgm.focus,type.to_upper())
 	
+	$GUI.update_prgms()
 
 
 func _process(delta):

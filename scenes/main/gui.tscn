@@ -1,34 +1,20 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/gui/gui.gd" type="Script" id=1]
 [ext_resource path="res://scripts/gui/control_meter.gd" type="Script" id=2]
-[ext_resource path="res://images/gui/login.png" type="Texture" id=3]
-
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.25098, 0.25098, 0.25098, 1 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 0.12549, 0.12549, 0.12549, 1 )
+[ext_resource path="res://images/gui/status_panel.png" type="Texture" id=3]
+[ext_resource path="res://images/gui/action_bar.png" type="Texture" id=4]
+[ext_resource path="res://images/gui/control_bar.png" type="Texture" id=5]
+[ext_resource path="res://images/gui/cpu.png" type="Texture" id=6]
 
 [sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.25098, 0.25098, 0.25098, 1 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 0.12549, 0.12549, 0.12549, 1 )
-corner_radius_bottom_right = 32
-corner_detail = 1
+bg_color = Color( 0.25098, 0.627451, 0.752941, 0.752941 )
 
 [sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0.25098, 0.627451, 0.752941, 1 )
-
-[sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0, 0, 0, 1 )
+bg_color = Color( 0, 0, 0, 0.501961 )
 
 [sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.6, 0.6, 0.6, 0.752941 )
 
 [node name="GUI" type="CanvasLayer"]
 layer = 15
@@ -38,144 +24,174 @@ script = ExtResource( 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="Actions" type="Panel" parent="."]
+[node name="Actions" type="TextureRect" parent="."]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -258.0
-margin_top = -76.0
-margin_right = 258.0
+margin_left = -260.0
+margin_top = -80.0
+margin_right = 260.0
 margin_bottom = -8.0
-custom_styles/panel = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
 
 [node name="GridContainer" type="GridContainer" parent="Actions"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = -2.0
-margin_bottom = -2.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
 columns = 8
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="TextureRect" parent="."]
 margin_left = 68.0
 margin_top = 36.0
-margin_right = 200.0
-margin_bottom = 136.0
-custom_styles/panel = SubResource( 2 )
+margin_right = 204.0
+margin_bottom = 236.0
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = -2.0
-margin_bottom = -2.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -36.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="CPU" type="ProgressBar" parent="Panel/VBoxContainer"]
 margin_right = 128.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
-custom_styles/fg = SubResource( 3 )
-custom_styles/bg = SubResource( 4 )
+custom_styles/fg = SubResource( 2 )
+custom_styles/bg = SubResource( 3 )
 value = 50.0
 percent_visible = false
+
+[node name="Icon" type="TextureRect" parent="Panel/VBoxContainer/CPU"]
+anchor_bottom = 1.0
+margin_right = 24.0
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="LabelCPU" type="Label" parent="Panel/VBoxContainer/CPU"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 16.0
 text = "CPU:"
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="Panel/VBoxContainer/CPU"]
+anchor_left = 0.33
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -1.0
 text = "100/100"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Control" type="Panel" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
+margin_top = 28.0
+margin_right = 128.0
+margin_bottom = 160.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer/ScrollContainer"]
+margin_right = 128.0
+margin_bottom = 132.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Prgm1" type="HBoxContainer" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer"]
+visible = false
+margin_right = 128.0
+margin_bottom = 14.0
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/Prgm1"]
+margin_right = 95.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "PRGM:"
+valign = 1
+autowrap = true
+
+[node name="Number" type="Label" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/Prgm1"]
+margin_left = 99.0
+margin_right = 128.0
+margin_bottom = 14.0
+size_flags_vertical = 3
+text = "0 / 0"
+align = 2
+valign = 1
+
+[node name="Control" type="TextureRect" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -256.0
-margin_top = 36.0
-margin_right = 256.0
+margin_left = -260.0
+margin_top = 44.0
+margin_right = 260.0
 margin_bottom = 84.0
-custom_styles/panel = SubResource( 1 )
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Progress" type="Control" parent="Control"]
 anchor_right = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = -2.0
-margin_bottom = 34.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Time" type="ProgressBar" parent="Control"]
-anchor_top = 1.0
+anchor_top = 0.75
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = -12.0
-margin_right = -2.0
-margin_bottom = -2.0
+margin_left = 4.0
+margin_top = -6.0
+margin_right = -4.0
+margin_bottom = -4.0
 custom_styles/fg = SubResource( 5 )
-custom_styles/bg = SubResource( 4 )
+custom_styles/bg = SubResource( 3 )
 value = 50.0
 percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="Control/Time"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -1.0
-text = "0s"
+text = "0.0s"
 align = 1
-
-[node name="Code" type="Panel" parent="."]
-visible = false
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -200.0
-margin_top = -100.0
-margin_right = -50.0
-margin_bottom = 100.0
-custom_styles/panel = SubResource( 1 )
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Code"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = -2.0
-margin_bottom = -2.0
-
-[node name="Line0" type="HBoxContainer" parent="Code/VBoxContainer"]
-margin_right = 146.0
-margin_bottom = 14.0
-
-[node name="Icon" type="TextureRect" parent="Code/VBoxContainer/Line0"]
-modulate = Color( 1, 1, 1, 0 )
-margin_right = 14.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 14, 14 )
-texture = ExtResource( 3 )
-expand = true
-stretch_mode = 7
-
-[node name="Label" type="Label" parent="Code/VBoxContainer/Line0"]
-margin_left = 18.0
-margin_right = 146.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-text = "TEXT"
-autowrap = true

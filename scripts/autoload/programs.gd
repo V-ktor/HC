@@ -497,7 +497,6 @@ func _load(file):
 				var array = k2.split(",")
 				if array.size()>=2:
 					var pos = Vector2(int(array[0]),int(array[1]))
-					code[pos] = known_programs[k1].code[k2]
-			known_programs[k1].code = to_class(code)
+					code[pos] = to_class(known_programs[k1].code[k2])
 			programs[k1] = known_programs[k1]
 	
