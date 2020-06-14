@@ -184,7 +184,7 @@ func under_attack():
 	call_chat("ai","under_attack")
 
 func add_riley():
-	var c = Objects.Actor.new("???",Color(0.4,0.02,0.01),"res://scenes/portraits/character02.tscn","res://scenes/gui/chat_bg/riley.tscn",35,175,60.0,{"pulse":4,"phalanx":2,"scythe":6,"parry":6,"lock":4},0,0,8,{},0)
+	var c = Objects.Actor.new("???",Color(0.4,0.02,0.01),"res://scenes/portraits/character02.tscn","res://scenes/gui/chat_bg/riley.tscn",35,175,60.0,{"pulse":4,"phalanx":4,"scythe":6,"parry":6,"lock":4},0,0,8,{},0)
 	Objects.actors["riley"] = c
 	Menu.contacts.push_back("riley")
 	call_chat("riley","chat01")
@@ -194,13 +194,13 @@ func add_riley():
 
 func add_riley_local_server():
 	var mi = Menu.main_scene.instance()
-	var target = Objects.add_target("local_server",tr("YOUR_SERVER")%Objects.actors["player"].name,null,"127.0.0.1",Color(0.6,0.05,0.04),"layered",[4,4,18],Objects.actors["riley"].programs,Objects.actors["riley"].cpu,"ai_random",2500,25,"_local_server_defence")
+	var target = Objects.add_target("local_server",tr("YOUR_SERVER")%Objects.actors["player"].name,null,"127.0.0.1",Color(0.6,0.05,0.04),"layered",[4,4,18],Objects.actors["riley"].programs.duplicate(),Objects.actors["riley"].cpu,"ai_random",2500,25,"_local_server_defence")
 	target.music_overwrite = "Of_Far_Different_Nature-Escape-14-Crypt.ogg"
 	triggered_method("on_hack_started","_riley_defence_start",[],"ai")
 	Menu.add_log_msg("LOG_DEFENCE","LOG_DEFENCE_HACK")
 	get_tree().get_root().add_child(mi)
 	Menu._show_hack()
-	mi.start(2,30.0,[Objects.actors["player"].cpu,30],[Objects.actors["player"].programs,Objects.actors["riley"].programs],["human","ai_random"],[Objects.actors["player"].color,Color(0.6,0.05,0.04)],mi.callv("create_layered_system",[4,3,14]))
+	mi.start(2,30.0,[Objects.actors["player"].cpu,30],[Objects.actors["player"].programs,Objects.actors["riley"].programs.duplicate()],["human","ai_random"],[Objects.actors["player"].color,Color(0.6,0.05,0.04)],mi.callv("create_layered_system",[4,3,14]))
 	Music.play("Of_Far_Different_Nature-Escape-14-Crypt.ogg")
 	Menu.get_node("Glitch/AnimationPlayer").play("sequence1")
 	yield(mi,"timeout")
@@ -218,10 +218,9 @@ func _local_server_defence(victory):
 
 func break_free(args=null):
 	Objects.actors["riley"].programs["silence"] = 2
-	Objects.actors["riley"].cpu += 15
+	Objects.actors["riley"].cpu += 10
 	Objects.actors["riley"].memory += 75
-	var target = Objects.add_target("ai_server",tr("HALLY_SERVER"),null,tr("HALLY_SERVER"),Color(0.6,0.05,0.04),"radial",[4,4,12,2],Objects.actors["riley"].programs,Objects.actors["riley"].cpu,"ai_random",3000,30,"_riley_attack")
-	target.music_overwrite = "Of_Far_Different_Nature-Escape-14-Crypt.ogg"
+	var target = Objects.add_target("ai_server",tr("HALLY_SERVER"),null,tr("HALLY_SERVER"),Color(0.6,0.05,0.04),"radial",[4,4,12,2],Objects.actors["riley"].programs.duplicate(),Objects.actors["riley"].cpu,"ai_random",3000,30,"_riley_attack","Of_Far_Different_Nature-Escape-14-Crypt.ogg")
 	triggered_method("on_hack_started","_riley_attack_start",[],"ai")
 	Menu.add_log_msg("LOG_DEFENCE_BREAK_FREE","LOG_DEFENCE_CAPTURE_FAILED")
 	call_chat("ai","break_free")

@@ -622,6 +622,7 @@ func _riley_attack(victory):
 	if victory:
 		Music.play("Of_Far_Different_Nature-Escape-05-Silence.ogg")
 		Menu.hack_contact_overwrite = ""
+		Menu.chat_hack_log.clear()
 		Events.delayed_hack_msg(tr("AI_0440"),1.0)
 		Events.delayed_hack_msg(tr("AI_0441"),2.0)
 		Events.delayed_hack_msg(tr("AI_0442"),3.0)

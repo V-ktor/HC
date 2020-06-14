@@ -1544,7 +1544,7 @@ func _load(filename):
 		return
 	
 	var currentline = JSON.parse(file.get_line()).result
-	if currentline==null || currentline["version"]!=VERSION:
+	if currentline==null:# || currentline["version"]!=VERSION:
 		print("Incompatible version!")
 		return
 	quicksave()

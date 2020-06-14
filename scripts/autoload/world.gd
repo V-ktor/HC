@@ -193,12 +193,12 @@ class Server extends Obj:
 	var cpu : int
 	var credits : float
 	var prestige : float
-	var method_on_win : String
+	var method_on_win
 	var group
-	var music_overwrite := ""
+	var music_overwrite
 	var optional := false
 	
-	func _init(_name,_group,_desc,_color,_layout,_layout_params,_programs,_cpu,_ai,_credits,_prestige,_method_on_win=null):
+	func _init(_name,_group,_desc,_color,_layout,_layout_params,_programs,_cpu,_ai,_credits,_prestige,_method_on_win=null,_music_overwrite=null):
 		name = _name
 		group = _group
 		desc = _desc
@@ -211,9 +211,10 @@ class Server extends Obj:
 		credits = _credits
 		prestige = _prestige
 		method_on_win = _method_on_win
+		music_overwrite = _music_overwrite
 	
 	func to_dict():
-		var dict = {"type":"server","name":name,"group":group,"desc":desc,"color":color,"layout":layout,"layout_params":layout_params,"ai":ai,"programs":programs,"cpu":cpu,"credits":credits,"prestige":prestige,"method_on_win":method_on_win}
+		var dict = {"type":"server","name":name,"group":group,"desc":desc,"color":color,"layout":layout,"layout_params":layout_params,"ai":ai,"programs":programs,"cpu":cpu,"credits":credits,"prestige":prestige,"method_on_win":method_on_win,"music_overwrite":music_overwrite}
 		return dict
 
 class Group extends Obj:
@@ -402,7 +403,7 @@ func _load(file):
 		# work around because colors can't be saved/loaded properly in JSON format
 		var array = dict["color"].split(",")
 		var color = Color(array[0],array[1],array[2],array[3])
-		obj = Server.new(dict.name,dict.group,dict.desc,color,dict.layout,dict.layout_params,dict.programs,dict.cpu,dict.ai,dict.credits,dict.prestige,dict.method_on_win)
+		obj = Server.new(dict.name,dict.group,dict.desc,color,dict.layout,dict.layout_params,dict.programs,dict.cpu,dict.ai,dict.credits,dict.prestige,dict.method_on_win,dict.music_overwrite)
 		targets[ID] = obj
 	currentline = JSON.parse(file.get_line()).result
 	actors.clear()
@@ -472,8 +473,8 @@ func get_total_node_count(type,params):
 		return params[0]+params[1]+params[2]
 	return 0
 
-func add_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win=null):
-	var new_target = Server.new(name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win)
+func add_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win=null,music_overwrite=null):
+	var new_target = Server.new(name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win,music_overwrite)
 	targets[ID] = new_target
 	$"/root/Menu".targets.push_back(ID)
 	$"/root/Menu".new_targets += 1

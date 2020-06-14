@@ -102,7 +102,6 @@ class ControlPoint:
 				remove_program(program)
 	
 	func attack(player,amount):
-#		print("damage node "+str(ID)+" for "+str(amount)+" damage")
 		var dam = amount
 		for i in range(0,player-1)+range(player+1,control.size()):
 			if shield[i]>0.0:
@@ -127,7 +126,6 @@ class ControlPoint:
 			mask_dmg -= amount
 	
 	func defend(player,amount):
-#		print("defend node "+str(ID)+" for "+str(amount)+" damage")
 		shield[player] += amount
 		max_shield[player] += amount
 		
@@ -140,7 +138,6 @@ class ControlPoint:
 			mask_dmg -= amount
 	
 	func cancel_defense(player,amount):
-#		print("defense of node "+str(ID)+" for "+str(amount)+" damage expired")
 		shield[player] -= amount*shield[player]/max(max_shield[player],1)
 		max_shield[player] -= amount
 	
@@ -795,13 +792,11 @@ func start(np,_time,_cpu,_programs,_type,_colors,_points):
 	started = true
 	
 	update_gui()
-	printt("Start!")
 
 func stop():
 	active = false
 	started = false
 	emit_signal("timeout",get_winner())
-	printt("Stop!")
 
 
 func create_radial_system(num_inner,num_outer,num_central,num_layers):
