@@ -1,4 +1,4 @@
-[gd_scene load_steps=135 format=2]
+[gd_scene load_steps=140 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -39,6 +39,11 @@
 [ext_resource path="res://images/gui/menu_gear.png" type="Texture" id=37]
 [ext_resource path="res://images/gui/menu_web.png" type="Texture" id=38]
 [ext_resource path="res://images/gui/menu_log.png" type="Texture" id=39]
+[ext_resource path="res://images/gui/menu_button_pressed.png" type="Texture" id=40]
+[ext_resource path="res://images/gui/menu_button_disabled.png" type="Texture" id=41]
+[ext_resource path="res://images/gui/menu_button_normal.png" type="Texture" id=42]
+[ext_resource path="res://images/gui/menu_button_hover.png" type="Texture" id=43]
+[ext_resource path="res://images/gui/menu_button_focus.png" type="Texture" id=44]
 
 [sub_resource type="StyleBoxFlat" id=21]
 bg_color = Color( 0.0941176, 0.101961, 0.109804, 1 )
@@ -3622,17 +3627,19 @@ size_flags_horizontal = 3
 [node name="Space" type="Control" parent="Left/ScrollContainer/VBoxContainer"]
 margin_right = 68.0
 
-[node name="Button0" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button0" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 4.0
 margin_right = 68.0
 margin_bottom = 68.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "CONTINUE"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
 
 [node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button0"]
 modulate = Color( 1, 1, 1, 0.752941 )
@@ -3660,17 +3667,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button1" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button1" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 72.0
 margin_right = 68.0
 margin_bottom = 136.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "NEW_GAME"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button1"]
 modulate = Color( 1, 1, 1, 0.752941 )
@@ -3694,17 +3706,22 @@ valign = 1
 autowrap = true
 clip_text = true
 
-[node name="Button2" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button2" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 140.0
 margin_right = 68.0
 margin_bottom = 204.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "LOAD"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button2"]
 modulate = Color( 1, 1, 1, 0.752941 )
@@ -3732,17 +3749,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button3" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button3" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 208.0
 margin_right = 68.0
 margin_bottom = 272.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "SAVE"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button3"]
 modulate = Color( 1, 1, 1, 0.752941 )
@@ -3769,17 +3791,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button4" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button4" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 276.0
 margin_right = 68.0
 margin_bottom = 340.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "CHAT"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button4"]
 modulate = Color( 1, 1, 1, 0.752941 )
@@ -3829,17 +3856,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button5" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button5" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 344.0
 margin_right = 68.0
 margin_bottom = 408.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "DECK"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button5"]
 modulate = Color( 1, 1, 1, 0.752941 )
@@ -3867,17 +3899,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button9" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button9" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 412.0
 margin_right = 68.0
 margin_bottom = 476.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "CODE"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button9"]
 modulate = Color( 1, 1, 1, 0.752941 )
@@ -3905,17 +3942,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button6" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button6" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 480.0
 margin_right = 68.0
 margin_bottom = 544.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "COMPILE"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
 __meta__ = {
 "_editor_description_": ""
 }
@@ -3946,17 +3985,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button7" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button7" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 548.0
 margin_right = 68.0
 margin_bottom = 612.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "GEAR"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button7"]
 modulate = Color( 1, 1, 1, 0.752941 )
@@ -3984,17 +4028,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button8" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button8" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 616.0
 margin_right = 68.0
 margin_bottom = 680.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "WEB"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button8"]
 visible = false
@@ -4045,17 +4094,19 @@ valign = 1
 autowrap = true
 clip_text = true
 
-[node name="Button10" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button10" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 684.0
 margin_right = 68.0
 margin_bottom = 748.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "LOG"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
 __meta__ = {
 "_editor_description_": ""
 }
@@ -4086,17 +4137,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button11" type="Button" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button11" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 752.0
 margin_right = 68.0
 margin_bottom = 816.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "CREDITS"
-custom_styles/hover = SubResource( 14 )
-custom_styles/pressed = SubResource( 15 )
-custom_styles/focus = SubResource( 16 )
-custom_styles/disabled = SubResource( 17 )
-custom_styles/normal = SubResource( 18 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button11"]
 modulate = Color( 1, 1, 1, 0.752941 )
