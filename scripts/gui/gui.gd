@@ -15,8 +15,9 @@ func update_prgms():
 					item = $Panel/VBoxContainer/ScrollContainer/VBoxContainer/Prgm1.duplicate()
 					item.name = "Prgm"+str(index)
 					$Panel/VBoxContainer/ScrollContainer/VBoxContainer.add_child(item)
-				item.get_node("Label").text = tr(Programs.programs[prgm.type].name)
-				item.get_node("Number").text = str(prgm.cpu)
+				item.get_node("HBoxContainer/Label").text = tr(Programs.programs[prgm.type].name)
+				item.texture = load("res://images/icons/"+Programs.programs[prgm.type].icon+".png")
+				item.get_node("HBoxContainer/Number").text = str(prgm.cpu)
 				item.show()
 				index += 1
 		

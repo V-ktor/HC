@@ -7,13 +7,13 @@
 [ext_resource path="res://images/gui/control_bar.png" type="Texture" id=5]
 [ext_resource path="res://images/gui/cpu.png" type="Texture" id=6]
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.25098, 0.627451, 0.752941, 0.752941 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0, 0, 0, 0.501961 )
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.6, 0.6, 0.6, 0.752941 )
 
 [node name="GUI" type="CanvasLayer"]
@@ -73,8 +73,8 @@ __meta__ = {
 margin_right = 128.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 0, 24 )
-custom_styles/fg = SubResource( 2 )
-custom_styles/bg = SubResource( 3 )
+custom_styles/fg = SubResource( 1 )
+custom_styles/bg = SubResource( 2 )
 value = 50.0
 percent_visible = false
 
@@ -124,24 +124,37 @@ margin_bottom = 132.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Prgm1" type="HBoxContainer" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer"]
+[node name="Prgm1" type="TextureRect" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer"]
 visible = false
 margin_right = 128.0
-margin_bottom = 14.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 0, 16 )
+expand = true
+stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/Prgm1"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/Prgm1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/Prgm1/HBoxContainer"]
 margin_right = 95.0
-margin_bottom = 14.0
+margin_bottom = 16.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "PRGM:"
 valign = 1
 autowrap = true
 
-[node name="Number" type="Label" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/Prgm1"]
+[node name="Number" type="Label" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/Prgm1/HBoxContainer"]
 margin_left = 99.0
 margin_right = 128.0
-margin_bottom = 14.0
+margin_bottom = 16.0
 size_flags_vertical = 3
 text = "0 / 0"
 align = 2
@@ -181,8 +194,8 @@ margin_left = 4.0
 margin_top = -6.0
 margin_right = -4.0
 margin_bottom = -4.0
-custom_styles/fg = SubResource( 5 )
-custom_styles/bg = SubResource( 3 )
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 2 )
 value = 50.0
 percent_visible = false
 __meta__ = {
