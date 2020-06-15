@@ -101,6 +101,8 @@ CHARISMA,Charisma
 FEAR,Fear
 FOCUS,Focus
 CUNNING,Cunning
+CLOSE,Close
+QUIT,Quit
 YES,Yes
 NO,No
 WARNING,Warning

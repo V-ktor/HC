@@ -1,6 +1,6 @@
 ,en
-"// _ARGS","// TEXT"
-"// _DESC","Ignore this line.\nYou should add comments that explain how your program works."
+INITIALIZE_ARGS,"initialize"
+INITIALIZE_DESC,"Start the program.\nThis node will initially have the focus."
 CONNECT_ARGS,"connect NODE"
 CONNECT_DESC,"Connect to the node NODE.\nSome commands will use this node as a target instead of the local node they run on."
 DISCONNECT_ARGS,"disconnect"
