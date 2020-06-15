@@ -14,7 +14,7 @@ bg_color = Color( 0.25098, 0.627451, 0.752941, 0.752941 )
 bg_color = Color( 0, 0, 0, 0.501961 )
 
 [sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0.6, 0.6, 0.6, 0.752941 )
+bg_color = Color( 1, 0.878431, 0.12549, 0.752941 )
 
 [node name="GUI" type="CanvasLayer"]
 layer = 15
@@ -57,6 +57,9 @@ margin_bottom = 236.0
 texture = ExtResource( 3 )
 expand = true
 stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 anchor_right = 1.0
@@ -126,6 +129,7 @@ size_flags_vertical = 3
 
 [node name="Prgm1" type="TextureRect" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer"]
 visible = false
+self_modulate = Color( 1, 1, 1, 0.752941 )
 margin_right = 128.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 0, 16 )
@@ -208,3 +212,6 @@ anchor_bottom = 1.0
 margin_top = -1.0
 text = "0.0s"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

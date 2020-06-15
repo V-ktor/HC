@@ -145,7 +145,7 @@ func _start_new_game(name=null):
 	$Top/HBoxContainer/ButtonClose.disabled = true
 	$Login/HBoxContainer.show()
 	$Login/HBoxContainer/AnimationPlayer.play("loading",-1,1.5)
-	$Login/AnimationPlayer.play("error")
+	$Login/AnimationPlayer.play("error",-1,0.67)
 	$Login.show()
 	Objects.init_world(self)
 	Programs.known_programs = {"pulse":Programs.programs.pulse}
@@ -1608,6 +1608,7 @@ func _show_new_game():
 	$Login/Input/LineEdit.editable = true
 	$Login/Input/ButtonConfirm.disabled = false
 	$Login/Input/LineEdit.grab_focus()
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
 func _show_chat():
 	_close(true)
@@ -1646,6 +1647,7 @@ func _show_chat():
 	$Left/ScrollContainer/VBoxContainer/Button4/Notice.hide()
 	Events._on_show_chat()
 	connect_ui_sounds_recursively($Chat)
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
 func _show_deck():
 	_close(true)
@@ -1655,6 +1657,7 @@ func _show_deck():
 	
 	update_inventory()
 	update_decks()
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
 func _show_gear():
 	_close(true)
@@ -1663,6 +1666,7 @@ func _show_gear():
 	$Top/HBoxContainer/ButtonClose/Icon.texture = icon_close
 	update_upgrades()
 	Events._on_show_upgrades()
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 	
 
 func _show_compile():
@@ -1672,6 +1676,7 @@ func _show_compile():
 	$Top/HBoxContainer/ButtonClose/Icon.texture = icon_close
 	update_compile()
 	Events._on_show_compile()
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
 func _show_code():
 	_close(true)
@@ -1684,6 +1689,7 @@ func _show_code():
 	$Code/Code/ScrollContainer.scroll_horizontal = $Code/Code/ScrollContainer/BG.rect_min_size.x/2-$Code/Code/ScrollContainer.rect_size.x/2+172/2
 	$Code/Code/ScrollContainer.scroll_vertical = $Code/Code/ScrollContainer/BG.rect_min_size.y/2-$Code/Code/ScrollContainer.rect_size.y/2+196/2
 	Events._on_show_code()
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
 func _show_targets():
 	if game_instance!=null:
@@ -1715,6 +1721,7 @@ func _show_targets():
 	if can_scan:
 		$Targets/ScrollContainer/VBoxContainer/ButtonScan.show()
 	connect_ui_sounds_recursively($Targets)
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
 func _show_log():
 	_close(true)
@@ -1723,6 +1730,7 @@ func _show_log():
 	$Log.show()
 	$Top/HBoxContainer/ButtonClose/Icon.texture = icon_close
 	update_log()
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
 func _show_hack():
 	_close(true)
@@ -1740,6 +1748,7 @@ func _show_hack():
 			$Hack/Result.hide()
 		else:
 			$Hack/Result.show()
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
 func _show_load():
 	_close(true)
@@ -1773,6 +1782,7 @@ func _show_load():
 	if $Saves/ScrollContainer/VBoxContainer/Button0.visible:
 		$Saves/ScrollContainer/VBoxContainer/Button0.grab_focus()
 	connect_ui_sounds_recursively($Saves)
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
 func _show_save():
 	_close(true)
@@ -1798,17 +1808,20 @@ func _show_save():
 	$Saves/ScrollContainer/VBoxContainer/New/LineEdit.grab_focus()
 	$Saves/ScrollContainer/VBoxContainer/New.raise()
 	connect_ui_sounds_recursively($Saves)
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
 func _show_credits():
 	_close(true)
 	$Top/HBoxContainer/Title.text = tr("CREDITS")
 	$Credits.show()
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
 func _show_quit():
 	_close(true)
 	$Top/HBoxContainer/Title.text = tr("SHUTDOWN")
 	$Quit.show()
 	$Top/HBoxContainer/ButtonClose/Icon.texture = icon_close
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("QUIT")
 
 
 func _close(no_quit=false):
@@ -1816,6 +1829,7 @@ func _close(no_quit=false):
 	$Top/HBoxContainer/Title.text = VERSION
 	$Background.show()
 	mode = ""
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("QUIT")
 	
 	if $Login.visible:
 		$Login.hide()

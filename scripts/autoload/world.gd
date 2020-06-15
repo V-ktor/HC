@@ -403,6 +403,8 @@ func _load(file):
 		# work around because colors can't be saved/loaded properly in JSON format
 		var array = dict["color"].split(",")
 		var color = Color(array[0],array[1],array[2],array[3])
+		if !dict.has("music_overwrite"):
+			dict.music_overwrite = null
 		obj = Server.new(dict.name,dict.group,dict.desc,color,dict.layout,dict.layout_params,dict.programs,dict.cpu,dict.ai,dict.credits,dict.prestige,dict.method_on_win,dict.music_overwrite)
 		targets[ID] = obj
 	currentline = JSON.parse(file.get_line()).result
