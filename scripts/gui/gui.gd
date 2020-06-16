@@ -17,6 +17,7 @@ func update_prgms():
 					$Panel/VBoxContainer/ScrollContainer/VBoxContainer.add_child(item)
 				item.get_node("HBoxContainer/Label").text = tr(Programs.programs[prgm.type].name)
 				item.texture = load("res://images/icons/"+Programs.programs[prgm.type].icon+".png")
+				item.hint_tooltip = tr(Programs.programs[prgm.type].description)
 				item.get_node("HBoxContainer/Number").text = str(prgm.cpu)
 				item.show()
 				index += 1

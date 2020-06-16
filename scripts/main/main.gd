@@ -518,6 +518,9 @@ func add_program(player,type,ID):
 	
 	return true
 
+func _use_action(player,type):
+	use_action(player,type,node_selected)
+
 func use_action(player,type,ID):
 	if !active:
 		if started:
@@ -750,6 +753,7 @@ func update_gui():
 	for action in programs[0].keys():
 		var bi = action_button.instance()
 		bi.action = action
+		bi.hint_tooltip = tr(Programs.programs[action].name)
 		bi.get_node("LabelKey").text = str(k+1)
 		bi.get_node("LabelAmount").text = str(programs[0][action])+"x"
 		bi.key = KEY_1+k
@@ -758,6 +762,7 @@ func update_gui():
 			bi.get_node("Cooldown").max_value = Programs.programs[action]["cooldown"]
 		bi.name = action
 		$GUI/Actions/GridContainer.add_child(bi)
+		bi.connect("pressed",self,"_use_action",[0,programs[0].keys()[k]])
 		k += 1
 
 func reset():

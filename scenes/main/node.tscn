@@ -118,6 +118,9 @@ mouse_filter = 2
 max_value = 50.0
 texture_progress = ExtResource( 5 )
 fill_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Control2" type="TextureProgress" parent="."]
 visible = false
@@ -147,4 +150,6 @@ margin_bottom = 48.0
 mouse_filter = 2
 texture_progress = ExtResource( 8 )
 fill_mode = 4
-
+__meta__ = {
+"_edit_use_anchors_": false
+}

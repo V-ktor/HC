@@ -8,12 +8,19 @@ margin_right = 12.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 64, 64 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Icon" type="TextureRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 expand = true
 stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Cooldown" type="TextureProgress" parent="."]
 modulate = Color( 1, 1, 1, 0.376471 )
@@ -28,7 +35,6 @@ fill_mode = 4
 [node name="LabelKey" type="Label" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 1
 text = "1"
 align = 2
 valign = 2
@@ -36,7 +42,6 @@ valign = 2
 [node name="LabelAmount" type="Label" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 1
 text = "0x"
 align = 1
 valign = 1
