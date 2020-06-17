@@ -21,7 +21,9 @@ func _process(_delta):
 		else:
 			$Control1.value = 0
 		if owner>=0:
-			$Control.modulate = $"../../".colors[owner]
-			$Control1.modulate = $"../../".colors[owner]
+			$Control.modulate = $"../../".colors[owner].lightened(0.2)
+			$Control1.modulate = $"../../".colors[owner].lightened(0.2)
+			$Text.self_modulate = $"../../".colors[owner]
 		else:
 			$Control.modulate = Color(1.0,1.0,1.0)
+			$Text.self_modulate = Color(1.0,1.0,1.0)

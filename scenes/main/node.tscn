@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scripts/gui/node.gd" type="Script" id=1]
 [ext_resource path="res://images/nodes/base.png" type="Texture" id=2]
@@ -8,6 +8,35 @@
 [ext_resource path="res://images/nodes/control2.png" type="Texture" id=6]
 [ext_resource path="res://images/nodes/control3.png" type="Texture" id=7]
 [ext_resource path="res://images/gui/control.png" type="Texture" id=8]
+[ext_resource path="res://images/characters/background/blocky_text.png" type="Texture" id=9]
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform float speed = 1.0;
+uniform float size = 1.0;
+uniform sampler2D text;
+
+void fragment()
+{
+	float xscale = 0.4;
+	float yscale = 0.4;
+	vec2 center = vec2(xscale/2.0,yscale/2.0);
+	vec2 uv = (UV*vec2(xscale,yscale)-center)*mat2(vec2(cos(TIME*speed/2.0),-sin(TIME*speed/2.0)),vec2(sin(TIME*speed/2.0),cos(TIME*speed/2.0)));
+	float pi = 3.1415926535798;
+	float angle = 0.1*(atan(uv.x,uv.y)+TIME*speed);
+	float l = max(8.0*length(uv)/size-1.0,0.0);
+	uv = vec2(mod(angle/2.0/pi,1.0),1.0-l);
+	COLOR *= texture(text,uv);
+	COLOR.a *= clamp(10.0*(l-0.2)*(0.9-l),0.0,1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/speed = 0.71
+shader_param/size = 0.8
+shader_param/text = ExtResource( 9 )
 
 [sub_resource type="Animation" id=1]
 resource_name = "rotate"
@@ -78,8 +107,20 @@ tracks/4/keys = {
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.43, 0.43 )
 texture = ExtResource( 2 )
 script = ExtResource( 3 )
+
+[node name="Text" type="Panel" parent="."]
+modulate = Color( 1, 1, 1, 0.501961 )
+material = SubResource( 3 )
+margin_left = -32.0
+margin_top = -32.0
+margin_right = 32.0
+margin_bottom = 32.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Select" type="Node2D" parent="."]
 modulate = Color( 1, 1, 1, 0 )
@@ -116,6 +157,7 @@ margin_right = 48.0
 margin_bottom = 48.0
 mouse_filter = 2
 max_value = 50.0
+value = 30.0
 texture_progress = ExtResource( 5 )
 fill_mode = 4
 __meta__ = {
@@ -129,6 +171,7 @@ margin_top = -48.0
 margin_right = 48.0
 margin_bottom = 48.0
 mouse_filter = 2
+value = 50.0
 texture_progress = ExtResource( 6 )
 fill_mode = 4
 
@@ -139,6 +182,7 @@ margin_top = -48.0
 margin_right = 48.0
 margin_bottom = 48.0
 mouse_filter = 2
+value = 50.0
 texture_progress = ExtResource( 7 )
 fill_mode = 4
 
@@ -148,6 +192,7 @@ margin_top = -48.0
 margin_right = 48.0
 margin_bottom = 48.0
 mouse_filter = 2
+value = 40.0
 texture_progress = ExtResource( 8 )
 fill_mode = 4
 __meta__ = {
