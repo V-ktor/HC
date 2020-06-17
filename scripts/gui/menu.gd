@@ -795,6 +795,13 @@ func add_chat_choice_box(choices,index,where="Chat"):
 		elif c.has("personality") && c.personality.size()>0:
 			button.get_node("HBoxContainer/Icon").texture = icons_personality[c.personality.keys()[0]]
 			button.get_node("HBoxContainer/Icon/Inc").show()
+		button.hint_tooltip = ""
+		if c.has("required"):
+			for i in range(c.required.size()):
+				button.hint_tooltip += tr("STAT_REQUIRED").format({"stat":tr(c.required.keys()[i].to_upper()),"value":c.required.values()[i]})+"\n"
+		if c.has("personality"):
+			for i in range(c.personality.size()):
+				button.hint_tooltip += tr("INC_STAT").format({"stat":tr(c.personality.keys()[i].to_upper()),"value":c.personality.values()[i]})+"\n"
 		available += int(!button.disabled)
 		bi.get_node("Panel/VBoxContainer").add_child(button)
 		button.connect("pressed",self,"_select_choice",[c,index,bi])

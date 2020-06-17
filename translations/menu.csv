@@ -101,6 +101,8 @@ CHARISMA,Charisma
 FEAR,Fear
 FOCUS,Focus
 CUNNING,Cunning
+INC_STAT,"Increase {stat} by {value}."
+STAT_REQUIRED,"Requires {value} {stat}."
 CLOSE,Close
 QUIT,Quit
 YES,Yes
