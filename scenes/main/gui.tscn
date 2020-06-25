@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scripts/gui/gui.gd" type="Script" id=1]
 [ext_resource path="res://scripts/gui/control_meter.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://images/gui/action_bar.png" type="Texture" id=4]
 [ext_resource path="res://images/gui/control_bar.png" type="Texture" id=5]
 [ext_resource path="res://images/gui/cpu.png" type="Texture" id=6]
+[ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.25098, 0.627451, 0.752941, 0.752941 )
@@ -13,8 +14,19 @@ bg_color = Color( 0.25098, 0.627451, 0.752941, 0.752941 )
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0, 0, 0, 0.501961 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="DynamicFont" id=3]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 7 )
+
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 1, 0.878431, 0.12549, 0.752941 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 13
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 7 )
 
 [node name="GUI" type="CanvasLayer"]
 layer = 15
@@ -73,6 +85,7 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 16.0
+custom_fonts/font = SubResource( 3 )
 text = "CPU:"
 valign = 1
 __meta__ = {
@@ -84,6 +97,7 @@ anchor_left = 0.33
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -1.0
+custom_fonts/font = SubResource( 3 )
 text = "100/100"
 align = 1
 valign = 1
@@ -127,19 +141,21 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/Prgm1/HBoxContainer"]
-margin_right = 95.0
-margin_bottom = 16.0
+margin_right = 91.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_fonts/font = SubResource( 3 )
 text = "PRGM:"
 valign = 1
 autowrap = true
 
 [node name="Number" type="Label" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/Prgm1/HBoxContainer"]
-margin_left = 99.0
+margin_left = 95.0
 margin_right = 128.0
-margin_bottom = 16.0
+margin_bottom = 19.0
 size_flags_vertical = 3
+custom_fonts/font = SubResource( 3 )
 text = "0 / 0"
 align = 2
 valign = 1
@@ -178,7 +194,7 @@ margin_left = 4.0
 margin_top = -6.0
 margin_right = -4.0
 margin_bottom = -4.0
-custom_styles/fg = SubResource( 3 )
+custom_styles/fg = SubResource( 4 )
 custom_styles/bg = SubResource( 2 )
 value = 50.0
 percent_visible = false
@@ -189,7 +205,8 @@ __meta__ = {
 [node name="Label" type="Label" parent="Control/Time"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -1.0
+margin_top = -2.0
+custom_fonts/font = SubResource( 5 )
 text = "0.0s"
 align = 1
 __meta__ = {

@@ -495,7 +495,7 @@ func add_opt_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,a
 	targets[ID] = new_target
 
 func remove_opt_target(ID):
-	if !targets[ID].optional:
+	if targets.has(ID) && !targets[ID].optional:
 		return
 	targets.erase(ID)
 	$"/root/Menu".targets.erase(ID)
