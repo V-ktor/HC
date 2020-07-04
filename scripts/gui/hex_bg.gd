@@ -2,10 +2,10 @@ extends Control
 
 var pos := Vector2()
 
-func can_drop_data(position,data):
+func can_drop_data(_position,data):
 	return typeof(data)==TYPE_VECTOR2 && Menu.program_nodes.has(data)
 
-func drop_data(position,data):
+func drop_data(_position,data):
 	if !Menu.program_nodes.has(data):
 		Menu.update_program()
 		return

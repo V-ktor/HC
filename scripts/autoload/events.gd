@@ -216,11 +216,11 @@ func _local_server_defence(victory):
 	Menu.get_node("Hack/Result/LabelReward").text += tr("TECHS")+": "+tr(Programs.programs["lock"].name)+"\n"
 	call_chat("ai","_local_server_defence",[victory])
 
-func break_free(args=null):
+func break_free():
 	Objects.actors["riley"].programs["silence"] = 2
 	Objects.actors["riley"].cpu += 10
 	Objects.actors["riley"].memory += 75
-	var target = Objects.add_target("ai_server",tr("HALLY_SERVER"),null,tr("HALLY_SERVER"),Color(0.6,0.05,0.04),"radial",[5,4,12,2],Objects.actors["riley"].programs.duplicate(),Objects.actors["riley"].cpu,"ai_random",3000,30,"_riley_attack","Of_Far_Different_Nature-Escape-14-Crypt.ogg")
+	Objects.add_target("ai_server",tr("HALLY_SERVER"),null,tr("HALLY_SERVER"),Color(0.6,0.05,0.04),"radial",[5,4,12,2],Objects.actors["riley"].programs.duplicate(),Objects.actors["riley"].cpu,"ai_random",3000,30,"_riley_attack","Of_Far_Different_Nature-Escape-14-Crypt.ogg")
 	triggered_method("on_hack_started","_riley_attack_start",[],"ai")
 	Menu.add_log_msg("LOG_DEFENCE_BREAK_FREE","LOG_DEFENCE_CAPTURE_FAILED")
 	call_chat("ai","break_free")

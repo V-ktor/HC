@@ -8,7 +8,7 @@ var dragged := false
 var scale := 1.0
 
 
-func get_drag_data(position):
+func get_drag_data(_position):
 	dragged = true
 	mouse_filter = MOUSE_FILTER_IGNORE
 	$Type.mouse_filter = MOUSE_FILTER_IGNORE

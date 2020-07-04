@@ -547,13 +547,13 @@ func reply_0041_1():
 	Events.delayed_msg("ai",tr("AI_0410"),2.0)
 	Events.delayed_msg("ai",tr("AI_0411"),3.0)
 	Events.delayed_msg("ai",tr("AI_0412"),3.0)
-	Events.delayed_method(2.0,"break_free",[box])
+	Events.delayed_method(2.0,"break_free")
 	Vars.inc_var("affection")
 
 func reply_0041_2():
 	update_bg()
 	Events.send_player_msg("ai",tr("REPLY_0041_2"))
-	Events.delayed_method(2.0,"break_free",[box])
+	Events.delayed_method(2.0,"break_free")
 	Vars.inc_var("affection")
 
 func reply_0041_3():
@@ -561,7 +561,7 @@ func reply_0041_3():
 	Events.send_player_msg("ai",tr("REPLY_0041_3"))
 	Events.delayed_msg("ai",tr("AI_0414"),2.0)
 	Events.delayed_msg("ai",tr("AI_0415"),3.0)
-	Events.delayed_method(2.0,"break_free",[box])
+	Events.delayed_method(2.0,"break_free")
 	Vars.inc_var("aggression")
 
 func reply_0041_4():

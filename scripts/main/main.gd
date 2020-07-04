@@ -169,10 +169,8 @@ class Program:
 	var current_command
 	var stack := {}
 	var ID := -1
-# warning-ignore:unused_class_variable
 	var index := -1
 	var node
-# warning-ignore:unused_class_variable
 	var particles := []
 	var tooltip
 	var status_delay := 0.0
@@ -240,7 +238,6 @@ class Program:
 		if !stack.has(pos):
 			return
 		var cmd = stack[pos].command
-		var dir = stack[pos].dir
 		if !stack[pos].sustained && !failed:
 			if cmd=="attack":
 				var array = stack[pos].args
@@ -327,7 +324,6 @@ class Program:
 		else:
 			node.get_node("VBoxContainer/Status/HBoxContainer/Label").text = ""
 		node.get_node("VBoxContainer/Status").max_value = delay
-#		node.get_node("Code").text = "..."
 		finish_action(last)
 		goto(dir)
 		last = pos
@@ -335,7 +331,6 @@ class Program:
 	
 	func goto(dir):
 		focus += Programs.get_offset(dir,focus)
-#		finish_action(last)
 		last = focus
 	
 	func skip():
@@ -367,65 +362,65 @@ class Program:
 	func evaluate_statement(array) -> bool:
 		if array.size()==0:
 			return false
-		var type = array[0]
-		if type=="true":
+		var t = array[0]
+		if t=="true":
 			return true
-		elif type=="false":
+		elif t=="false":
 			return false
-		elif type=="connected":
+		elif t=="connected":
 			return targets.size()>0
-		elif type=="connected_enemy":
+		elif t=="connected_enemy":
 			for target in targets:
 				if gamestate.nodes[target].owner!=owner:
 					return true
 			return false
-		elif type=="connected_controled":
+		elif t=="connected_controled":
 			for target in targets:
 				if gamestate.nodes[target].owner==owner:
 					return true
 			return false
-		elif type=="enemy_adjacent":
+		elif t=="enemy_adjacent":
 			for p in gamestate.nodes[ID].connections:
 				if gamestate.nodes[p].owner!=owner:
 					return true
 			return false
-		elif type=="controled_adjacent":
+		elif t=="controled_adjacent":
 			for p in gamestate.nodes[ID].connections:
 				if gamestate.nodes[p].owner==owner:
 					return true
 			return false
-		elif type=="unconnected_enemy":
+		elif t=="unconnected_enemy":
 			for p in gamestate.nodes[ID].connections:
 				if gamestate.nodes[p].owner!=owner && !(p in targets):
 					return true
 			return false
-		elif type=="unconnected_controled":
+		elif t=="unconnected_controled":
 			for p in gamestate.nodes[ID].connections:
 				if gamestate.nodes[p].owner==owner && !(p in targets):
 					return true
 			return false
-		elif type=="hostile_program_adjacent":
+		elif t=="hostile_program_adjacent":
 			for p in gamestate.nodes[ID].connections:
 				for prog in gamestate.nodes[p].programs:
 					if prog.owner!=owner:
 						return true
 			return false
-		elif type==">":
+		elif t==">":
 			if array.size()>2:
 				return evaluate_var(array[1])>evaluate_var(array[2])
-		elif type==">=":
+		elif t==">=":
 			if array.size()>2:
 				return evaluate_var(array[1])>=evaluate_var(array[2])
-		elif type=="<":
+		elif t=="<":
 			if array.size()>2:
 				return evaluate_var(array[1])<evaluate_var(array[2])
-		elif type=="<=":
+		elif t=="<=":
 			if array.size()>2:
 				return evaluate_var(array[1])<=evaluate_var(array[2])
-		elif type=="==":
+		elif t=="==":
 			if array.size()>2:
 				return evaluate_var(array[1])==evaluate_var(array[2])
-		elif type=="!=":
+		elif t=="!=":
 			if array.size()>2:
 				return evaluate_var(array[1])!=evaluate_var(array[2])
 		return false
@@ -509,9 +504,6 @@ func add_program(player,type,ID):
 	tooltip.rect_position = dir*Vector2(192,128)
 	tooltip.self_modulate = colors[player]
 	tooltip.node = points[ID].node
-#	if player==0:
-#		tooltip.get_node("VBoxContainer/Status/HBoxContainer/ButtonCancel").connect("pressed",points[ID],"remove_program",[prgm])
-#	else:
 	tooltip.get_node("VBoxContainer/Status/HBoxContainer/ButtonCancel").hide()
 	$GUI/Tooltips.add_child(tooltip)
 	prgm.tooltip = tooltip
@@ -595,7 +587,6 @@ func hint():
 
 func parse(prgm):
 	# Parse the program.
-	var nodes = prgm.nodes
 	if !prgm.nodes.has(prgm.focus):
 		print("No valid node at "+str(prgm.focus)+"!")
 		prgm.stop()
@@ -784,8 +775,8 @@ func start(np,_time,_cpu,_programs,_type,_colors,_points):
 		var node = preload("res://scenes/main/node.tscn").instance()
 		node.ID = i
 		node.position = _points[i]["position"]
-		for i in range(min(num_players,3)):
-			node.get_node("Control"+str(i+1)).modulate = colors[i]
+		for j in range(min(num_players,3)):
+			node.get_node("Control"+str(j+1)).modulate = colors[j]
 		$ControlPoints.add_child(node)
 		points[i] = ControlPoint.new(i,num_players,_points[i]["position"],_points[i]["connections"],node,gamestate,_points[i]["owner"])
 	
