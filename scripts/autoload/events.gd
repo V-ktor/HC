@@ -202,7 +202,13 @@ func add_riley_local_server():
 	Menu._show_hack()
 	mi.start(2,30.0,[Objects.actors["player"].cpu,30],[Objects.actors["player"].programs,Objects.actors["riley"].programs.duplicate()],["human","ai_random"],[Objects.actors["player"].color,Color(0.6,0.05,0.04)],mi.callv("create_layered_system",[4,3,14]))
 	Music.play("Of_Far_Different_Nature-Escape-14-Crypt.ogg")
-	Menu.get_node("Glitch/AnimationPlayer").play("sequence1")
+	Menu.get_node("Boss/AnimationPlayer").play("boss")
+	Menu.hack_contact_overwrite = "riley"
+	Menu.update_hack_chat()
+	Menu.get_node("Hack/Panel").self_modulate.a = 0.0
+	Menu.get_node("Hack/Panel").show()
+	Menu.get_node("Boss/AnimationPlayer").connect("animation_finished",Menu,"hide_hack_panel",[],CONNECT_ONESHOT)
+#	Menu.get_node("Glitch/AnimationPlayer").play("sequence1")
 	yield(mi,"timeout")
 	Menu.get_node("Glitch/AnimationPlayer").play("burst_off")
 	mi.queue_free()

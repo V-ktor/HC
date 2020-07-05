@@ -1830,6 +1830,9 @@ func _show_quit():
 	$Top/HBoxContainer/ButtonClose/Icon.texture = icon_close
 	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("QUIT")
 
+func hide_hack_panel(_args=null):
+	get_node("Hack/Panel").hide()
+	Menu.get_node("Hack/Panel").self_modulate.a = 1.0
 
 func _close(no_quit=false):
 	$Top/HBoxContainer/ButtonClose/Icon.texture = icon_shutdown

@@ -1,4 +1,4 @@
-[gd_scene load_steps=149 format=2]
+[gd_scene load_steps=167 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -46,6 +46,8 @@
 [ext_resource path="res://images/gui/menu_button_focus.png" type="Texture" id=44]
 [ext_resource path="res://images/gui/log_panel.png" type="Texture" id=45]
 [ext_resource path="res://images/gui/action_bar.png" type="Texture" id=46]
+[ext_resource path="res://images/misc/crown.png" type="Texture" id=47]
+[ext_resource path="res://images/misc/star.png" type="Texture" id=48]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.0941176, 0.101961, 0.109804, 1 )
@@ -607,6 +609,7 @@ void fragment()
 	COLOR = texture(TEXTURE,UV);
 	COLOR.a *= texture(mask,UV).g*clamp((COLOR.r+COLOR.g+COLOR.b)/3.0*10.0,0.0,1.0);
 }"
+custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=41]
 shader = SubResource( 40 )
@@ -1013,6 +1016,317 @@ bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 [sub_resource type="DynamicFont" id=93]
 font_data = ExtResource( 3 )
 
+[sub_resource type="Shader" id=109]
+code = "shader_type canvas_item;
+
+uniform float speed = 1.0;
+
+void fragment()
+{
+	COLOR *= texture(TEXTURE, UV);
+	COLOR.a *= clamp(4.0*(abs(1.0-2.0*fract(100.0*UV.x+1.0*UV.y+speed*TIME))-0.25),0.0,1.0);
+}"
+custom_defines = ""
+
+[sub_resource type="ShaderMaterial" id=110]
+shader = SubResource( 109 )
+shader_param/speed = 10.0
+
+[sub_resource type="StyleBoxFlat" id=108]
+bg_color = Color( 0.752941, 0, 0, 0.501961 )
+
+[sub_resource type="ShaderMaterial" id=111]
+shader = SubResource( 109 )
+shader_param/speed = -10.0
+
+[sub_resource type="Shader" id=112]
+code = "shader_type canvas_item;
+
+uniform float speed = 1.0;
+uniform float offset = 0.0;
+
+void fragment()
+{
+	COLOR = texture(TEXTURE, UV+vec2(speed*TIME,0.0+offset));
+}"
+custom_defines = ""
+
+[sub_resource type="ShaderMaterial" id=113]
+shader = SubResource( 112 )
+shader_param/speed = 0.8
+shader_param/offset = 0.0
+
+[sub_resource type="ViewportTexture" id=114]
+viewport_path = NodePath("Boss/Viewport")
+
+[sub_resource type="ShaderMaterial" id=115]
+shader = SubResource( 112 )
+shader_param/speed = 0.7
+shader_param/offset = 0.5
+
+[sub_resource type="Shader" id=105]
+code = "shader_type canvas_item;
+
+uniform vec4 color : hint_color = vec4(0.75,0.0,0.0,0.75);
+uniform float speed = 1.0;
+
+void fragment()
+{
+	vec2 uv = UV;
+	uv.x = mod(uv.x+speed*TIME,1.0);
+	COLOR = color;
+	COLOR.a *= 1.0-texture(TEXTURE, uv).a;
+}"
+custom_defines = ""
+
+[sub_resource type="ShaderMaterial" id=106]
+shader = SubResource( 105 )
+shader_param/color = Color( 0.75, 0, 0, 0.75 )
+shader_param/speed = 2.0
+
+[sub_resource type="ShaderMaterial" id=107]
+shader = SubResource( 105 )
+shader_param/color = Color( 0.75, 0, 0, 0.75 )
+shader_param/speed = -2.0
+
+[sub_resource type="ShaderMaterial" id=116]
+shader = SubResource( 105 )
+shader_param/color = Color( 0.74902, 0, 0, 0.25098 )
+shader_param/speed = -2.0
+
+[sub_resource type="ShaderMaterial" id=117]
+shader = SubResource( 105 )
+shader_param/color = Color( 0.74902, 0, 0, 0.25098 )
+shader_param/speed = 2.0
+
+[sub_resource type="StyleBoxFlat" id=102]
+bg_color = Color( 0.752941, 0, 0, 0.752941 )
+
+[sub_resource type="DynamicFont" id=103]
+size = 42
+font_data = ExtResource( 10 )
+
+[sub_resource type="Animation" id=118]
+resource_name = "boss"
+length = 10.0
+step = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 10 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Panel1:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 8, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Panel2:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1, 8, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Panel3:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1, 8, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Panel4:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 1, 8, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Text1:anchor_left")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Text1:anchor_right")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 8, 10 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Text2:anchor_left")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Text2:anchor_right")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 8, 10 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Crown1:modulate")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 2, 9, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Crown2:modulate")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0, 2, 9, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("Star1:modulate")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0, 1, 9, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("Star2:modulate")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0, 1, 9, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("../Glitch:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0, 10 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("../Glitch:material:shader_param/noise_scale")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("../Glitch:material:shader_param/glitch_scale")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+tracks/16/type = "value"
+tracks/16/path = NodePath("../Glitch:material:shader_param/glitch_blend")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 0, 1, 7.5, 8, 9, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 10.0, -1.0, -1.0, 10.0, -10.0, 0.0 ]
+}
+tracks/17/type = "value"
+tracks/17/path = NodePath("../Glitch:material:shader_param/block_scale")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"times": PoolRealArray( 0, 1, 7, 8, 9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0, 0.0, 1.0, 0.0 ]
+}
+
 [sub_resource type="Shader" id=94]
 code = "shader_type canvas_item;
 
@@ -1049,13 +1363,14 @@ void fragment()
 	COLOR.rg *= 1.0-scale.b;
 }
 "
+custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=95]
 shader = SubResource( 94 )
-shader_param/noise_scale = 1.0
-shader_param/glitch_scale = 10.0
-shader_param/glitch_blend = 10.0
-shader_param/block_scale = 1.0
+shader_param/noise_scale = 0.0
+shader_param/glitch_scale = 1.0
+shader_param/glitch_blend = 0.0
+shader_param/block_scale = 0.0
 shader_param/noise = ExtResource( 11 )
 shader_param/noise_mask = ExtResource( 13 )
 shader_param/block_mask = ExtResource( 20 )
@@ -1346,7 +1661,7 @@ tracks/3/keys = {
 "values": [ 0.0, 0.18, 0.0, 0.25, 0.165, 0.0, 0.185, 0.0, 0.3, 0.0, 0.25, 0.0, 0.3, 0.0, 0.2, 0.0, 0.35, 0.0, 0.165, 0.0, 0.275, 0.0, 0.5, 0.0, 2.0, 0.0 ]
 }
 
-[sub_resource type="GDScript" id=102]
+[sub_resource type="GDScript" id=104]
 script/source = "extends Control
 
 var ring : Dictionary
@@ -1401,7 +1716,6 @@ __meta__ = {
 }
 
 [node name="Login" type="Panel" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 68.0
@@ -4366,6 +4680,202 @@ stretch_mode = 6
 
 [node name="Textbox" parent="." instance=ExtResource( 16 )]
 
+[node name="Boss" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel1" type="Panel" parent="Boss"]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 110 )
+anchor_right = 1.0
+margin_top = 8.0
+margin_bottom = 16.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 108 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel2" type="Panel" parent="Boss"]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 110 )
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -16.0
+margin_bottom = -8.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 108 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel3" type="Panel" parent="Boss"]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 111 )
+anchor_right = 1.0
+margin_top = 232.0
+margin_bottom = 240.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 108 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel4" type="Panel" parent="Boss"]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 111 )
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -240.0
+margin_bottom = -232.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 108 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text1" type="TextureRect" parent="Boss"]
+material = SubResource( 113 )
+margin_top = 48.0
+margin_bottom = 96.0
+mouse_filter = 2
+texture = SubResource( 114 )
+expand = true
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Text2" type="TextureRect" parent="Boss"]
+material = SubResource( 115 )
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -96.0
+margin_bottom = -48.0
+mouse_filter = 2
+texture = SubResource( 114 )
+expand = true
+stretch_mode = 2
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Crown1" type="TextureRect" parent="Boss"]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 106 )
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -192.0
+margin_bottom = -144.0
+texture = ExtResource( 47 )
+expand = true
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Crown2" type="TextureRect" parent="Boss"]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 107 )
+anchor_right = 1.0
+margin_top = 144.0
+margin_bottom = 192.0
+texture = ExtResource( 47 )
+expand = true
+stretch_mode = 2
+
+[node name="Star1" type="TextureRect" parent="Boss"]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 116 )
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -136.0
+margin_bottom = -104.0
+texture = ExtResource( 48 )
+expand = true
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Star2" type="TextureRect" parent="Boss"]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 117 )
+anchor_right = 1.0
+margin_top = 104.0
+margin_bottom = 136.0
+texture = ExtResource( 48 )
+expand = true
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="Boss"]
+size = Vector2( 320, 96 )
+own_world = true
+transparent_bg = true
+hdr = false
+disable_3d = true
+usage = 0
+render_target_v_flip = true
+
+[node name="Panel1" type="Panel" parent="Boss/Viewport"]
+anchor_right = 1.0
+anchor_bottom = 0.5
+mouse_filter = 2
+custom_styles/panel = SubResource( 102 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Boss/Viewport/Panel1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 103 )
+text = "-    WARNING"
+align = 1
+valign = 1
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel2" type="Panel" parent="Boss/Viewport"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 102 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Boss/Viewport/Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 103 )
+text = "-    CAUTION"
+align = 1
+valign = 1
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Boss"]
+anims/boss = SubResource( 118 )
+
 [node name="Glitch" type="Panel" parent="."]
 visible = false
 material = SubResource( 95 )
@@ -4402,7 +4912,7 @@ margin_bottom = 256.0
 rect_min_size = Vector2( 256, 256 )
 expand = true
 stretch_mode = 6
-script = SubResource( 102 )
+script = SubResource( 104 )
 
 [node name="Label" type="Label" parent="ViewportLogo/Draw"]
 anchor_right = 1.0
