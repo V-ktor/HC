@@ -1097,6 +1097,7 @@ func update_program():
 						pi.get_node("Type").add_item(Programs.COMMANDS.keys()[i],i)
 				pi.get_node("Type").selected = pi.get_node("Type").get_item_index(Programs.COMMANDS.keys().find(prgm.type))
 				pi.get_node("Type").icon = load(Programs.COMMANDS[prgm.type].icon)
+				pi.get_node("Type").hint_tooltip = prgm.type
 				if pi.get_node("Type").is_connected("item_selected",self,"_set_prog_node_type"):
 					pi.get_node("Type").disconnect("item_selected",self,"_set_prog_node_type")
 				pi.get_node("Type").connect("item_selected",self,"_set_prog_node_type",[p,pi.get_node("Type")])
@@ -1116,6 +1117,8 @@ func update_program():
 						for j in range(Programs.VARS.size()):
 							button.add_item(Programs.VARS[j],j)
 						button.selected = 0
+						button.icon = preload("res://images/gui/prm_number.png")
+						button.hint_tooltip = "number"
 					else:
 						spin_box.hide()
 						if prgm.arguments[i] in Programs.VARS:
@@ -1130,6 +1133,8 @@ func update_program():
 							for j in range(Programs.STATEMENTS.size()):
 								button.add_item(Programs.STATEMENTS[j],j)
 							button.selected = button.get_item_index(Programs.STATEMENTS.find(prgm.arguments[i]))
+						button.icon = load("res://images/gui/prm_"+prgm.arguments[i]+".png")
+						button.hint_tooltip = prgm.arguments[i]
 					if button.is_connected("item_selected",self,"_set_prog_node_arg"):
 						button.disconnect("item_selected",self,"_set_prog_node_arg")
 					button.connect("item_selected",self,"_set_prog_node_arg",[p,button,i])
