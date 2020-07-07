@@ -1556,7 +1556,8 @@ func _load(filename):
 		return
 	
 	var currentline = JSON.parse(file.get_line()).result
-	if currentline==null:# || currentline["version"]!=VERSION:
+	var save_version = currentline.version
+	if currentline==null:# || save_version!=VERSION:
 		print("Incompatible version!")
 		return
 	quicksave()
@@ -1589,6 +1590,13 @@ func _load(filename):
 	active = true
 	
 	# Compatibility with older save files.
+	if save_version!=VERSION:
+		Objects.actors.player.memory = 128
+		if upgraded.has("memory"):
+			Objects.actors.player.memory += 32*upgraded.memory
+		Objects.actors.player.cpu = 15
+		if upgraded.has("cpu"):
+			Objects.actors.player.cpu += 3*upgraded.cpu
 	if Vars.get_var("part1_finished"):
 		Events.call_chat("ai","suggest_contact")
 		Vars.clear_var("part1_finished")

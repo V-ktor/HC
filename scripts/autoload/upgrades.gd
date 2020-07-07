@@ -22,7 +22,7 @@ func _ready():
 	upgrades["cpu"] = {"name":"CPU","method":"inc_cpu","args":3,
 		"cost":2000,"compile_time":20.0,"compile_cpu":10,
 		"icon":"res://images/icons/cpu.png","image":"res://images/cards/cpu.png"}
-	upgrades["memory"] = {"name":"MEMORY","method":"inc_memory","args":16,
+	upgrades["memory"] = {"name":"MEMORY","method":"inc_memory","args":32,
 		"cost":1500,"compile_time":15.0,"compile_cpu":10,
 		"icon":"res://images/icons/memory.png","image":"res://images/cards/memory.png"}
 	upgrades["time_limit"] = {"name":"TIME_LIMIT","method":"inc_time_limit","args":5.0,

@@ -279,18 +279,18 @@ const NODE_ENEMY = 3
 
 
 class Program:
-	var name
-	var description
-	var nodes
-	var max_cpu
-	var mean_cpu
-	var size
-	var cost
-	var compile_time
-	var compile_cpu
-	var line
-	var icon
-	var image
+	var name : String
+	var description : String
+	var nodes : Dictionary
+	var max_cpu : int
+	var mean_cpu : float
+	var size : int
+	var cost : int
+	var compile_time : float
+	var compile_cpu : int
+#	var line
+	var icon : String
+	var image : String
 	
 	func _init(dict):
 		nodes = dict.code
@@ -301,8 +301,18 @@ class Program:
 		if dict.has("icon"):
 			icon = "res://images/icons/"+dict.icon+".png"
 			image = "res://images/cards/"+dict.icon+".png"
-		line = 0
+#		line = 0
 		calc_statistics()
+	
+	func find_loops(node,previous_pos:=[],loops:=0) -> int:
+		var pos_array := previous_pos+[node.pos]
+		for dir in node.dir:
+			var p = node.pos+Programs.get_offset(dir,node.pos)
+			if p in previous_pos:
+				loops += 1
+			elif nodes.has(p):
+				loops = find_loops(nodes[p],pos_array,loops)
+		return loops
 	
 	func calc_statistics():
 		var time := 0.0
@@ -314,17 +324,23 @@ class Program:
 		compile_cpu = 0
 		compile_time = 0
 		
-		for node in nodes.values():
+		for pos in nodes.keys():
+			var node = nodes[pos]
 			var cpu := 0
 			var delay := 0.0
+			var s := 0
+			var loops := 0
+			node.pos = pos
+			loops = find_loops(node)
 			if typeof(Programs.COMMANDS[node.type].cost)==TYPE_STRING:
 				cost += Programs.call(Programs.COMMANDS[node.type].cost,node.arguments)
 			else:
 				cost += Programs.COMMANDS[node.type].cost
 			if typeof(Programs.COMMANDS[node.type].size)==TYPE_STRING:
-				size += Programs.call(Programs.COMMANDS[node.type].size,node.arguments)
+				s = Programs.call(Programs.COMMANDS[node.type].size,node.arguments)
 			else:
-				size += Programs.COMMANDS[node.type].size
+				s = Programs.COMMANDS[node.type].size
+			size += int(s*(1.0+loops/2.0))
 			if typeof(Programs.COMMANDS[node.type].cpu)==TYPE_STRING:
 				cpu = Programs.call(Programs.COMMANDS[node.type].cpu,node.arguments)
 			else:
@@ -453,26 +469,27 @@ func get_offset(dir : int, pos : Vector2) -> Vector2:
 			offset = Vector2(1,-int(pos.x+1)%2)
 	return offset
 
-func attack_cpu(args):
+func attack_cpu(args) -> int:
 	return int(args[0])
 
-func attack_delay(args):
+func attack_delay(args) -> float:
 	return 1.0+float(args[0])/2.0
 
-func protect_delay(args):
+func protect_delay(args) -> float:
 	return 5.0+float(args[0])
 
-func disrupt_cpu(args):
+func disrupt_cpu(args) -> int:
 	return int(1+pow(args[0],1.5)/250.0)
 
 
-func to_class(code):
+
+func to_class(code) -> Dictionary:
 	var nodes = {}
 	for pos in code.keys():
 		nodes[pos] = PrgmNode.new(pos,code[pos])
 	return nodes
 
-func to_dict(code):
+func to_dict(code) -> Dictionary:
 	var dict = {}
 	for pos in code.code.keys():
 		dict[pos] = code.code[pos].to_dict()
