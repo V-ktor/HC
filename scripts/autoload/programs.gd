@@ -256,13 +256,6 @@ const VARS = [
 	"cpu",
 	"control"
 ]
-#const FOR_VARS = [
-#	"i","j","k","l","m","n","a","b","c","d","e","f","g","h"
-#]
-#const MAIN_COMMANDS = [
-#	"if","while","for","break","return","sleep","connect","disconnect",
-#	"attack","protect","translocate","clone"
-#]
 const STATEMENT_ARGS = {
 	"==":["number","number"],
 	"!=":["number","number"],
@@ -279,6 +272,7 @@ const NODE_ENEMY = 3
 
 
 class Program:
+	# Program definition and statistics.
 	var name : String
 	var description : String
 	var nodes : Dictionary
@@ -288,7 +282,6 @@ class Program:
 	var cost : int
 	var compile_time : float
 	var compile_cpu : int
-#	var line
 	var icon : String
 	var image : String
 	
@@ -301,16 +294,16 @@ class Program:
 		if dict.has("icon"):
 			icon = "res://images/icons/"+dict.icon+".png"
 			image = "res://images/cards/"+dict.icon+".png"
-#		line = 0
 		calc_statistics()
 	
 	func find_loops(node,previous_pos:=[],loops:=0) -> int:
+		# Get the number of loops containing node.
 		var pos_array := previous_pos+[node.pos]
 		for dir in node.dir:
 			var p = node.pos+Programs.get_offset(dir,node.pos)
-			if p in previous_pos:
+			if p==pos_array[0]:
 				loops += 1
-			elif nodes.has(p):
+			elif nodes.has(p) && !(p in previous_pos):
 				loops = find_loops(nodes[p],pos_array,loops)
 		return loops
 	
@@ -341,6 +334,7 @@ class Program:
 			else:
 				s = Programs.COMMANDS[node.type].size
 			size += int(s*(1.0+loops/2.0))
+			printt(pos,node.type,loops)
 			if typeof(Programs.COMMANDS[node.type].cpu)==TYPE_STRING:
 				cpu = Programs.call(Programs.COMMANDS[node.type].cpu,node.arguments)
 			else:
@@ -360,6 +354,7 @@ class Program:
 	
 
 class PrgmNode:
+	# Contains program node settings.
 	var type := "initialize"
 	var arguments := []
 	var dir := []
@@ -453,6 +448,7 @@ var known_commands := []
 
 
 func get_offset(dir : int, pos : Vector2) -> Vector2:
+	# Return a vector pointing in the right direction on a hex grid.
 	var offset := Vector2()
 	match dir:
 		0:
@@ -507,14 +503,13 @@ func _load(file):
 	if currentline!=null:
 		known_commands = currentline.known_commands
 		known_programs = currentline.known_programs
-		# Convert strings to Vector2 as it cannot be loaded poperly.
 		for k1 in known_programs.keys():
 			var code := {}
 			for k2 in known_programs[k1].code.keys():
 				var array = k2.split(",")
 				if array.size()>=2:
-					var pos = Vector2(int(array[0]),int(array[1]))
+					# Convert strings (which were Vector2 when saving) to Vector2 as it cannot be loaded poperly.
+					var pos := Vector2(int(array[0]),int(array[1]))
 					code[pos] = known_programs[k1].code[k2]
 			known_programs[k1].code = to_class(code)
 			programs[k1] = known_programs[k1]
-	

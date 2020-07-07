@@ -1,5 +1,7 @@
 extends Node
 
+# Very basic computer player.
+
 var Main
 var gamestate
 

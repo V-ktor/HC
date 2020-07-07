@@ -1591,6 +1591,7 @@ func _load(filename):
 	
 	# Compatibility with older save files.
 	if save_version!=VERSION:
+		# Fix changed cpu and memory values.
 		Objects.actors.player.memory = 128
 		if upgraded.has("memory"):
 			Objects.actors.player.memory += 32*upgraded.memory
@@ -1598,6 +1599,7 @@ func _load(filename):
 		if upgraded.has("cpu"):
 			Objects.actors.player.cpu += 3*upgraded.cpu
 	if Vars.get_var("part1_finished"):
+		# Continue story.
 		Events.call_chat("ai","suggest_contact")
 		Vars.clear_var("part1_finished")
 	

@@ -1,5 +1,7 @@
 extends Node
 
+# Handles BGM
+
 const DEFAULT = ["bazaarnet.ogg","crystal_space.ogg","restoration_completed.ogg","simulation_unknown.ogg"]
 const ACTION = ["caves.ogg","currents.ogg","test_subject.ogg","tribal_chaos.ogg","wicked_beast.ogg"]
 

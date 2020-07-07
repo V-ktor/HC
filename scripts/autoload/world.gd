@@ -139,6 +139,7 @@ class Obj:
 	
 
 class Actor extends Obj:
+	# NPCs, player character, etc.
 	var color : Color
 	var portrait : String
 	var bg : String
@@ -185,6 +186,7 @@ class Actor extends Obj:
 		return dict
 
 class Server extends Obj:
+	# Target that can be attacked.
 	var color : Color
 	var layout : String
 	var layout_params : Array
@@ -218,6 +220,7 @@ class Server extends Obj:
 		return dict
 
 class Group extends Obj:
+	# Companies, organizations, etc. that provide targets aquired via scans and are shown in the log page.
 	var form : String
 	var color : Color
 	var color_alt : Color
@@ -244,6 +247,7 @@ class Group extends Obj:
 		
 	
 	func print_desc(node):
+		# Generate a description for the log page.
 		for d in desc:
 			if desc.has("security") && data<desc.security:
 				if desc.security>1024*1024:
@@ -262,6 +266,7 @@ class Group extends Obj:
 		return dict
 
 class Country extends Obj:
+	# Used to handle countries shown in the log page.
 	var plural := false
 	var acronym := ""
 	var color : Color
@@ -292,6 +297,7 @@ class Country extends Obj:
 		
 	
 	func print_desc(node):
+		# Generate a description for the log page.
 		var num_descs := 0
 		for d in desc:
 			if desc.has("security") && data<desc.security:
@@ -315,6 +321,7 @@ class Country extends Obj:
 		return dict
 
 class Event extends Obj:
+	# Used to handle events shown in the log page.
 	var date : int
 	var data : int
 	
@@ -326,6 +333,7 @@ class Event extends Obj:
 		
 	
 	func print_desc(node):
+		# Generate a description for the log page.
 		for d in desc:
 			if desc.has("security") && data<desc.security:
 				if desc.security>1024*1024:
@@ -345,6 +353,7 @@ class Event extends Obj:
 		return dict
 
 func insert_links(node,text,desc):
+	# Add links to the log text.
 	var array = text.split(" ")
 	for t in array:
 		if desc.has("event") && "<event>" in t:
@@ -392,7 +401,6 @@ func _save(file):
 	file.store_line(JSON.print(acts))
 	file.store_line(JSON.print(grp))
 	file.store_line(JSON.print(evt))
-	
 
 func _load(file):
 	var currentline = JSON.parse(file.get_line()).result
@@ -458,7 +466,6 @@ func _load(file):
 		var dict = currentline[i]
 		var obj = Event.new(dict.name,dict.desc,dict.date,dict.data)
 		events[i] = obj
-	
 
 
 func trigger_on_win(victory):
@@ -475,8 +482,9 @@ func get_total_node_count(type,params):
 		return params[0]+params[1]+params[2]
 	return 0
 
-func add_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win=null,music_overwrite=null):
-	var new_target = Server.new(name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win,music_overwrite)
+func add_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win=null,music_overwrite=null) -> Server:
+	# Add a new target to the target list.
+	var new_target := Server.new(name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win,music_overwrite)
 	targets[ID] = new_target
 	$"/root/Menu".targets.push_back(ID)
 	$"/root/Menu".new_targets += 1
@@ -484,17 +492,20 @@ func add_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,ai,cr
 	return new_target
 
 func remove_target(ID):
+	# Remove target from the target list.
 	targets.erase(ID)
 	$"/root/Menu".targets.erase(ID)
 	if $"/root/Menu/Targets".visible:
 		$"/root/Menu"._show_targets()
 
 func add_opt_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win=null):
-	var new_target = Server.new(name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win)
+	# Add an optional target to the target list (cleared if scan is used).
+	var new_target := Server.new(name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win)
 	new_target.optional = true
 	targets[ID] = new_target
 
 func remove_opt_target(ID):
+	# Remove optional target, check if it is optional first.
 	if targets.has(ID) && !targets[ID].optional:
 		return
 	targets.erase(ID)
@@ -518,6 +529,8 @@ func get_influence_ranking():
 
 
 func create_group_target(strength):
+	# Create a new target belonging to a group.
+	# Set strength and loadout.
 	var ID : String
 	var name : String
 	var group
@@ -598,6 +611,7 @@ func create_groups():
 		create_group("terrorists",COUNTRIES[randi()%COUNTRIES.size()],25.0)
 
 func create_group(type,country,infl):
+	# Create a new group in a certain country.
 	var ID
 	var name : String
 	var desc := []
@@ -770,6 +784,7 @@ func create_group(type,country,infl):
 
 
 func get_random_color(color,color_alt) -> Color:
+	# Given a color and a contrast color, return a random color or one of those two.
 	var logo_color : Color
 	var rnd := randf()
 	if rnd<0.33:
@@ -784,14 +799,15 @@ func get_random_color(color,color_alt) -> Color:
 
 
 func init_world(Menu):
+	# Initialize new game.
 	randomize()
 	
 	var player = Actor.new(Menu.get_node("Login/Input/LineEdit").text,Color(0.1,0.3,1.0),"","",15,128,50.0,{"pulse":7},1000,0,37,{},100)
 	var ai = Actor.new("Hally",Color(0.13,0.5,1.0),"res://scenes/portraits/character01.tscn","res://scenes/gui/chat_bg/AI.tscn",15,256,60.0,{"pulse":6,"wave":2,"fire_wall":2},0,0,21,{},100)
 	ai.desc = "AI_DESC"
 	
-	actors["player"] = player
-	actors["ai"] = ai
+	actors.player = player
+	actors.ai = ai
 	Menu.contacts.push_back("ai")
 	
 	create_groups()
@@ -800,7 +816,9 @@ func init_world(Menu):
 
 
 
-func create_data(group)->Array:
+func create_data(group) -> Array:
+	# Create random file names displayed after successful hack.
+	# File names are chosen by the group's traits.
 	var num_files := 3+(randi()%4)
 	var files := []
 	var array := []
@@ -850,6 +868,7 @@ func create_data(group)->Array:
 	
 	return files
 
-func get_directory(group)->String:
+func get_directory(group) -> String:
+	# Return a random directory name displayed after successful hack.
 	var array : Array = DIRECTORY_NAMES+group.traits
 	return array[randi()%array.size()]
