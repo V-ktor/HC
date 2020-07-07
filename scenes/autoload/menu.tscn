@@ -1016,7 +1016,7 @@ bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 [sub_resource type="DynamicFont" id=93]
 font_data = ExtResource( 3 )
 
-[sub_resource type="Shader" id=109]
+[sub_resource type="Shader" id=94]
 code = "shader_type canvas_item;
 
 uniform float speed = 1.0;
@@ -1028,18 +1028,18 @@ void fragment()
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=110]
-shader = SubResource( 109 )
+[sub_resource type="ShaderMaterial" id=95]
+shader = SubResource( 94 )
 shader_param/speed = 10.0
 
-[sub_resource type="StyleBoxFlat" id=108]
+[sub_resource type="StyleBoxFlat" id=96]
 bg_color = Color( 0.752941, 0, 0, 0.501961 )
 
-[sub_resource type="ShaderMaterial" id=111]
-shader = SubResource( 109 )
+[sub_resource type="ShaderMaterial" id=97]
+shader = SubResource( 94 )
 shader_param/speed = -10.0
 
-[sub_resource type="Shader" id=112]
+[sub_resource type="Shader" id=98]
 code = "shader_type canvas_item;
 
 uniform float speed = 1.0;
@@ -1051,20 +1051,20 @@ void fragment()
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=113]
-shader = SubResource( 112 )
+[sub_resource type="ShaderMaterial" id=99]
+shader = SubResource( 98 )
 shader_param/speed = 0.8
 shader_param/offset = 0.0
 
-[sub_resource type="ViewportTexture" id=114]
+[sub_resource type="ViewportTexture" id=100]
 viewport_path = NodePath("Boss/Viewport")
 
-[sub_resource type="ShaderMaterial" id=115]
-shader = SubResource( 112 )
+[sub_resource type="ShaderMaterial" id=101]
+shader = SubResource( 98 )
 shader_param/speed = 0.7
 shader_param/offset = 0.5
 
-[sub_resource type="Shader" id=105]
+[sub_resource type="Shader" id=102]
 code = "shader_type canvas_item;
 
 uniform vec4 color : hint_color = vec4(0.75,0.0,0.0,0.75);
@@ -1079,34 +1079,34 @@ void fragment()
 }"
 custom_defines = ""
 
+[sub_resource type="ShaderMaterial" id=103]
+shader = SubResource( 102 )
+shader_param/color = Color( 0.752941, 0.0627451, 0, 0.74902 )
+shader_param/speed = 2.0
+
+[sub_resource type="ShaderMaterial" id=104]
+shader = SubResource( 102 )
+shader_param/color = Color( 0.752941, 0.0627451, 0, 0.74902 )
+shader_param/speed = -2.0
+
+[sub_resource type="ShaderMaterial" id=105]
+shader = SubResource( 102 )
+shader_param/color = Color( 0.752941, 0, 0.12549, 0.25098 )
+shader_param/speed = -2.0
+
 [sub_resource type="ShaderMaterial" id=106]
-shader = SubResource( 105 )
-shader_param/color = Color( 0.75, 0, 0, 0.75 )
+shader = SubResource( 102 )
+shader_param/color = Color( 0.752941, 0, 0.12549, 0.25098 )
 shader_param/speed = 2.0
 
-[sub_resource type="ShaderMaterial" id=107]
-shader = SubResource( 105 )
-shader_param/color = Color( 0.75, 0, 0, 0.75 )
-shader_param/speed = -2.0
-
-[sub_resource type="ShaderMaterial" id=116]
-shader = SubResource( 105 )
-shader_param/color = Color( 0.74902, 0, 0, 0.25098 )
-shader_param/speed = -2.0
-
-[sub_resource type="ShaderMaterial" id=117]
-shader = SubResource( 105 )
-shader_param/color = Color( 0.74902, 0, 0, 0.25098 )
-shader_param/speed = 2.0
-
-[sub_resource type="StyleBoxFlat" id=102]
+[sub_resource type="StyleBoxFlat" id=107]
 bg_color = Color( 0.752941, 0, 0, 0.752941 )
 
-[sub_resource type="DynamicFont" id=103]
+[sub_resource type="DynamicFont" id=108]
 size = 42
 font_data = ExtResource( 10 )
 
-[sub_resource type="Animation" id=118]
+[sub_resource type="Animation" id=109]
 resource_name = "boss"
 length = 10.0
 step = 0.5
@@ -1326,8 +1326,32 @@ tracks/17/keys = {
 "update": 0,
 "values": [ 1.0, 0.0, 0.0, 1.0, 0.0 ]
 }
+tracks/18/type = "value"
+tracks/18/path = NodePath("Viewport/Panel1/Label:text")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"times": PoolRealArray( 0, 4, 8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ "-    WARNING", "-    DANGER", "-    CAUTION" ]
+}
+tracks/19/type = "value"
+tracks/19/path = NodePath("Viewport/Panel2/Label:text")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"times": PoolRealArray( 0, 2, 6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ "-    CAUTION", "-    BOSS    -", "-    WARNING" ]
+}
 
-[sub_resource type="Shader" id=94]
+[sub_resource type="Shader" id=110]
 code = "shader_type canvas_item;
 
 uniform float noise_scale = 0.0;
@@ -1365,8 +1389,8 @@ void fragment()
 "
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=95]
-shader = SubResource( 94 )
+[sub_resource type="ShaderMaterial" id=111]
+shader = SubResource( 110 )
 shader_param/noise_scale = 0.0
 shader_param/glitch_scale = 1.0
 shader_param/glitch_blend = 0.0
@@ -1375,11 +1399,11 @@ shader_param/noise = ExtResource( 11 )
 shader_param/noise_mask = ExtResource( 13 )
 shader_param/block_mask = ExtResource( 20 )
 
-[sub_resource type="StyleBoxFlat" id=96]
+[sub_resource type="StyleBoxFlat" id=112]
 bg_color = Color( 0, 0, 0, 0 )
 border_color = Color( 0, 0, 0, 0 )
 
-[sub_resource type="Animation" id=97]
+[sub_resource type="Animation" id=113]
 length = 3.0
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:material:shader_param/noise_scale")
@@ -1442,7 +1466,7 @@ tracks/4/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=98]
+[sub_resource type="Animation" id=114]
 length = 2.0
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:visible")
@@ -1505,7 +1529,7 @@ tracks/4/keys = {
 "values": [ 0.0, 0.16, 0.165, 0.17, 0.175, 0.18, 0.185, 2.0 ]
 }
 
-[sub_resource type="Animation" id=99]
+[sub_resource type="Animation" id=115]
 length = 30.0
 loop = true
 tracks/0/type = "value"
@@ -1557,7 +1581,7 @@ tracks/3/keys = {
 "values": [ 0.0, 0.25, 0.0, 0.175, 0.0, 0.5, 0.0, 1.0, 0.0, 2.0, 0.0, 0.2, 0.0, 0.17, 0.0 ]
 }
 
-[sub_resource type="Animation" id=100]
+[sub_resource type="Animation" id=116]
 length = 20.0
 loop = true
 tracks/0/type = "value"
@@ -1609,7 +1633,7 @@ tracks/3/keys = {
 "values": [ 1.0, 0.0, 1.0, 0.18, 0.0, 0.17, 0.0, 0.2, 10.0, 0.0, 0.175, 0.0 ]
 }
 
-[sub_resource type="Animation" id=101]
+[sub_resource type="Animation" id=117]
 length = 20.0
 loop = true
 tracks/0/type = "value"
@@ -1661,7 +1685,7 @@ tracks/3/keys = {
 "values": [ 0.0, 0.18, 0.0, 0.25, 0.165, 0.0, 0.185, 0.0, 0.3, 0.0, 0.25, 0.0, 0.3, 0.0, 0.2, 0.0, 0.35, 0.0, 0.165, 0.0, 0.275, 0.0, 0.5, 0.0, 2.0, 0.0 ]
 }
 
-[sub_resource type="GDScript" id=104]
+[sub_resource type="GDScript" id=118]
 script/source = "extends Control
 
 var ring : Dictionary
@@ -4690,62 +4714,62 @@ __meta__ = {
 
 [node name="Panel1" type="Panel" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 110 )
+material = SubResource( 95 )
 anchor_right = 1.0
 margin_top = 8.0
 margin_bottom = 16.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 108 )
+custom_styles/panel = SubResource( 96 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Panel2" type="Panel" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 110 )
+material = SubResource( 95 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -16.0
 margin_bottom = -8.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 108 )
+custom_styles/panel = SubResource( 96 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Panel3" type="Panel" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 111 )
+material = SubResource( 97 )
 anchor_right = 1.0
 margin_top = 232.0
 margin_bottom = 240.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 108 )
+custom_styles/panel = SubResource( 96 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Panel4" type="Panel" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 111 )
+material = SubResource( 97 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -240.0
 margin_bottom = -232.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 108 )
+custom_styles/panel = SubResource( 96 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Text1" type="TextureRect" parent="Boss"]
-material = SubResource( 113 )
+material = SubResource( 99 )
 margin_top = 48.0
 margin_bottom = 96.0
 mouse_filter = 2
-texture = SubResource( 114 )
+texture = SubResource( 100 )
 expand = true
 stretch_mode = 2
 __meta__ = {
@@ -4754,13 +4778,13 @@ __meta__ = {
 }
 
 [node name="Text2" type="TextureRect" parent="Boss"]
-material = SubResource( 115 )
+material = SubResource( 101 )
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_top = -96.0
 margin_bottom = -48.0
 mouse_filter = 2
-texture = SubResource( 114 )
+texture = SubResource( 100 )
 expand = true
 stretch_mode = 2
 __meta__ = {
@@ -4769,7 +4793,7 @@ __meta__ = {
 
 [node name="Crown1" type="TextureRect" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 106 )
+material = SubResource( 103 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -4784,7 +4808,7 @@ __meta__ = {
 
 [node name="Crown2" type="TextureRect" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 107 )
+material = SubResource( 104 )
 anchor_right = 1.0
 margin_top = 144.0
 margin_bottom = 192.0
@@ -4794,7 +4818,7 @@ stretch_mode = 2
 
 [node name="Star1" type="TextureRect" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 116 )
+material = SubResource( 105 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -4809,7 +4833,7 @@ __meta__ = {
 
 [node name="Star2" type="TextureRect" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 117 )
+material = SubResource( 106 )
 anchor_right = 1.0
 margin_top = 104.0
 margin_bottom = 136.0
@@ -4833,7 +4857,7 @@ render_target_v_flip = true
 anchor_right = 1.0
 anchor_bottom = 0.5
 mouse_filter = 2
-custom_styles/panel = SubResource( 102 )
+custom_styles/panel = SubResource( 107 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -4841,8 +4865,8 @@ __meta__ = {
 [node name="Label" type="Label" parent="Boss/Viewport/Panel1"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 103 )
-text = "-    WARNING"
+custom_fonts/font = SubResource( 108 )
+text = "-    CAUTION"
 align = 1
 valign = 1
 clip_text = true
@@ -4855,7 +4879,7 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 102 )
+custom_styles/panel = SubResource( 107 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -4863,8 +4887,8 @@ __meta__ = {
 [node name="Label" type="Label" parent="Boss/Viewport/Panel2"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 103 )
-text = "-    CAUTION"
+custom_fonts/font = SubResource( 108 )
+text = "-    WARNING"
 align = 1
 valign = 1
 clip_text = true
@@ -4873,17 +4897,17 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Boss"]
-anims/boss = SubResource( 118 )
+anims/boss = SubResource( 109 )
 
 [node name="Textbox" parent="." instance=ExtResource( 16 )]
 
 [node name="Glitch" type="Panel" parent="."]
 visible = false
-material = SubResource( 95 )
+material = SubResource( 111 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 96 )
+custom_styles/panel = SubResource( 112 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -4893,11 +4917,11 @@ stream = ExtResource( 23 )
 volume_db = -80.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Glitch"]
-anims/burst_off = SubResource( 97 )
-anims/intro = SubResource( 98 )
-anims/sequence1 = SubResource( 99 )
-anims/sequence2 = SubResource( 100 )
-anims/sequence3 = SubResource( 101 )
+anims/burst_off = SubResource( 113 )
+anims/intro = SubResource( 114 )
+anims/sequence1 = SubResource( 115 )
+anims/sequence2 = SubResource( 116 )
+anims/sequence3 = SubResource( 117 )
 
 [node name="ViewportLogo" type="Viewport" parent="."]
 size = Vector2( 256, 256 )
@@ -4913,7 +4937,7 @@ margin_bottom = 256.0
 rect_min_size = Vector2( 256, 256 )
 expand = true
 stretch_mode = 6
-script = SubResource( 104 )
+script = SubResource( 118 )
 
 [node name="Label" type="Label" parent="ViewportLogo/Draw"]
 anchor_right = 1.0
