@@ -15,11 +15,14 @@ func ai_random(player):
 #	if gamestate.cpu[player]-2<0.1*gamestate.max_cpu[player]:
 #		cancel_random_program(player)
 #		return
-	if nodes.size()==0 || gamestate.cpu[player]<=gamestate.max_cpu[player]/10 || gamestate.cpu[player]<1.2*get_mean_program_cpu(player):
+	if nodes.size()==0 || gamestate.cpu[player]<gamestate.max_cpu[player]/10 || gamestate.cpu[player]<get_mean_program_cpu(player):
+		# No nodes or low on CPU.
 		return
 	for program in programs:
+		# Go trough all available programs in random order.
 		var ID = nodes[randi()%nodes.size()]
 		if gamestate.cpu[player]<Programs.Program.new(Programs.programs[program]).mean_cpu:
+			# Not enough CPU.
 			continue
 		if program=="pulse" || program=="wave" || program=="scythe":
 			if is_adjacent_to_unowned(player,ID):
@@ -44,7 +47,6 @@ func ai_random(player):
 		else:
 			Main.use_action(player,program,ID)
 			break
-	
 
 
 func sort_random(array : Array) -> Array:

@@ -415,6 +415,7 @@ func update_log():
 
 
 func _add_deck():
+	# Create a new (empty) deck.
 	decks.push_back({})
 	deck_selected = decks.size()-1
 	update_decks()
@@ -423,15 +424,17 @@ func _select_deck(deck):
 	deck_selected = deck
 	update_decks()
 
-func get_memory():
+func get_memory() -> int:
+	# Returns the memory left.
 	var used := 0
 	for prog in decks[deck_selected].keys():
 		var prgm = Programs.Program.new(Programs.programs[prog])
 		used += prgm.size*decks[deck_selected][prog]
 	return Objects.actors.player.memory-used
 
-func _add_card(prog):
-	var prgm = Programs.Program.new(Programs.programs[prog])
+func _add_card(prog) -> bool:
+	# Add a card to the current deck.
+	var prgm := Programs.Program.new(Programs.programs[prog])
 	if prgm.size>get_memory():
 		return false
 	var inventory = Objects.actors.player.programs
@@ -447,6 +450,7 @@ func _add_card(prog):
 	return true
 
 func _remove_card(prog):
+	# Remove a card from the current deck.
 	if !decks[deck_selected].has(prog):
 		return false
 	if decks[deck_selected][prog]==1:
@@ -458,6 +462,8 @@ func _remove_card(prog):
 	return true
 
 func _select_contact(contact):
+	# Select a contact from the contact list.
+	# Load portrait and background.
 	var bg = load(Objects.actors[contact].bg).instance()
 	var portrait = load(Objects.actors[contact].portrait).instance()
 	var scale := max($Chat/Panel/Portrait.rect_size.x/portrait.get_node("Rect").rect_size.x,$Chat/Panel/Portrait.rect_size.y/portrait.get_node("Rect").rect_size.y)
@@ -493,6 +499,7 @@ func _select_contact(contact):
 	chat_read[contact] = chat_log[contact].size()
 
 func _select_choice(choice,index,panel):
+	# Selected a dialog option in the chat window.
 	var method = choice.text.to_lower()
 	panel.queue_free()
 	chat_log[contact_selected].remove(index)
@@ -506,6 +513,8 @@ func _select_choice(choice,index,panel):
 		Events.call_chat(contact_selected,method)
 
 func _select_target(target):
+	# Selected a target from the target list.
+	# Show info and logo.
 	var tg = Objects.targets[target]
 	var group = tg.group
 	var text := $Targets/VBoxContainer/HBoxContainer/Text
@@ -529,6 +538,7 @@ func _select_target(target):
 		Objects.groups[group].print_desc(text)
 
 func _attack_target():
+	# Start an attack against the currently selected target.
 	if target_selected==null:
 		return false
 	printt("Initializing attack...")
@@ -639,6 +649,7 @@ func _confirm_hack_result():
 	$Hack/Result.hide()
 
 func add_msg(contact,text,from_player:=false,dict:={}):
+	# Add a new chat message and update GUI.
 	dict.text = text
 	dict.from_player = from_player
 	if !chat_log.has(contact):
@@ -657,6 +668,7 @@ func add_msg(contact,text,from_player:=false,dict:={}):
 	update_main_menu()
 
 func add_choice(contact,choices):
+	# Add dialog options to the chat.
 	if !chat_choice.has(contact):
 		chat_choice[contact] = [{"choices":choices,"from_player":true}]
 	else:
@@ -673,6 +685,7 @@ func add_choice(contact,choices):
 	update_main_menu()
 
 func add_hack_msg(text,from_player=false):
+	# Add a new message in the hack result window.
 	chat_hack_log.push_back({"text":text,"from_player":from_player})
 	if chat_hack_log.size()>MAX_MSG:
 		chat_hack_log.pop_front()
@@ -682,6 +695,7 @@ func add_hack_msg(text,from_player=false):
 	update_main_menu()
 
 func remove_choice(contact,choices):
+	# Remove the chat options (usually because one of them were selected).
 	if !chat_choice.has(contact):
 		chat_choice[contact] = []
 	else:
@@ -692,16 +706,16 @@ func remove_choice(contact,choices):
 	if $Chat.visible && contact==contact_selected:
 		update_chat()
 
-func add_tech(prog):
-	if prog in Programs.known_programs.keys():
-		return
-	Programs.known_programs[prog] = Programs.programs[prog]
-	if $Compile.visible:
-		update_compile()
+#func add_tech(prog):
+#	# Add the program to the list of known programs.
+#	if prog in Programs.known_programs.keys():
+#		return
+#	Programs.known_programs[prog] = Programs.programs[prog]
+#	if $Compile.visible:
+#		update_compile()
 
 func _research(prog):
-#	if Objects.actors.player.programs[prog]<1:
-#		return false
+	# Start decompilation of a program.
 	var prgm = Programs.Program.new(Programs.programs[prog])
 	if Programs.known_programs.has(prog):
 		if prgm.cost>Objects.actors.player.credits || prgm.compile_cpu>Objects.actors["ai"].cpu-compile_cpu:
@@ -720,6 +734,9 @@ func _research(prog):
 	return true
 
 func research(dict):
+	# Decompile a program.
+	# Remove it, but add it to the list of known programs so that it can be compiled.
+	# Add yet unknown commands to the list of known commands.
 	var prgm = Programs.programs[dict.type]
 	Objects.actors.player.programs[dict.type] -= 1
 	Programs.known_programs[dict.type] = prgm
@@ -735,6 +752,7 @@ func research(dict):
 				continue
 
 func _upgrade(tech):
+	# Start building an upgrade.
 	var lvl := 1
 	if upgraded.has(tech):
 		lvl += upgraded[tech]
@@ -749,6 +767,8 @@ func _upgrade(tech):
 	return true
 
 func upgrade(dict):
+	# Upgrade has been built.
+	# Increase the level and apply the upgrade.
 	if upgraded.has(dict["type"]):
 		upgraded[dict["type"]] += 1
 	else:
@@ -756,6 +776,8 @@ func upgrade(dict):
 	Upgrades.call(Upgrades.upgrades[dict["type"]]["method"],Upgrades.upgrades[dict["type"]]["args"])
 
 func add_chat_box(dict,index,where="Chat",contact="ai"):
+	# Add a chat box to the chat or the hack result window containing text.
+	# Call 'add_chat_choice_box' instead if it contains dialog options.
 	if dict.has("choices"):
 		add_chat_choice_box(dict.choices,index)
 		return
@@ -962,6 +984,7 @@ func update_compile():
 	connect_ui_sounds_recursively($Compile)
 
 func add_program(dict):
+	# Add a program to the player's inventory.
 	if Objects.actors.player.programs.has(dict["type"]):
 		Objects.actors.player.programs[dict["type"]] += 1
 	else:
@@ -990,6 +1013,7 @@ func update_code():
 	connect_ui_sounds_recursively($Code)
 
 func _load_program(ID):
+	# Display an existing program in the code window.
 	program_nodes = Programs.known_programs.values()[ID].code.duplicate()
 	program_name = tr(Programs.known_programs.values()[ID].name)
 	program_desc =  tr(Programs.known_programs.values()[ID].description)
@@ -1000,6 +1024,7 @@ func _load_program(ID):
 	update_program()
 
 func _save_program():
+	# Save a program by adding it to the list of known programs.
 	var code := {}
 	if program_name in Programs.programs.keys():
 		var n := 2
@@ -1013,6 +1038,7 @@ func _save_program():
 	update_code()
 
 func _new_program():
+	# Create a new program.
 	program_nodes = {program_grid_size/2:Programs.PrgmNode.new(program_grid_size/2,{"type":"initialize","dir":[0]})}
 	program_name = tr("NEW_PROGRAM")
 	program_desc = tr("EMPTY_PROGRAM")
@@ -1025,6 +1051,8 @@ func _new_program():
 	$Code/Code/ScrollContainer.scroll_vertical = $Code/Code/ScrollContainer/BG.rect_min_size.y/2-$Code/Code/ScrollContainer.rect_size.y/2+196/2
 
 func _delete_program():
+	# Delete a program from the list of known programs.
+	# Make sure it is not a default program.
 	if Programs.predefined_programs.has(program_name):
 		return
 	Programs.known_programs.erase(program_name)
@@ -1490,10 +1518,10 @@ func debug_progress():
 		if prog.type=="terminate":
 			debug_msg(tr("TERMINATE"))
 		debug_stop()
-	
 
 
 func _scan():
+	# Add random targets to the target list.
 	for target in Objects.targets.keys():
 		if Objects.targets[target].optional:
 			Objects.remove_opt_target(target)
@@ -1906,15 +1934,15 @@ func _quit():
 		get_tree().quit()
 
 func _screen_resized():
+	# Cards have to be resized when the screen resolution changed.
 	yield(get_tree(),"idle_frame")
 	$Code/Icon/ScrollContainer/GridContainer.columns = int(($Code/Icon/ScrollContainer/GridContainer.rect_size.x-4)/196)
 	if $Deck.visible:
 		update_inventory()
 		update_deck()
-	
-
 
 func get_date(time:=0) -> Dictionary:
+	# Get the current date or offsetted by 'time' (in seconds) and add 100 years because reasons.
 	if time==0:
 		time = OS.get_unix_time()
 	var date := OS.get_datetime_from_unix_time(time)
@@ -1923,11 +1951,13 @@ func get_date(time:=0) -> Dictionary:
 
 
 func _process(delta):
+	# Update date shown in the top bar.
 	var date := get_date()
 	$Top/HBoxContainer/Date.text = str(date["day"]).pad_zeros(2)+"."+str(date["month"]).pad_zeros(2)+"."+str(date["year"])
 	$Top/HBoxContainer/Time.text = str(date["hour"]).pad_zeros(2)+":"+str(date["minute"]).pad_zeros(2)
 	
 	if active:
+		# Progress building projects.
 		for i in range(building.size()-1,-1,-1):
 			building[i]["delay"] -= delta
 			if building[i]["delay"]<=0.0:
@@ -1946,6 +1976,7 @@ func _process(delta):
 					get_node("Gear/ScrollContainer/GridContainer/Stack"+str(i)+"/ProgressBar/Label").text = str(building[i]["delay"]).pad_decimals(1)+"s"
 		
 		if debug_active:
+			# Progress program debug.
 			program_delay -= delta*debug_speed
 			program_time += delta*debug_speed
 			debug_dot_delay -= delta
@@ -1954,13 +1985,11 @@ func _process(delta):
 			if program_delay<=0.0:
 				debug_progress()
 			debug_update()
-	
 
 func _input(event):
 	if event is InputEventKey:
 		if event.is_action_pressed("cancel"):
 			_close()
-
 
 
 func _log_item_selected():
@@ -1969,6 +1998,7 @@ func _log_item_selected():
 	select_log(type,ID)
 
 func update_logo(logo):
+	# Create the organization logo fram data stored as dictionary.
 	var draw := $ViewportLogo/Draw
 	draw.clear()
 	if logo.has("ring"):
@@ -1988,6 +2018,8 @@ func update_logo(logo):
 	draw.update()
 
 func select_log(type,ID):
+	# A button in the log window was pressed.
+	# Display the appropriate log entry.
 	var text := $Log/Text/VBoxContainer/Text
 	var logo := $Log/Text/VBoxContainer/HBoxContainer/Logo
 	var text_right := $Log/Text/VBoxContainer/HBoxContainer/Text
@@ -2101,14 +2133,14 @@ func select_log(type,ID):
 		text.newline()
 		text.newline()
 		event.print_desc(text)
-		
 	
 
 func _log_link(data):
 	select_log(data.type,data.ID)
-	
+
 
 func connect_ui_sounds_recursively(node):
+	# Play a sound when a button is pressed or when the mouse enters the button.
 	for c in node.get_children():
 		if c is BaseButton:
 			if !c.is_connected("mouse_entered",$SoundHover,"play"):
@@ -2122,7 +2154,6 @@ func _ready():
 	var credits_text := $Credits/RichTextLabel
 	randomize()
 	reset()
-	
 	
 	# connect signals #
 	get_tree().connect("screen_resized",self,"_screen_resized")
@@ -2172,10 +2203,10 @@ func _ready():
 	$Saves/ScrollContainer/VBoxContainer/New/ButtonConfirm.connect("pressed",self,"_save")
 	$Quit/ButtonClose.connect("pressed",self,"_quit")
 	
-	
 	connect_ui_sounds_recursively(self)
 	
 	for i in range(PROGRAM_ICONS.size()):
+		# Create the program icon buttons.
 		var bi
 		if has_node("Code/Icon/ScrollContainer/GridContainer/Button"+str(i)):
 			bi = get_node("Code/Icon/ScrollContainer/GridContainer/Button"+str(i))
@@ -2186,6 +2217,7 @@ func _ready():
 			bi.connect("pressed",self,"_select_program_icon",[i])
 		bi.get_node("TextureRect").texture = load("res://images/cards/"+PROGRAM_ICONS[i]+".png")
 	
+	# Create the credits and add url links.
 	credits_text.clear()
 	credits_text.add_text(tr("MADE_WITH_GODOT")+" (")
 	credits_text.append_bbcode("[url=https://godotengine.org]godotengine.org[/url]")
@@ -2226,4 +2258,5 @@ func _ready():
 	credits_text.add_text(" - Jonas Hecksher\n\n")
 	credits_text.connect("meta_clicked",Object(OS),"shell_open")
 	
+	# There should be options to change this behaviour.
 	OS.window_maximized = true

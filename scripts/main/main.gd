@@ -26,11 +26,12 @@ var connection_particle := preload("res://scenes/particles/connection.tscn")
 var fire_wall_particle := preload("res://scenes/particles/fire.tscn")
 var disrupt_particle := preload("res://scenes/particles/disrupt.tscn")
 
-
+# When the timer reaches zero.
 signal timeout(winner)
 
 
 class ControlPoint:
+	# Control points that can be captured by players.
 	var position := Vector2()
 	var connections := []
 	var control := []
@@ -69,11 +70,12 @@ class ControlPoint:
 		check_owner()
 	
 	func has_access(player):
+		# Can the player install his programs here?
 		return player==owner
 	
 	func check_owner():
-		var new_owner = -1
-		var max_value = 50
+		var new_owner := -1
+		var max_value := 50
 		if owner>=0:
 			max_value = control[owner]
 			if max_value>=50:
@@ -97,11 +99,13 @@ class ControlPoint:
 		check_programs()
 	
 	func check_programs():
+		# Remove invalid programs.
 		for program in programs:
 			if program.owner!=owner:
 				remove_program(program)
 	
 	func attack(player,amount):
+		# Attack this control point.
 		var dam = amount
 		for i in range(0,player-1)+range(player+1,control.size()):
 			if shield[i]>0.0:
@@ -126,6 +130,7 @@ class ControlPoint:
 			mask_dmg -= amount
 	
 	func defend(player,amount):
+		# Add protection against attacks.
 		shield[player] += amount
 		max_shield[player] += amount
 		
@@ -138,6 +143,7 @@ class ControlPoint:
 			mask_dmg -= amount
 	
 	func cancel_defense(player,amount):
+		# Cancel the protection.
 		shield[player] -= amount*shield[player]/max(max_shield[player],1)
 		max_shield[player] -= amount
 	
@@ -156,6 +162,7 @@ class ControlPoint:
 		programs.erase(program)
 
 class Program:
+	# Programs running on control points.
 	var type := ""
 	var prgm
 	var nodes := {}
@@ -344,7 +351,6 @@ class Program:
 		gamestate.nodes[ID].remove_program(self)
 		remove()
 	
-	
 	func update(delta):
 		status_delay -= delta
 		if status_delay<=0.0:
@@ -357,7 +363,6 @@ class Program:
 				ticks = 0
 				pos = node.get_node("Code").text.find("\n")
 				node.get_node("Code").text = node.get_node("Code").text.substr(pos+1,node.get_node("Code").text.length()-pos-1)+"\n"+tr(nodes[focus].type.to_upper()+"_LINE"+str((randi()%5)+1))
-	
 	
 	func evaluate_statement(array) -> bool:
 		if array.size()==0:
@@ -470,10 +475,10 @@ class Program:
 				target = array[randi()%array.size()]
 		
 		return target
-	
 
 
 func select(ID):
+	# Player selected a control point.
 	if node_selected>=0:
 		var node = points[node_selected].node
 		var tween = node.get_node("Select/Tween")
@@ -488,11 +493,12 @@ func select(ID):
 	$SoundClick.play()
 
 func add_program(player,type,ID):
+	# Add a new program.
 	var tooltip
 	var prgm
 	var dir
 	var index
-	var prog = Programs.Program.new(Programs.programs[type])
+	var prog := Programs.Program.new(Programs.programs[type])
 	
 	tooltip = effect_tooltip.instance()
 	prgm = Program.new(type,prog,player,ID,gamestate,tooltip)
@@ -514,6 +520,7 @@ func _use_action(player,type):
 	use_action(player,type,node_selected)
 
 func use_action(player,type,ID):
+	# Player selected an action.
 	if !active:
 		if started:
 			active = true
@@ -534,9 +541,9 @@ func use_action(player,type,ID):
 	return success
 
 func get_winner():
-	var player = -1
-	var control = []
-	var highest = 0
+	var player := -1
+	var control := []
+	var highest := 0
 	control.resize(num_players+1)
 	for i in range(control.size()):
 		control[i] = 0
@@ -563,6 +570,8 @@ func get_winner():
 
 
 func hint():
+	# Give visual hints to the player.
+	# Used in the intro sequence.
 	var valid_points := []
 	var timer = Timer.new()
 	for i in range(points.size()):
@@ -586,7 +595,7 @@ func hint():
 
 
 func parse(prgm):
-	# Parse the program.
+	# Execute the program's next command.
 	if !prgm.nodes.has(prgm.focus):
 		print("No valid node at "+str(prgm.focus)+"!")
 		prgm.stop()
