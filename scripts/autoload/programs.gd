@@ -334,7 +334,6 @@ class Program:
 			else:
 				s = Programs.COMMANDS[node.type].size
 			size += int(s*(1.0+loops/2.0))
-			printt(pos,node.type,loops)
 			if typeof(Programs.COMMANDS[node.type].cpu)==TYPE_STRING:
 				cpu = Programs.call(Programs.COMMANDS[node.type].cpu,node.arguments)
 			else:
@@ -351,7 +350,6 @@ class Program:
 		compile_cpu = int(3*sqrt(total_cpu))
 		mean_cpu /= max(time,1.0)
 		compile_time = time
-	
 
 class PrgmNode:
 	# Contains program node settings.

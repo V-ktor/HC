@@ -2850,13 +2850,13 @@ scroll_vertical_enabled = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Gear/Techs"]
 margin_right = 948.0
-margin_bottom = 250.0
+margin_bottom = 262.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Tech0" type="Panel" parent="Gear/Techs/HBoxContainer"]
 margin_right = 175.0
-margin_bottom = 250.0
+margin_bottom = 262.0
 rect_min_size = Vector2( 175, 250 )
 
 [node name="Card" parent="Gear/Techs/HBoxContainer/Tech0" instance=ExtResource( 9 )]
@@ -3248,6 +3248,7 @@ __meta__ = {
 }
 
 [node name="Description" type="Tabs" parent="Code/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -3293,7 +3294,6 @@ __meta__ = {
 }
 
 [node name="Debug" type="Tabs" parent="Code/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0

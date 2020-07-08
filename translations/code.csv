@@ -1,4 +1,37 @@
 ,en
+INITIALIZE,initialize
+TERMINATE,terminate
+DISCONNECT,disconnect
+CONNECT,connect
+ATTACK,attack
+PROTECT,protect
+DISRUPT,disrupt
+TRANSLOCATE,translocate
+CLONE,clone
+SLEEP,sleep
+IF,if
+TRUE,true
+FALSE,false
+CONNECTED,connected
+ENEMY_ADJACENT,hostile node is adjacent
+CONTROLED_ADJACENT,controled node is adjacent
+CONNECTED_ENEMY,connected to hostile node
+CONNECTED_CONTROLED,connected to controled node
+UNCONNECTED_ENEMY,unconnected hostile node
+UNCONNECTED_CONTROLED,unconnected controled node
+CONTROLED_ADJACENT,controled node is adjacent
+UNCONTROLED_ADJACENT,uncontroled node is adjacent
+HOSTILE_PROGRAM_ADJACENT,hostile program is adjacent
+ALL_NODES,all nodes
+ENEMY_NODES,hostile nodes
+CONTROLED_NODES,controled nodes
+LOCAL,local
+RANDOM_NODE,random node
+RANDOM_ENEMY,random hostile node
+RANDOM_CONTROLED,random controled node
+NUMBER,number
+CPU,CPU
+CONTROL,control
 INITIALIZE_LINE1,"Allocating memory"
 INITIALIZE_LINE2,"Loading data"
 INITIALIZE_LINE3,"Expanding files"

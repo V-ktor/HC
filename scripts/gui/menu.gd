@@ -1132,10 +1132,10 @@ func update_program():
 				pi.get_node("Type").clear()
 				for i in range(Programs.COMMANDS.size()):
 					if Programs.COMMANDS.keys()[i] in Programs.known_commands:
-						pi.get_node("Type").add_item(Programs.COMMANDS.keys()[i],i)
+						pi.get_node("Type").add_item(tr(Programs.COMMANDS.keys()[i].to_upper()),i)
 				pi.get_node("Type").selected = pi.get_node("Type").get_item_index(Programs.COMMANDS.keys().find(prgm.type))
 				pi.get_node("Type").icon = load(Programs.COMMANDS[prgm.type].icon)
-				pi.get_node("Type").hint_tooltip = prgm.type
+				pi.get_node("Type").hint_tooltip = prgm.type.to_upper()
 				if pi.get_node("Type").is_connected("item_selected",self,"_set_prog_node_type"):
 					pi.get_node("Type").disconnect("item_selected",self,"_set_prog_node_type")
 				pi.get_node("Type").connect("item_selected",self,"_set_prog_node_type",[p,pi.get_node("Type")])
@@ -1153,26 +1153,26 @@ func update_program():
 							spin_box.disconnect("value_changed",self,"set_prog_node_arg_number")
 						spin_box.connect("value_changed",self,"set_prog_node_arg_number",[p,i])
 						for j in range(Programs.VARS.size()):
-							button.add_item(Programs.VARS[j],j)
+							button.add_item(tr(Programs.VARS[j].to_upper()),j)
 						button.selected = 0
 						button.icon = preload("res://images/gui/prm_number.png")
-						button.hint_tooltip = "number"
+						button.hint_tooltip = tr("NUMBER")
 					else:
 						spin_box.hide()
 						if prgm.arguments[i] in Programs.VARS:
 							for j in range(Programs.VARS.size()):
-								button.add_item(Programs.VARS[j],j)
+								button.add_item(tr(Programs.VARS[j].to_upper()),j)
 							button.selected = button.get_item_index(Programs.VARS.find(prgm.arguments[i]))
 						elif prgm.arguments[i] in Programs.TARGETS:
 							for j in range(Programs.TARGETS.size()):
-								button.add_item(Programs.TARGETS[j],j)
+								button.add_item(tr(Programs.TARGETS[j].to_upper()),j)
 							button.selected = button.get_item_index(Programs.TARGETS.find(prgm.arguments[i]))
 						elif prgm.arguments[i] in Programs.STATEMENTS:
 							for j in range(Programs.STATEMENTS.size()):
-								button.add_item(Programs.STATEMENTS[j],j)
+								button.add_item(tr(Programs.STATEMENTS[j].to_upper()),j)
 							button.selected = button.get_item_index(Programs.STATEMENTS.find(prgm.arguments[i]))
 						button.icon = load("res://images/gui/prm_"+prgm.arguments[i]+".png")
-						button.hint_tooltip = prgm.arguments[i]
+						button.hint_tooltip = tr(prgm.arguments[i].to_upper())
 					if button.is_connected("item_selected",self,"_set_prog_node_arg"):
 						button.disconnect("item_selected",self,"_set_prog_node_arg")
 					button.connect("item_selected",self,"_set_prog_node_arg",[p,button,i])
