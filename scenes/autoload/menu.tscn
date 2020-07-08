@@ -1,4 +1,4 @@
-[gd_scene load_steps=172 format=2]
+[gd_scene load_steps=175 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -49,6 +49,8 @@
 [ext_resource path="res://images/misc/crown.png" type="Texture" id=47]
 [ext_resource path="res://images/misc/star.png" type="Texture" id=48]
 [ext_resource path="res://images/gui/menu_options.png" type="Texture" id=49]
+[ext_resource path="res://images/gui/checkbox_checked.png" type="Texture" id=50]
+[ext_resource path="res://images/gui/checkbox_unchecked.png" type="Texture" id=51]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.0941176, 0.101961, 0.109804, 1 )
@@ -433,6 +435,15 @@ expand_margin_right = 6.0
 expand_margin_top = 6.0
 expand_margin_bottom = 6.0
 
+[sub_resource type="StyleBoxFlat" id=123]
+bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.627451, 0.752941, 0.878431, 1 )
+corner_detail = 1
+
 [sub_resource type="DynamicFont" id=22]
 size = 22
 outline_size = 2
@@ -483,6 +494,24 @@ Button/styles/focus = null
 Button/styles/hover = null
 Button/styles/normal = null
 Button/styles/pressed = null
+CheckBox/colors/font_color = Color( 0.88, 0.88, 0.88, 1 )
+CheckBox/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
+CheckBox/colors/font_color_hover = Color( 0.94, 0.94, 0.94, 1 )
+CheckBox/colors/font_color_hover_pressed = Color( 1, 1, 1, 1 )
+CheckBox/colors/font_color_pressed = Color( 1, 1, 1, 1 )
+CheckBox/constants/check_vadjust = 0
+CheckBox/constants/hseparation = 4
+CheckBox/fonts/font = null
+CheckBox/icons/checked = ExtResource( 50 )
+CheckBox/icons/radio_checked = null
+CheckBox/icons/radio_unchecked = null
+CheckBox/icons/unchecked = ExtResource( 51 )
+CheckBox/styles/disabled = null
+CheckBox/styles/focus = null
+CheckBox/styles/hover = null
+CheckBox/styles/hover_pressed = null
+CheckBox/styles/normal = null
+CheckBox/styles/pressed = null
 HScrollBar/icons/decrement = null
 HScrollBar/icons/decrement_highlight = null
 HScrollBar/icons/increment = null
@@ -501,6 +530,19 @@ Label/constants/shadow_offset_x = 1
 Label/constants/shadow_offset_y = 1
 Label/fonts/font = SubResource( 2 )
 Label/styles/normal = null
+LineEdit/colors/clear_button_color = Color( 0.88, 0.88, 0.88, 1 )
+LineEdit/colors/clear_button_color_pressed = Color( 1, 1, 1, 1 )
+LineEdit/colors/cursor_color = Color( 0.94, 0.94, 0.94, 1 )
+LineEdit/colors/font_color = Color( 0.88, 0.88, 0.88, 1 )
+LineEdit/colors/font_color_selected = Color( 0, 0, 0, 1 )
+LineEdit/colors/font_color_uneditable = Color( 0.88, 0.88, 0.88, 0.5 )
+LineEdit/colors/selection_color = Color( 0.49, 0.49, 0.49, 1 )
+LineEdit/constants/minimum_spaces = 12
+LineEdit/fonts/font = null
+LineEdit/icons/clear = null
+LineEdit/styles/focus = null
+LineEdit/styles/normal = SubResource( 123 )
+LineEdit/styles/read_only = null
 SpinBox/icons/updown = null
 TooltipLabel/colors/font_color = Color( 1, 1, 1, 1 )
 TooltipLabel/colors/font_color_shadow = Color( 0, 0, 0, 0.25098 )
@@ -4088,12 +4130,12 @@ __meta__ = {
 
 [node name="HBoxContainer1" type="HBoxContainer" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
 margin_right = 944.0
-margin_bottom = 34.0
+margin_bottom = 40.0
 rect_min_size = Vector2( 0, 34 )
 
 [node name="Label" type="Label" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer1"]
 margin_right = 256.0
-margin_bottom = 34.0
+margin_bottom = 40.0
 rect_min_size = Vector2( 256, 0 )
 size_flags_vertical = 7
 text = "FULLSCREEN"
@@ -4102,27 +4144,27 @@ valign = 1
 
 [node name="CheckBox" type="CheckBox" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer1"]
 margin_left = 260.0
-margin_right = 284.0
-margin_bottom = 34.0
-rect_min_size = Vector2( 0, 34 )
+margin_right = 300.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 34, 34 )
 size_flags_vertical = 3
 
 [node name="HSeparator1" type="HSeparator" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
-margin_top = 38.0
+margin_top = 44.0
 margin_right = 944.0
-margin_bottom = 42.0
+margin_bottom = 48.0
 custom_styles/separator = SubResource( 120 )
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
-margin_top = 46.0
+margin_top = 52.0
 margin_right = 944.0
-margin_bottom = 82.0
+margin_bottom = 86.0
 rect_min_size = Vector2( 0, 34 )
 
 [node name="Label" type="Label" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer2"]
-margin_top = 5.0
+margin_top = 4.0
 margin_right = 256.0
-margin_bottom = 31.0
+margin_bottom = 30.0
 rect_min_size = Vector2( 256, 0 )
 text = "RESOLUTION"
 align = 1
@@ -4130,9 +4172,9 @@ valign = 1
 
 [node name="LabelX" type="Label" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer2"]
 margin_left = 260.0
-margin_top = 5.0
+margin_top = 4.0
 margin_right = 292.0
-margin_bottom = 31.0
+margin_bottom = 30.0
 rect_min_size = Vector2( 32, 0 )
 text = "X"
 align = 1
@@ -4140,52 +4182,53 @@ valign = 1
 
 [node name="SpinBoxX" type="SpinBox" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer2"]
 margin_left = 296.0
-margin_right = 382.0
-margin_bottom = 36.0
+margin_right = 376.0
+margin_bottom = 34.0
 min_value = 640.0
 max_value = 4096.0
 value = 640.0
+align = 1
 
 [node name="Space" type="Control" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer2"]
-margin_left = 386.0
-margin_right = 422.0
-margin_bottom = 36.0
+margin_left = 380.0
+margin_right = 416.0
+margin_bottom = 34.0
 rect_min_size = Vector2( 36, 0 )
 
 [node name="LabelY" type="Label" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer2"]
-margin_left = 426.0
-margin_top = 5.0
-margin_right = 458.0
-margin_bottom = 31.0
+margin_left = 420.0
+margin_top = 4.0
+margin_right = 452.0
+margin_bottom = 30.0
 rect_min_size = Vector2( 32, 0 )
 text = "Y"
 align = 1
 valign = 1
 
 [node name="SpinBoxY" type="SpinBox" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer2"]
-margin_left = 462.0
-margin_right = 548.0
-margin_bottom = 36.0
+margin_left = 456.0
+margin_right = 536.0
+margin_bottom = 34.0
 min_value = 480.0
 max_value = 4096.0
 value = 480.0
+align = 1
 
 [node name="HSeparator2" type="HSeparator" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
-margin_top = 86.0
+margin_top = 90.0
 margin_right = 944.0
-margin_bottom = 90.0
+margin_bottom = 94.0
 custom_styles/separator = SubResource( 120 )
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
-margin_top = 94.0
+margin_top = 98.0
 margin_right = 944.0
-margin_bottom = 130.0
+margin_bottom = 132.0
 rect_min_size = Vector2( 0, 34 )
 
 [node name="Label" type="Label" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer3"]
-margin_top = 1.0
 margin_right = 256.0
-margin_bottom = 35.0
+margin_bottom = 34.0
 rect_min_size = Vector2( 256, 34 )
 text = "TARGET_FPS"
 align = 1
@@ -4193,24 +4236,26 @@ valign = 1
 
 [node name="SpinBox" type="SpinBox" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer3"]
 margin_left = 260.0
-margin_right = 346.0
-margin_bottom = 36.0
+margin_right = 340.0
+margin_bottom = 34.0
+align = 1
 
 [node name="HSeparator3" type="HSeparator" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
-margin_top = 134.0
+margin_top = 136.0
 margin_right = 944.0
-margin_bottom = 138.0
+margin_bottom = 140.0
 custom_styles/separator = SubResource( 120 )
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
-margin_top = 142.0
+margin_top = 144.0
 margin_right = 944.0
-margin_bottom = 176.0
+margin_bottom = 184.0
 rect_min_size = Vector2( 0, 34 )
 
 [node name="Label" type="Label" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer4"]
+margin_top = 3.0
 margin_right = 256.0
-margin_bottom = 34.0
+margin_bottom = 37.0
 rect_min_size = Vector2( 256, 34 )
 text = "SHOW_PARTICLES"
 align = 1
@@ -4218,25 +4263,26 @@ valign = 1
 
 [node name="CheckBox" type="CheckBox" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer4"]
 margin_left = 260.0
-margin_right = 292.0
-margin_bottom = 34.0
-rect_min_size = Vector2( 32, 0 )
+margin_right = 300.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 34, 0 )
 
 [node name="HSeparator4" type="HSeparator" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
-margin_top = 180.0
+margin_top = 188.0
 margin_right = 944.0
-margin_bottom = 184.0
+margin_bottom = 192.0
 custom_styles/separator = SubResource( 120 )
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
-margin_top = 188.0
+margin_top = 196.0
 margin_right = 944.0
-margin_bottom = 222.0
+margin_bottom = 236.0
 rect_min_size = Vector2( 0, 34 )
 
 [node name="Label" type="Label" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer5"]
+margin_top = 3.0
 margin_right = 256.0
-margin_bottom = 34.0
+margin_bottom = 37.0
 rect_min_size = Vector2( 256, 34 )
 text = "SCREEN_SHADERS"
 align = 1
@@ -4244,9 +4290,9 @@ valign = 1
 
 [node name="CheckBox" type="CheckBox" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer5"]
 margin_left = 260.0
-margin_right = 292.0
-margin_bottom = 34.0
-rect_min_size = Vector2( 32, 0 )
+margin_right = 300.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 34, 0 )
 
 [node name="Audio" type="Control" parent="Options/ScrollContainer/VBoxContainer"]
 margin_top = 292.0
@@ -4301,12 +4347,12 @@ __meta__ = {
 
 [node name="HBoxContainer1" type="HBoxContainer" parent="Options/ScrollContainer/VBoxContainer/Audio/Panel/VBoxContainer"]
 margin_right = 944.0
-margin_bottom = 36.0
+margin_bottom = 34.0
 rect_min_size = Vector2( 0, 34 )
 
 [node name="Label" type="Label" parent="Options/ScrollContainer/VBoxContainer/Audio/Panel/VBoxContainer/HBoxContainer1"]
 margin_right = 256.0
-margin_bottom = 36.0
+margin_bottom = 34.0
 rect_min_size = Vector2( 256, 0 )
 size_flags_vertical = 7
 text = "MUSIC_VOLUME"
@@ -4315,25 +4361,26 @@ valign = 1
 
 [node name="SpinBox" type="SpinBox" parent="Options/ScrollContainer/VBoxContainer/Audio/Panel/VBoxContainer/HBoxContainer1"]
 margin_left = 260.0
-margin_right = 346.0
-margin_bottom = 36.0
+margin_right = 340.0
+margin_bottom = 34.0
+align = 1
 
 [node name="HSeparator1" type="HSeparator" parent="Options/ScrollContainer/VBoxContainer/Audio/Panel/VBoxContainer"]
-margin_top = 40.0
+margin_top = 38.0
 margin_right = 944.0
-margin_bottom = 44.0
+margin_bottom = 42.0
 custom_styles/separator = SubResource( 120 )
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Options/ScrollContainer/VBoxContainer/Audio/Panel/VBoxContainer"]
-margin_top = 48.0
+margin_top = 46.0
 margin_right = 944.0
-margin_bottom = 84.0
+margin_bottom = 80.0
 rect_min_size = Vector2( 0, 34 )
 
 [node name="Label" type="Label" parent="Options/ScrollContainer/VBoxContainer/Audio/Panel/VBoxContainer/HBoxContainer2"]
-margin_top = 5.0
+margin_top = 4.0
 margin_right = 256.0
-margin_bottom = 31.0
+margin_bottom = 30.0
 rect_min_size = Vector2( 256, 0 )
 text = "SOUND_VOLUME"
 align = 1
@@ -4341,8 +4388,9 @@ valign = 1
 
 [node name="SpinBox" type="SpinBox" parent="Options/ScrollContainer/VBoxContainer/Audio/Panel/VBoxContainer/HBoxContainer2"]
 margin_left = 260.0
-margin_right = 346.0
-margin_bottom = 36.0
+margin_right = 340.0
+margin_bottom = 34.0
+align = 1
 
 [node name="Panel" type="Panel" parent="Options"]
 anchor_left = 1.0
