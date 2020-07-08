@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-const VERSION = "v0.1-alpha"
+const VERSION = "v0.1.1-alpha"
 const MAX_MSG = 100
 const PROGRAM_ICONS = [
 	"anti_virus_green","anti_virus_purple","beam_cannon","bombardment",
@@ -929,6 +929,16 @@ func update_upgrades():
 	$Gear/Credits.text = tr("CREDITS")+": "+str(Objects.actors.player.credits)
 	connect_ui_sounds_recursively($Gear)
 
+func update_options():
+	$Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer1/CheckBox.pressed = Options.fullscreen
+	$Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer2/SpinBoxX.value = Options.resolution.x
+	$Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer2/SpinBoxY.value = Options.resolution.y
+	$Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer3/SpinBox.value = Options.target_fps
+	$Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer4/CheckBox.pressed = Options.show_particles
+	$Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer5/CheckBox.pressed = !Options.disable_screen_shader
+	$Options/ScrollContainer/VBoxContainer/Audio/Panel/VBoxContainer/HBoxContainer1/SpinBox.value = 100*Options.music_volume
+	$Options/ScrollContainer/VBoxContainer/Audio/Panel/VBoxContainer/HBoxContainer2/SpinBox.value = 100*Options.sound_volume
+
 func update_compile():
 	var all_programs = Objects.actors.player.programs.duplicate()
 	for p in Programs.known_programs.keys():
@@ -1558,7 +1568,7 @@ func _save(filename=$Saves/ScrollContainer/VBoxContainer/New/LineEdit.text):
 	var file := File.new()
 	var error := file.open("user://saves/"+filename+".sav",File.WRITE)
 	if error!=OK:
-		printt("Error",error,"opening file","user://saves/"+filename+".sav")
+		print("Error (code "+str(error)+") while creating file 'user://saves/"+filename+".sav'")
 		return
 	
 	var visible_tabs := {}
@@ -1860,6 +1870,13 @@ func _show_save():
 	connect_ui_sounds_recursively($Saves)
 	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
+func _show_options():
+	_close(true)
+	$Top/HBoxContainer/Title.text = tr("COPTIONS")
+	update_options()
+	$Options.show()
+	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
+
 func _show_credits():
 	_close(true)
 	$Top/HBoxContainer/Title.text = tr("CREDITS")
@@ -1912,6 +1929,8 @@ func _close(no_quit=false):
 		$Credits.hide()
 	elif $Saves.visible:
 		$Saves.hide()
+	elif $Options.visible:
+		$Options.hide()
 	elif $Quit.visible:
 		$Quit.hide()
 	elif !no_quit:
@@ -1932,6 +1951,22 @@ func _quit():
 	else:
 		quicksave()
 		get_tree().quit()
+
+func _apply_settings():
+	Options.fullscreen = $Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer1/CheckBox.pressed
+	Options.window_maximized = OS.window_maximized
+	Options.resolution = Vector2($Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer2/SpinBoxX.value,$Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer2/SpinBoxY.value)
+	Options.target_fps = $Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer3/SpinBox.value
+	Options.show_particles = $Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer4/CheckBox.pressed
+	Options.disable_screen_shader = !$Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer/HBoxContainer5/CheckBox.pressed
+	Options.music_volume = $Options/ScrollContainer/VBoxContainer/Audio/Panel/VBoxContainer/HBoxContainer1/SpinBox.value/100.0
+	Options.sound_volume = $Options/ScrollContainer/VBoxContainer/Audio/Panel/VBoxContainer/HBoxContainer2/SpinBox.value/100.0
+	Options.apply_settings()
+	Options._save()
+
+func _confirm_settings():
+	_apply_settings()
+	_close(true)
 
 func _screen_resized():
 	# Cards have to be resized when the screen resolution changed.
@@ -2170,6 +2205,7 @@ func _ready():
 	$Left/ScrollContainer/VBoxContainer/Button9.connect("pressed",self,"_show_code")
 	$Left/ScrollContainer/VBoxContainer/Button10.connect("pressed",self,"_show_log")
 	$Left/ScrollContainer/VBoxContainer/Button11.connect("pressed",self,"_show_credits")
+	$Left/ScrollContainer/VBoxContainer/Button12.connect("pressed",self,"_show_options")
 	
 	$Login/Input/LineEdit.connect("text_entered",self,"_start_new_game")
 	$Login/Input/ButtonConfirm.connect("pressed",self,"_start_new_game")
@@ -2201,6 +2237,9 @@ func _ready():
 	$Saves/ScrollContainer/VBoxContainer/Button0.connect("pressed",self,"_select_file",[0])
 	$Saves/ScrollContainer/VBoxContainer/New/LineEdit.connect("text_entered",self,"_save")
 	$Saves/ScrollContainer/VBoxContainer/New/ButtonConfirm.connect("pressed",self,"_save")
+	$Options/Panel/HBoxContainer/Button1.connect("pressed",self,"_apply_settings")
+	$Options/Panel/HBoxContainer/Button2.connect("pressed",self,"_confirm_settings")
+	$Options/Panel/HBoxContainer/Button3.connect("pressed",self,"_close",[true])
 	$Quit/ButtonClose.connect("pressed",self,"_quit")
 	
 	connect_ui_sounds_recursively(self)
@@ -2258,5 +2297,4 @@ func _ready():
 	credits_text.add_text(" - Jonas Hecksher\n\n")
 	credits_text.connect("meta_clicked",Object(OS),"shell_open")
 	
-	# There should be options to change this behaviour.
-	OS.window_maximized = true
+	Options._load()

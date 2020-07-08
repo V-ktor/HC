@@ -30,6 +30,7 @@ Upgrades="*res://scripts/autoload/upgrades.gd"
 Programs="*res://scripts/autoload/programs.gd"
 Music="*res://scenes/autoload/music.tscn"
 Menu="*res://scenes/autoload/menu.tscn"
+Options="*res://scripts/autoload/options.gd"
 
 [debug]
 

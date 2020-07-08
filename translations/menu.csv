@@ -15,7 +15,17 @@ LOAD,Load
 SAVE,Save
 HACK,Hack
 SHUTDOWN,Shutdown
+OPTIONS,Options
+VIDEO,Video
+AUDIO,Audio
 CREDITS,Credits
+FULLSCREEN,Fullscreen
+RESOLUTION,Resolution
+TARGET_FPS,Target FPS
+SHOW_PARTICLES,Show Particles
+SCREEN_SHADERS,Enable Screen Shaders
+MUSIC_VOLUME,Music Volume
+SOUND_VOLUME,Sound Volume
 NEW_MESSAGES,new messages
 INVENTORY,Inventory
 MEMORY,Memory
