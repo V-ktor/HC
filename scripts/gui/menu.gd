@@ -164,13 +164,15 @@ func _start_new_game(name=null):
 	timer.wait_time = 2.0
 	add_child(timer)
 	timer.start()
-	$Glitch.show()
-	$Glitch/AnimationPlayer.play("intro")
+	if !Options.disable_screen_shader:
+		$Glitch.show()
+		$Glitch/AnimationPlayer.play("intro")
 	
 	yield(timer,"timeout")
 	timer.queue_free()
 	_close(true)
-	$Glitch/AnimationPlayer.play("sequence1")
+	if !Options.disable_screen_shader:
+		$Glitch/AnimationPlayer.play("sequence1")
 	$Left/ScrollContainer/VBoxContainer/Button0.hide()
 	$Left/ScrollContainer/VBoxContainer/Button1.hide()
 	$Left/ScrollContainer/VBoxContainer/Button2.show()
@@ -194,7 +196,8 @@ func _start_new_game(name=null):
 	Music.play("Of_Far_Different_Nature-Escape-11-Jellyfish.ogg")
 	
 	yield(mi,"timeout")
-	$Glitch/AnimationPlayer.play("sequence2")
+	if !Options.disable_screen_shader:
+		$Glitch/AnimationPlayer.play("sequence2")
 	mi.queue_free()
 	mi = main_scene.instance()
 	mi.hint()
@@ -202,7 +205,8 @@ func _start_new_game(name=null):
 	mi.start(2,25.0,[20,12],[{"pulse":6,"wave":4,"phalanx":2},{"pulse":4,"anti_virus":2,"fire_wall":2}],["human","ai_random"],[player.color,Color(1.0,0.05,0.15)],mi.callv("create_layered_system",[4,2,9]))
 	
 	yield(mi,"timeout")
-	$Glitch/AnimationPlayer.play("sequence3")
+	if !Options.disable_screen_shader:
+		$Glitch/AnimationPlayer.play("sequence3")
 	mi.queue_free()
 	mi = main_scene.instance()
 	mi.hint()
@@ -212,7 +216,8 @@ func _start_new_game(name=null):
 	yield(mi,"timeout")
 	intro_sequence = false
 	mi.queue_free()
-	$Glitch/AnimationPlayer.play("burst_off")
+	if !Options.disable_screen_shader:
+		$Glitch/AnimationPlayer.play("burst_off")
 	$Login/Input/LineEdit.editable = true
 	$Login/Input/ButtonConfirm.disabled = false
 	$Left/ScrollContainer/VBoxContainer/Button0.disabled = false
@@ -2182,7 +2187,6 @@ func connect_ui_sounds_recursively(node):
 				c.connect("mouse_entered",$SoundHover,"play")
 			if !c.is_connected("pressed",$SoundClick,"play"):
 				c.connect("pressed",$SoundClick,"play")
-			
 		connect_ui_sounds_recursively(c)
 
 func _ready():

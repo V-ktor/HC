@@ -83,7 +83,7 @@ class ControlPoint:
 		for i in range(control.size()):
 			if control[i]>max_value:
 				new_owner = i
-		if owner!=new_owner:
+		if owner!=new_owner && Options.show_particles:
 			var pi = particle_capture.instance()
 			var mi = mask.instance()
 			if new_owner>=0:
@@ -121,7 +121,7 @@ class ControlPoint:
 		control[player] = min(control[player]+dam,100)
 		check_owner()
 		
-		if mask_dmg<amount:
+		if mask_dmg<amount && Options.show_particles:
 			var mi = mask.instance()
 			mi.energy = (amount+mask_dmg)/100.0
 			node.add_child(mi)
@@ -134,7 +134,7 @@ class ControlPoint:
 		shield[player] += amount
 		max_shield[player] += amount
 		
-		if mask_dmg<amount:
+		if mask_dmg<amount && Options.show_particles:
 			var mi = mask.instance()
 			mi.energy = (amount+mask_dmg)/100.0
 			node.add_child(mi)
@@ -620,27 +620,29 @@ func parse(prgm):
 				if new_target==-1:
 					new_target = prgm.owner
 			if !(new_target in prgm.targets):
-				var pi = connection_particle.instance()
 				prgm.targets.push_back(new_target)
-				pi.from = gamestate.nodes[prgm.ID].node
-				pi.to = gamestate.nodes[new_target].node
-				pi.duration = prgm.delay
-				$ControlPoints.add_child(pi)
-				if prgm.stack.has(pos):
-					prgm.stack[pos].particles.push_back(pi)
+				if Options.show_particles:
+					var pi = connection_particle.instance()
+					pi.from = gamestate.nodes[prgm.ID].node
+					pi.to = gamestate.nodes[new_target].node
+					pi.duration = prgm.delay
+					$ControlPoints.add_child(pi)
+					if prgm.stack.has(pos):
+						prgm.stack[pos].particles.push_back(pi)
 	elif type=="attack":
 		if prgm.targets.size()>0:
 			# Attack!
 			wait = !prgm.init_command(prgm.focus,"ATTACKING")
 			if !wait:
-				for target in prgm.targets:
-					var pi = pulse_particle.instance()
-					pi.from = gamestate.nodes[prgm.ID].node
-					pi.to = gamestate.nodes[target].node
-					pi.duration = prgm.delay
-					$ControlPoints.add_child(pi)
-					if prgm.stack.has(pos):
-						prgm.stack[pos].particles.push_back(pi)
+				if Options.show_particles:
+					for target in prgm.targets:
+						var pi = pulse_particle.instance()
+						pi.from = gamestate.nodes[prgm.ID].node
+						pi.to = gamestate.nodes[target].node
+						pi.duration = prgm.delay
+						$ControlPoints.add_child(pi)
+						if prgm.stack.has(pos):
+							prgm.stack[pos].particles.push_back(pi)
 		else:
 			prgm.skip()
 	elif type=="protect":
@@ -650,13 +652,14 @@ func parse(prgm):
 			if !wait:
 				if node.arguments.size()>0:
 					for target in prgm.targets:
-						var pi = fire_wall_particle.instance()
 						var dam = node.arguments[0]
 						prgm.gamestate.nodes[target].defend(prgm.owner,10*dam)
-						pi.node = gamestate.nodes[target].node
-						$ControlPoints.add_child(pi)
-						if prgm.stack.has(pos):
-							prgm.stack[pos].particles.push_back(pi)
+						if Options.show_particles:
+							var pi = fire_wall_particle.instance()
+							pi.node = gamestate.nodes[target].node
+							$ControlPoints.add_child(pi)
+							if prgm.stack.has(pos):
+								prgm.stack[pos].particles.push_back(pi)
 		else:
 			prgm.skip()
 	elif type=="disrupt":
@@ -664,13 +667,14 @@ func parse(prgm):
 			# Disrupt
 			wait = !prgm.init_command(prgm.focus,"DISRUPTING")
 			if !wait:
-				for target in prgm.targets:
-					var pi = disrupt_particle.instance()
-					pi.node = gamestate.nodes[prgm.ID].node
-					pi.target = gamestate.nodes[target].node
-					$ControlPoints.add_child(pi)
-					if prgm.stack.has(pos):
-						prgm.stack[pos].particles.push_back(pi)
+				if Options.show_particles:
+					for target in prgm.targets:
+						var pi = disrupt_particle.instance()
+						pi.node = gamestate.nodes[prgm.ID].node
+						pi.target = gamestate.nodes[target].node
+						$ControlPoints.add_child(pi)
+						if prgm.stack.has(pos):
+							prgm.stack[pos].particles.push_back(pi)
 		else:
 			prgm.skip()
 	elif type=="translocate":

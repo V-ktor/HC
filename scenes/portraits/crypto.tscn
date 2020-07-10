@@ -1,10 +1,20 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://images/characters/silhouette.png" type="Texture" id=1]
 [ext_resource path="res://images/characters/silhouette_blury.png" type="Texture" id=2]
 [ext_resource path="res://images/masks/noise_color_small.png" type="Texture" id=3]
 
-[sub_resource type="Shader" id=11]
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+func _ready():
+	if !Options.show_particles:
+		$PolygonSharp.material.set_shader_param(\"scale\",0.0)
+	if Options.disable_screen_shader:
+		$Glitch.queue_free()
+"
+
+[sub_resource type="Shader" id=2]
 code = "shader_type canvas_item;
 
 uniform vec4 color : hint_color;
@@ -50,33 +60,35 @@ void fragment()
 	else
 		COLOR = vec4(0.0);
 }"
+custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=17]
-shader = SubResource( 11 )
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
 shader_param/color = Color( 0.101961, 0.501961, 0.14902, 1 )
 shader_param/offset = 0.3
 shader_param/side = 2
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="ShaderMaterial" id=15]
-shader = SubResource( 11 )
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 2 )
 shader_param/color = Color( 0.14902, 0.4, 0.34902, 1 )
 shader_param/offset = 0.4
 shader_param/side = 2
 
-[sub_resource type="ShaderMaterial" id=13]
-shader = SubResource( 11 )
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 2 )
 shader_param/color = Color( 0.101961, 0.501961, 0.14902, 1 )
 shader_param/offset = 0.0
 shader_param/side = 2
 
-[sub_resource type="Shader" id=20]
+[sub_resource type="Shader" id=7]
 code = "shader_type canvas_item;
 
 uniform sampler2D blury;
 uniform sampler2D mask;
+uniform float scale = 1.0;
 
 void fragment()
 {
@@ -86,49 +98,51 @@ void fragment()
 	vec3 c = texture(mask,uv2).rgb;
 	int x = int(8.0+c.r*6.0);
 	int y = int(10.0+c.g*8.0);
-	float w2 = 0.75*c.b*abs(1.0-2.0*fract(0.037*TIME));
+	float w2 = 0.75*c.b*abs(1.0-2.0*fract(0.037*TIME))*scale;
 	uv.x = (floor(uv.x*float(x))/float(x)+ceil(uv.x*float(x))/float(x))/2.0*w2+(1.0-w2)*uv.x;
 	uv.y = (floor(uv.y*float(y))/float(y)+ceil(uv.y*float(y))/float(y))/2.0*w2+(1.0-w2)*uv.y;
 	COLOR = texture(TEXTURE, uv)*w+(1.0-w)*texture(blury, uv);
 }
 "
+custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=21]
-shader = SubResource( 20 )
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
+shader_param/scale = 1.0
 shader_param/blury = ExtResource( 2 )
 shader_param/mask = ExtResource( 3 )
 
-[sub_resource type="ShaderMaterial" id=19]
-shader = SubResource( 11 )
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 2 )
 shader_param/color = Color( 0.101961, 0.501961, 0.14902, 1 )
 shader_param/offset = 0.7
 shader_param/side = 1
 
-[sub_resource type="ShaderMaterial" id=18]
-shader = SubResource( 11 )
+[sub_resource type="ShaderMaterial" id=10]
+shader = SubResource( 2 )
 shader_param/color = Color( 0.14902, 0.4, 0.34902, 1 )
 shader_param/offset = 0.0
 shader_param/side = 1
 
-[sub_resource type="ShaderMaterial" id=16]
-shader = SubResource( 11 )
+[sub_resource type="ShaderMaterial" id=11]
+shader = SubResource( 2 )
 shader_param/color = Color( 0.14902, 0.4, 0.34902, 1 )
 shader_param/offset = 0.8
 shader_param/side = 1
 
-[sub_resource type="ShaderMaterial" id=14]
-shader = SubResource( 11 )
+[sub_resource type="ShaderMaterial" id=12]
+shader = SubResource( 2 )
 shader_param/color = Color( 0.101961, 0.501961, 0.14902, 1 )
 shader_param/offset = 0.2
 shader_param/side = 1
 
-[sub_resource type="ShaderMaterial" id=10]
-shader = SubResource( 11 )
+[sub_resource type="ShaderMaterial" id=13]
+shader = SubResource( 2 )
 shader_param/color = Color( 0.14902, 0.4, 0.34902, 1 )
 shader_param/offset = 0.5
 shader_param/side = 1
 
-[sub_resource type="Shader" id=22]
+[sub_resource type="Shader" id=14]
 code = "shader_type canvas_item;
 
 uniform float block_scale = 0.0;
@@ -151,18 +165,18 @@ void fragment()
 	COLOR.rg *= 1.0-scale.b;
 }
 "
+custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=23]
-shader = SubResource( 22 )
+[sub_resource type="ShaderMaterial" id=15]
+shader = SubResource( 14 )
 shader_param/block_scale = 0.25
 shader_param/block_mask = ExtResource( 3 )
 
-[sub_resource type="StyleBoxFlat" id=24]
+[sub_resource type="StyleBoxFlat" id=16]
 bg_color = Color( 0, 0, 0, 0 )
 border_color = Color( 0, 0, 0, 0 )
 
-[sub_resource type="Animation" id=1]
-resource_name = "animation"
+[sub_resource type="Animation" id=17]
 length = 3.0
 loop = true
 tracks/0/type = "value"
@@ -274,8 +288,7 @@ tracks/8/keys = {
 "values": [ Vector2( 14.28, -297.468 ), Vector2( 14.28, -305.468 ) ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "fade_in"
+[sub_resource type="Animation" id=18]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Skeleton/Hip:position")
@@ -290,8 +303,7 @@ tracks/0/keys = {
 "values": [ Vector2( 1876.1, 685.01 ), Vector2( 276.098, 685.01 ) ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "fade_out"
+[sub_resource type="Animation" id=19]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Skeleton/Hip:position")
@@ -320,8 +332,7 @@ tracks/1/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=12]
-resource_name = "rotate"
+[sub_resource type="Animation" id=20]
 length = 30.0
 step = 5.0
 tracks/0/type = "value"
@@ -422,6 +433,7 @@ tracks/7/keys = {
 }
 
 [node name="Character03" type="Node2D"]
+script = SubResource( 1 )
 
 [node name="ArcsBG" type="Control" parent="."]
 margin_top = -50.0
@@ -433,37 +445,37 @@ __meta__ = {
 }
 
 [node name="Arc6" type="Panel" parent="ArcsBG"]
-material = SubResource( 17 )
+material = SubResource( 3 )
 anchor_right = 1.0
 margin_top = 500.0
 margin_bottom = 820.0
-custom_styles/panel = SubResource( 8 )
+custom_styles/panel = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Arc4" type="Panel" parent="ArcsBG"]
-material = SubResource( 15 )
+material = SubResource( 5 )
 anchor_right = 1.0
 margin_top = 280.0
 margin_bottom = 600.0
-custom_styles/panel = SubResource( 8 )
+custom_styles/panel = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Arc2" type="Panel" parent="ArcsBG"]
-material = SubResource( 13 )
+material = SubResource( 6 )
 anchor_right = 1.0
 margin_top = 60.0
 margin_bottom = 380.0
-custom_styles/panel = SubResource( 8 )
+custom_styles/panel = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PolygonSharp" type="Polygon2D" parent="."]
-material = SubResource( 21 )
+material = SubResource( 8 )
 texture = ExtResource( 1 )
 skeleton = NodePath("../Skeleton")
 polygon = PoolVector2Array( 416, -32, 608, 96, 576, 224, 672, 320, 672, 512, 768, 832, 640, 864, 640, 1184, 416, 1344, 96.0001, 1184, 160, 1024, 192, 832, 128, 704, 160, 480, 224, 256, 192, 96, 384, 256, 416, 416, 384, 640, 384, 864, 384, 1088 )
@@ -511,57 +523,57 @@ __meta__ = {
 }
 
 [node name="Arc8" type="Panel" parent="ArcsFG"]
-material = SubResource( 19 )
+material = SubResource( 9 )
 anchor_right = 1.0
 margin_top = 720.0
 margin_bottom = 1040.0
-custom_styles/panel = SubResource( 8 )
+custom_styles/panel = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Arc7" type="Panel" parent="ArcsFG"]
-material = SubResource( 18 )
+material = SubResource( 10 )
 anchor_right = 1.0
 margin_top = 610.0
 margin_bottom = 930.0
-custom_styles/panel = SubResource( 8 )
+custom_styles/panel = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Arc5" type="Panel" parent="ArcsFG"]
-material = SubResource( 16 )
+material = SubResource( 11 )
 anchor_right = 1.0
 margin_top = 390.0
 margin_bottom = 710.0
-custom_styles/panel = SubResource( 8 )
+custom_styles/panel = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Arc3" type="Panel" parent="ArcsFG"]
-material = SubResource( 14 )
+material = SubResource( 12 )
 anchor_right = 1.0
 margin_top = 171.0
 margin_bottom = 491.0
-custom_styles/panel = SubResource( 8 )
+custom_styles/panel = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Arc1" type="Panel" parent="ArcsFG"]
-material = SubResource( 10 )
+material = SubResource( 13 )
 anchor_right = 1.0
 margin_top = -50.0
 margin_bottom = 270.0
-custom_styles/panel = SubResource( 8 )
+custom_styles/panel = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Glitch" type="Panel" parent="."]
-material = SubResource( 23 )
+material = SubResource( 15 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -50.0
@@ -569,7 +581,7 @@ margin_top = -100.0
 margin_right = 850.0
 margin_bottom = 1000.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 24 )
+custom_styles/panel = SubResource( 16 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -584,11 +596,11 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "fade_in"
-anims/animation = SubResource( 1 )
-anims/fade_in = SubResource( 2 )
-anims/fade_out = SubResource( 3 )
+anims/animation = SubResource( 17 )
+anims/fade_in = SubResource( 18 )
+anims/fade_out = SubResource( 19 )
 next/fade_in = "animation"
 
 [node name="AnimationPlayerRotate" type="AnimationPlayer" parent="."]
 autoplay = "rotate"
-anims/rotate = SubResource( 12 )
+anims/rotate = SubResource( 20 )

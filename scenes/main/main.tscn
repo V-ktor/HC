@@ -19,6 +19,7 @@ void fragment()
 	COLOR.b = texture(TEXTURE,uvb).b*(0.75+0.25*cos(3.71*TIME));
 	COLOR.a = (2.0*texture(TEXTURE,UV).a+texture(TEXTURE,uvr).a+texture(TEXTURE,uvb).a)/3.0;
 }"
+custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )

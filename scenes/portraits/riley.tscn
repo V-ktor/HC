@@ -17,6 +17,13 @@ script/source = "extends Node2D
 
 
 func _ready():
+	if !Options.show_particles:
+		$Particles.queue_free()
+		$Pixelize.queue_free()
+		$BackBufferCopy.queue_free()
+		$Polygons/Scythe.queue_free()
+		$AnimationPlayer.clear_caches()
+		$AnimationDissolve.clear_caches()
 	if Vars.get_var(\"riley_defeated\"):
 		hide()
 "
@@ -97,6 +104,7 @@ void fragment()
 	NORMAL = vec3(2.0,2.0,1.0)*texture(normal,(UV+uv)/2.0).rgb-vec3(1.0,1.0,0.0);
 }
 "
+custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=9]
 shader = SubResource( 8 )
@@ -123,10 +131,11 @@ void fragment()
 	vec2 uv = vec2(floor(SCREEN_UV.x*float(pixels)/SCREEN_PIXEL_SIZE.y)/float(pixels)*SCREEN_PIXEL_SIZE.y,floor(SCREEN_UV.y*float(pixels))/float(pixels));
 	COLOR = (1.0-alpha)*texture(SCREEN_TEXTURE,SCREEN_UV)+alpha*texture(SCREEN_TEXTURE,uv);
 }"
+custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=12]
 shader = SubResource( 11 )
-shader_param/pixels = 126
+shader_param/pixels = 96
 
 [sub_resource type="Animation" id=13]
 length = 3.0

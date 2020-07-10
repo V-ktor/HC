@@ -202,15 +202,16 @@ func add_riley_local_server():
 	Menu._show_hack()
 	mi.start(2,30.0,[Objects.actors["player"].cpu,30],[Objects.actors["player"].programs,Objects.actors["riley"].programs.duplicate()],["human","ai_random"],[Objects.actors["player"].color,Color(0.6,0.05,0.04)],mi.callv("create_layered_system",[4,3,14]))
 	Music.play("Of_Far_Different_Nature-Escape-14-Crypt.ogg")
-	Menu.get_node("Boss/AnimationPlayer").play("boss")
-	Menu.hack_contact_overwrite = "riley"
-	Menu.update_hack_chat()
-	Menu.get_node("Hack/Panel").self_modulate.a = 0.0
-	Menu.get_node("Hack/Panel").show()
-	Menu.get_node("Boss/AnimationPlayer").connect("animation_finished",Menu,"hide_hack_panel",[],CONNECT_ONESHOT)
-#	Menu.get_node("Glitch/AnimationPlayer").play("sequence1")
+	if !Options.disable_screen_shader:
+		Menu.get_node("Boss/AnimationPlayer").play("boss")
+		Menu.hack_contact_overwrite = "riley"
+		Menu.update_hack_chat()
+		Menu.get_node("Hack/Panel").self_modulate.a = 0.0
+		Menu.get_node("Hack/Panel").show()
+		Menu.get_node("Boss/AnimationPlayer").connect("animation_finished",Menu,"hide_hack_panel",[],CONNECT_ONESHOT)
 	yield(mi,"timeout")
-	Menu.get_node("Glitch/AnimationPlayer").play("burst_off")
+	if !Options.disable_screen_shader:
+		Menu.get_node("Glitch/AnimationPlayer").play("burst_off")
 	mi.queue_free()
 
 func _local_server_defence(victory):
@@ -250,14 +251,17 @@ func riley_dissolve():
 		Menu._select_contact("riley")
 	Objects.actors["riley"].name = "Riley"
 	for c in Menu.get_node("Chat/Panel/Portrait").get_children():
-		if c.has_node("AnimationDissolve"):
+		if c.has_node("AnimationDissolve") && Options.show_particles:
 			c.get_node("AnimationDissolve").play("dissolve")
+		else:
+			c.hide()
 	timer.wait_time = 3.5
 	timer.one_shot = true
 	Menu.add_child(timer)
 	timer.start()
 	yield(timer,"timeout")
-	Menu.get_node("Glitch/AnimationPlayer").play("burst_off")
+	if !Options.disable_screen_shader:
+		Menu.get_node("Glitch/AnimationPlayer").play("burst_off")
 
 func chat_riley_defeated():
 	Vars.save_var("riley_defeated")
