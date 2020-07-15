@@ -1,4 +1,4 @@
-[gd_scene load_steps=175 format=2]
+[gd_scene load_steps=170 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -619,30 +619,6 @@ border_color = Color( 0.12549, 0.25098, 0.376471, 1 )
 [sub_resource type="StyleBoxEmpty" id=34]
 
 [sub_resource type="StyleBoxEmpty" id=35]
-
-[sub_resource type="StyleBoxEmpty" id=36]
-
-[sub_resource type="StyleBoxEmpty" id=37]
-
-[sub_resource type="StyleBoxFlat" id=38]
-content_margin_left = 4.0
-content_margin_right = 4.0
-content_margin_top = 4.0
-content_margin_bottom = 4.0
-draw_center = false
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color( 0.12549, 0.25098, 0.376471, 1 )
-expand_margin_left = 6.0
-expand_margin_right = 6.0
-expand_margin_top = 2.0
-expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxEmpty" id=39]
-
-[sub_resource type="StyleBoxEmpty" id=40]
 
 [sub_resource type="Shader" id=41]
 code = "shader_type canvas_item;
@@ -2188,53 +2164,6 @@ align = 1
 valign = 1
 autowrap = true
 clip_text = true
-
-[node name="Input" type="Panel" parent="Chat"]
-visible = false
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -36.0
-custom_styles/panel = SubResource( 3 )
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Chat/Input"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-scroll_vertical_enabled = false
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Chat/Input/ScrollContainer"]
-margin_right = 956.0
-margin_bottom = 36.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Button0" type="Button" parent="Chat/Input/ScrollContainer/HBoxContainer"]
-margin_top = 6.0
-margin_right = 29.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 0, 24 )
-size_flags_vertical = 4
-custom_styles/hover = SubResource( 36 )
-custom_styles/pressed = SubResource( 37 )
-custom_styles/focus = SubResource( 38 )
-custom_styles/disabled = SubResource( 39 )
-custom_styles/normal = SubResource( 40 )
-custom_colors/font_color_disabled = Color( 1, 0.188235, 0.12549, 1 )
-custom_colors/font_color = Color( 0.752941, 0.752941, 0.752941, 1 )
-custom_colors/font_color_hover = Color( 0.878431, 1, 1, 1 )
-custom_colors/font_color_pressed = Color( 0.25098, 0.25098, 0.25098, 1 )
-text = "TEXT"
-
-[node name="Label0" type="Label" parent="Chat/Input/ScrollContainer/HBoxContainer"]
-visible = false
-margin_left = 33.0
-margin_right = 38.0
-margin_bottom = 36.0
-size_flags_vertical = 3
-custom_colors/font_color = Color( 0.376471, 0.376471, 0.376471, 1 )
-text = "/"
-align = 1
-valign = 1
 
 [node name="Log" type="Panel" parent="."]
 visible = false

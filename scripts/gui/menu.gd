@@ -1602,7 +1602,7 @@ func _load(filename):
 	
 	var currentline = JSON.parse(file.get_line()).result
 	var save_version = currentline.version
-	if currentline==null:# || save_version!=VERSION:
+	if currentline==null || save_version!=VERSION:
 		print("Incompatible version!")
 		return
 	quicksave()
@@ -1694,8 +1694,6 @@ func _show_chat():
 	for c in $Chat/Panel/PortraitLeft.get_children():
 		c.get_node("AnimationPlayer").play("fade_out")
 	for c in $Chat/ScrollContainer/VBoxContainer.get_children():
-		c.hide()
-	for c in $Chat/Input/ScrollContainer/HBoxContainer.get_children():
 		c.hide()
 	for c in contacts:
 		var bi
