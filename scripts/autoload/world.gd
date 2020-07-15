@@ -486,7 +486,7 @@ func add_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,ai,cr
 	# Add a new target to the target list.
 	var new_target := Server.new(name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win,music_overwrite)
 	targets[ID] = new_target
-	$"/root/Menu".targets.push_back(ID)
+	$"/root/Menu".targets.push_front(ID)
 	$"/root/Menu".new_targets += 1
 	$"/root/Menu".update_main_menu()
 	return new_target

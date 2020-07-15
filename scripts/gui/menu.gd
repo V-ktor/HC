@@ -100,7 +100,6 @@ func reset():
 	mode = ""
 	building.clear()
 	compile_cpu = 0
-	Objects.targets.clear()
 	Objects.actors.clear()
 	Objects.groups.clear()
 	Objects.countries.clear()
