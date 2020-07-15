@@ -178,4 +178,195 @@ func chat02():
 	Menu.add_log_msg("LOG_CRYPTO","LOG_MET_CRYPTO")
 	Music.play("Of_Far_Different_Nature-Escape-10-Control.ogg",-4)
 
+func reply_0071_1():
+	Events.send_player_msg("crypto",tr("REPLY_0071_1"))
+	Events.delayed_msg("crypto",tr("CRYPTO_0052"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0053"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0054"),2.0)
+	Events.delayed_choice("crypto",[
+		{"text":"REPLY_0072_1","required":{"focus":5}},
+		{"text":"REPLY_0072_2","required":{"cunning":5}},
+		{"text":"REPLY_0072_3","required":{"charisma":5}}
+	],1.0)
 
+func reply_0071_2():
+	Events.send_player_msg("crypto",tr("REPLY_0071_2"))
+	Events.delayed_msg("crypto",tr("CRYPTO_0055"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0056"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0054"),2.0)
+	Events.delayed_choice("crypto",[
+		{"text":"REPLY_0072_1","required":{"focus":5}},
+		{"text":"REPLY_0072_2","required":{"cunning":5}},
+		{"text":"REPLY_0072_3","required":{"charisma":5}}
+	],1.0)
+
+func reply_0071_3():
+	Events.send_player_msg("crypto",tr("REPLY_0071_3"))
+	Events.delayed_msg("crypto",tr("CRYPTO_0057"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0058"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0059"),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0060"),3.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0061"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0054"),2.0)
+	Events.delayed_choice("crypto",[
+		{"text":"REPLY_0072_1","required":{"focus":5}},
+		{"text":"REPLY_0072_2","required":{"cunning":5}},
+		{"text":"REPLY_0072_3","required":{"charisma":5}}
+	],1.0)
+
+func reply_0071_4():
+	Events.send_player_msg("crypto",tr("REPLY_0071_4"))
+	Events.delayed_msg("crypto",tr("CRYPTO_0062"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0063"),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0064"),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0054"),2.0)
+	Events.delayed_choice("crypto",[
+		{"text":"REPLY_0072_1","required":{"focus":5}},
+		{"text":"REPLY_0072_2","required":{"cunning":5}},
+		{"text":"REPLY_0072_3","required":{"charisma":5}}
+	],1.0)
+
+func reply_0072_1():
+	Events.send_player_msg("crypto",Objects.actors.player.name)
+	Events.delayed_msg("crypto",tr("CRYPTO_0070"),1.0)
+	Events.delayed_msg("crypto","...",2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0071"),2.0)
+	Events.delayed_choice("crypto",[
+		{"text":"REPLY_0073_1","required":{"focus":5}},
+		{"text":"REPLY_0073_2","required":{"fear":5}},
+		{"text":"REPLY_0073_3","required":{"cunning":5}}
+	],1.0)
+
+func reply_0072_2():
+	Events.send_player_msg("crypto",tr("REPLY_0072_2"))
+	Events.delayed_msg("crypto",tr("CRYPTO_0071"),1.0)
+	Events.delayed_choice("crypto",[
+		{"text":"REPLY_0073_1","required":{"focus":5}},
+		{"text":"REPLY_0073_2","required":{"fear":5}},
+		{"text":"REPLY_0073_3","required":{"cunning":5}}
+	],1.0)
+
+func reply_0072_3():
+	Events.send_player_msg("crypto",tr("REPLY_0072_3"))
+	Events.delayed_msg("crypto",tr("CRYPTO_0072"),1.0)
+	Events.delayed_player_msg("crypto",tr("REPLY_0034_2"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0073"),3.0)
+	Events.delayed_choice("crypto",[
+		{"text":"REPLY_0073_1","required":{"focus":5}},
+		{"text":"REPLY_0073_2","required":{"fear":5}},
+		{"text":"REPLY_0073_3","required":{"cunning":5}}
+	],1.0)
+
+func reply_0073_1():
+	Events.send_player_msg("crypto",tr("REPLY_0073_1"))
+	Events.delayed_msg("crypto",tr("CRYPTO_0074"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0075"),3.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0076").format({"name":Objects.actors.player.name}),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0077"),3.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0078"),3.0)
+	Events.delayed_method(7.0,"hally_death_reaction")
+	Events.delayed_choice("crypto",[
+		{"text":"REPLY_0074_1","required":{"fear":5}},
+		{"text":"REPLY_0074_2","required":{"focus":5}},
+		{"text":"REPLY_0074_3","required":{"curiosity":5}},
+		{"text":"REPLY_0074_4","required":{"cunning":5}},
+	],1.0)
+
+func reply_0073_2():
+	Events.send_player_msg("crypto",tr("REPLY_0073_2"))
+	Events.delayed_msg("crypto",tr("CRYPTO_0079"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0075"),3.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0076").format({"name":Objects.actors.player.name}),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0077"),3.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0078"),3.0)
+	Events.delayed_method(7.0,"hally_death_reaction")
+	Events.delayed_choice("crypto",[
+		{"text":"REPLY_0074_1","required":{"fear":5}},
+		{"text":"REPLY_0074_2","required":{"focus":5}},
+		{"text":"REPLY_0074_3","required":{"curiosity":5}},
+		{"text":"REPLY_0074_4","required":{"cunning":5}},
+	],1.0)
+
+func reply_0073_3():
+	Events.send_player_msg("crypto",tr("REPLY_0073_3"))
+	Events.delayed_msg("crypto",tr("CRYPTO_0080"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0081"),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0076").format({"name":Objects.actors.player.name}),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0077"),3.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0078"),3.0)
+	Events.delayed_method(7.0,"hally_death_reaction")
+	Events.delayed_choice("crypto",[
+		{"text":"REPLY_0074_1","required":{"fear":5}},
+		{"text":"REPLY_0074_2","required":{"focus":5}},
+		{"text":"REPLY_0074_3","required":{"curiosity":5}},
+		{"text":"REPLY_0074_4","required":{"cunning":5}},
+	],1.0)
+
+func reply_0074_1():
+	Events.send_player_msg("crypto",tr("REPLY_0074_1"))
+	answer()
+
+func reply_0074_2():
+	Events.send_player_msg("crypto",tr("REPLY_0074_2"))
+	answer()
+
+func reply_0074_3():
+	Events.send_player_msg("crypto",tr("REPLY_0074_3"))
+	answer()
+
+func reply_0074_4():
+	Events.send_player_msg("crypto",tr("REPLY_0074_4"))
+	answer()
+
+func answer():
+	Events.delayed_msg("crypto","...",2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0090"),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0091"),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0092"),3.0)
+	Events.delayed_method(9.0,"hally_riley_reaction")
+
+func chat03():
+	Events.delayed_player_msg("crypto",tr("AI_0540"),1.0,{"from_ally":"ai"})
+	Events.delayed_player_msg("crypto",tr("AI_0541"),1.0,{"from_ally":"ai"})
+	Events.delayed_msg("crypto",tr("CRYPTO_0100"),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0101"),1.0)
+	Events.delayed_player_msg("crypto",tr("AI_0542"),2.0,{"from_ally":"ai"})
+	Events.delayed_player_msg("crypto",tr("AI_0541"),1.0,{"from_ally":"ai"})
+	Events.delayed_msg("crypto",tr("CRYPTO_0102"),2.0)
+	Events.delayed_player_msg("crypto",tr("AI_0543").format({"name":Objects.actors.player.name}),2.0,{"from_ally":"ai"})
+	Events.delayed_player_msg("crypto",tr("AI_0544"),3.0,{"from_ally":"ai"})
+	Events.delayed_msg("crypto","...",2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0103"),1.0)
+	Events.delayed_player_msg("crypto",tr("AI_0545"),2.0,{"from_ally":"ai"})
+	Events.delayed_msg("crypto","...",2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0104"),1.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0105").format({"name":Objects.actors.player.name}),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0106"),3.0)
+	Events.delayed_player_msg("crypto",tr("AI_0546"),2.0,{"from_ally":"ai"})
+	Events.delayed_msg("crypto",tr("CRYPTO_0107"),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0108"),2.0)
+	Events.delayed_player_msg("crypto","...",2.0,{"from_ally":"ai"})
+	Events.delayed_player_msg("crypto",tr("AI_0547"),2.0,{"from_ally":"ai"})
+	Events.delayed_player_msg("crypto",tr("AI_0548"),1.0,{"from_ally":"ai"})
+	Events.delayed_msg("crypto",tr("CRYPTO_0109"),2.0)
+	Events.delayed_player_msg("crypto",tr("AI_0549"),1.0,{"from_ally":"ai"})
+	Events.delayed_msg("crypto",tr("CRYPTO_0110"),3.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0111"),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0112"),3.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0113"),2.0)
+	Events.delayed_player_msg("crypto",tr("AI_0550"),1.0,{"from_ally":"ai"})
+	Events.delayed_player_msg("crypto",tr("AI_0551"),2.0,{"from_ally":"ai"})
+	Events.delayed_msg("crypto",tr("CRYPTO_0114").format({"name":Objects.actors.player.name}),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0115"),2.0)
+	Events.delayed_player_msg("crypto",tr("AI_0552"),2.0,{"from_ally":"ai"})
+	Events.delayed_player_msg("crypto",tr("AI_0553"),2.0,{"from_ally":"ai"})
+	Events.delayed_msg("crypto",tr("CRYPTO_0116"),2.0)
+	Events.delayed_player_msg("crypto",tr("AI_0554"),3.0,{"from_ally":"ai"})
+	Events.delayed_msg("crypto",tr("CRYPTO_0117").format({"name":Objects.actors.player.name}),3.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0118"),2.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0119"),3.0)
+	Events.delayed_msg("crypto",tr("CRYPTO_0120"),3.0)
+	Events.delayed_player_msg("crypto",tr("AI_0555"),0.5,{"from_ally":"ai"})
+	Events.delayed_msg("crypto",tr("CRYPTO_0121"),2.0)
+	Events.delayed_player_msg("crypto","...",2.0,{"from_ally":"ai"})
+	Events.delayed_method(88.0,"crypto_talk_end")

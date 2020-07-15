@@ -593,7 +593,8 @@ func break_free():
 	Menu.add_child(timer)
 	timer.start()
 	yield(timer,"timeout")
-	Menu.get_node("Glitch/AnimationPlayer").play("burst_off")
+	if !Options.disable_screen_shader:
+		Menu.get_node("Glitch/AnimationPlayer").play("burst_off")
 
 func _riley_attack_start(target):
 	if Objects.targets[target].method_on_win=="_riley_attack":
@@ -617,6 +618,7 @@ func _riley_attack_start(target):
 		yield(get_tree(),"idle_frame")
 		Menu.hack_contact_overwrite = "riley"
 		Menu.add_hack_msg(tr("RILEY_0020"))
+		Menu.update_hack_chat()
 
 func _riley_attack(victory):
 	if victory:
@@ -791,16 +793,215 @@ func reply_0063_3():
 func init_scan_data():
 	Events.delayed_msg("ai",tr("AI_0504"),2.0)
 	Events.delayed_msg("ai",tr("AI_0505"),3.0)
-	Events.delayed_msg("ai",tr("AI_0506"),2.0)
+	Events.delayed_msg("ai",tr("AI_0506"),4.0)
+	Events.delayed_msg("ai",tr("AI_0507"),3.0)
+	Events.delayed_msg("ai",tr("AI_0508"),2.0)
+	Events.delayed_msg("ai",tr("AI_0509"),2.0)
+	Events.delayed_msg("ai",tr("AI_0510"),1.0)
 	Objects.add_target("data_server",tr("DATA_STORAGE"),null,tr("DATA_STORAGE"),Color(0.6,0.05,0.04),"radial",[4,4,12,2],{"pulse":4,"wave":2,"phalanx":2,"scythe":4,"parry":4,"lock":2},20,"ai_random",2000,20,"_data_search")
-	story_ends()
 
 func _data_search(victory):
 	if victory:
 		Vars.inc_var("data_search")
+		Menu.add_hack_msg(tr("AI_051"+str(2+randi()%6)))
+		if Vars.get_var("data_search")>5:
+			data_found()
 	else:
-		Menu.add_hack_msg(tr("AI_0510"))
-	Objects.add_target("data_server",tr("DATA_STORAGE"),null,tr("DATA_STORAGE"),Color(0.6,0.05,0.04),"radial",[4,4,12,2],{"pulse":4,"wave":2,"phalanx":2,"scythe":4,"parry":4,"lock":2},30,"ai_random",2000,20,"_data_search")
+		Menu.add_hack_msg(tr("AI_0511"))
+
+func data_found():
+	Objects.remove_target("data_server")
+	Events.delayed_msg("ai",tr("AI_0520"),4.0)
+	Events.delayed_msg("ai",tr("AI_0521"),2.0)
+	Events.delayed_msg("ai",tr("AI_0522"),4.0)
+	Events.delayed_msg("ai",tr("AI_0523"),3.0)
+	Events.delayed_msg("ai",tr("AI_0524"),2.0)
+	Events.delayed_msg("ai",tr("AI_0525"),2.0)
+	Events.delayed_msg("ai",tr("AI_0526"),2.0)
+	Events.delayed_choice("ai",[
+		{"text":"REPLY_0070_1","personality":{"focus":1}},
+		{"text":"REPLY_0070_2","personality":{"charisma":1}},
+		{"text":"REPLY_0070_3","personality":{"cunning":1}}
+	],1.0)
+
+func reply_0070_1():
+	update_bg()
+	Events.send_player_msg("ai",tr("REPLY_0070_1"))
+	Events.second_contact()
+
+func reply_0070_2():
+	update_bg()
+	Events.send_player_msg("ai",tr("REPLY_0070_2"))
+	Events.second_contact()
+
+func reply_0070_3():
+	update_bg()
+	Events.send_player_msg("ai",tr("REPLY_0070_3"))
+	Events.second_contact()
+
+func crypto_talk_end():
+	Events.delayed_msg("ai",tr("AI_0560"),1.0)
+	Events.delayed_msg("ai",tr("AI_0561"),3.0)
+	Events.delayed_msg("ai",tr("AI_0562"),2.0)
+	Events.delayed_msg("ai",tr("AI_0563"),2.0)
+	Events.delayed_msg("ai",tr("AI_0564"),4.0)
+	Events.delayed_msg("ai",tr("AI_0565"),2.0)
+	Events.delayed_msg("ai",tr("AI_0566"),3.0)
+	Events.delayed_msg("ai",tr("AI_0567"),2.0)
+	Events.delayed_choice("ai",[
+		{"text":"REPLY_0080_1","personality":{"charisma":1}},
+		{"text":"REPLY_0080_2","personality":{"curiosity":1}},
+		{"text":"REPLY_0080_3","personality":{"fear":1}}
+	],1.0)
+
+func reply_0080_1():
+	update_bg()
+	Events.send_player_msg("ai",tr("REPLY_0080_1"))
+	Events.delayed_msg("ai",tr("AI_0570"),1.0)
+	Events.delayed_msg("ai",tr("AI_0571"),1.0)
+	Events.delayed_choice("ai",[
+		{"text":"REPLY_0081_1","personality":{"charisma":1}},
+		{"text":"REPLY_0081_2","personality":{"curiosity":1}},
+		{"text":"REPLY_0081_5","personality":{"cunning":1}}
+	],1.0)
+
+func reply_0080_2():
+	update_bg()
+	Events.send_player_msg("ai",tr("REPLY_0080_2"))
+	Events.delayed_msg("ai",tr("AI_0572"),1.0)
+	Events.delayed_msg("ai",tr("AI_0573"),2.0)
+	Events.delayed_choice("ai",[
+		{"text":"REPLY_0081_1","personality":{"charisma":1}},
+		{"text":"REPLY_0081_3","personality":{"fear":1}},
+		{"text":"REPLY_0081_5","personality":{"cunning":1}}
+	],1.0)
+
+func reply_0080_3():
+	update_bg()
+	Events.send_player_msg("ai",tr("REPLY_0080_3"))
+	Events.delayed_player_msg("ai",tr("REPLY_0080_3-2"),1.0)
+	Events.delayed_msg("ai",tr("AI_0574"),1.0)
+	Events.delayed_msg("ai",tr("AI_0575"),1.0)
+	Events.delayed_msg("ai",tr("AI_0576"),2.0)
+	Events.delayed_msg("ai",tr("AI_0577"),1.0)
+	Events.delayed_choice("ai",[
+		{"text":"REPLY_0081_3","personality":{"fear":1}},
+		{"text":"REPLY_0081_4","personality":{"charisma":1}},
+		{"text":"REPLY_0081_5","personality":{"cunning":1}}
+	],1.0)
+
+func reply_0081_1():
+	update_bg()
+	Vars.inc_var("affection")
+	Events.send_player_msg("ai",tr("REPLY_0081_1"))
+	Events.delayed_msg("ai",tr("AI_0578"),1.0)
+	Events.delayed_msg("ai",tr("AI_0579"),1.0)
+	Events.delayed_msg("ai",tr("AI_0580"),3.0)
+	Events.delayed_choice("ai",[
+		{"text":"REPLY_0082_1","personality":{"charisma":1}},
+		{"text":"REPLY_0082_2","personality":{"cunning":1}}
+	],1.0)
+
+func reply_0081_2():
+	update_bg()
+	Vars.inc_var("knowledge")
+	Events.send_player_msg("ai",tr("REPLY_0081_2"))
+	Events.delayed_msg("ai",tr("AI_0581"),1.0)
+	Events.delayed_msg("ai",tr("AI_0582"),2.0)
+	Events.delayed_choice("ai",[
+		{"text":"REPLY_0082_2","personality":{"cunning":1}},
+		{"text":"REPLY_0082_3","personality":{"focus":1}}
+	],1.0)
+
+func reply_0081_3():
+	update_bg()
+	Vars.inc_var("aggression")
+	Events.send_player_msg("ai",tr("REPLY_0081_3"))
+	Events.delayed_msg("ai",tr("AI_0583"),1.0)
+	Events.delayed_msg("ai",tr("AI_0584"),2.0)
+	Events.delayed_msg("ai",tr("AI_0585"),2.0)
+	Events.delayed_msg("ai",tr("AI_0586"),1.0)
+	Events.delayed_choice("ai",[
+		{"text":"REPLY_0082_3","personality":{"focus":1}},
+		{"text":"REPLY_0082_4","personality":{"cunning":1}}
+	],1.0)
+
+func reply_0081_4():
+	update_bg()
+	Vars.inc_var("affection")
+	Events.send_player_msg("ai",tr("REPLY_0081_4"))
+	Events.delayed_msg("ai",tr("AI_0587"),1.0)
+	Events.delayed_msg("ai",tr("AI_0588"),2.0)
+	Events.delayed_choice("ai",[
+		{"text":"REPLY_0082_3","personality":{"focus":1}},
+		{"text":"REPLY_0082_5","personality":{"charisma":1}}
+	],1.0)
+
+func reply_0081_5():
+	update_bg()
+	Vars.inc_var("aggression")
+	Events.send_player_msg("ai",tr("REPLY_0081_5"))
+	Events.delayed_msg("ai",tr("AI_0589"),1.0)
+	Events.delayed_msg("ai",tr("AI_0590"),2.0)
+	Events.delayed_msg("ai",tr("AI_0591"),1.0)
+	Events.delayed_choice("ai",[
+		{"text":"REPLY_0082_3","personality":{"focus":1}},
+		{"text":"REPLY_0082_6","personality":{"fear":1}}
+	],1.0)
+
+func reply_0082_1():
+	update_bg()
+	Events.send_player_msg("ai",tr("REPLY_0082_1"))
+	Events.delayed_msg("ai",tr("AI_0592"),1.0)
+	Events.delayed_msg("ai",tr("AI_0593"),1.0)
+	Events.delayed_msg("ai",tr("AI_0594"),2.0)
+	Events.delayed_msg("ai",tr("AI_0595"),2.0)
+	request_upgrade()
+
+func reply_0082_2():
+	update_bg()
+	Events.send_player_msg("ai",tr("REPLY_0082_2"))
+	Events.delayed_msg("ai",tr("AI_0596"),1.0)
+	Events.delayed_msg("ai",tr("AI_0597"),1.0)
+	Events.delayed_msg("ai",tr("AI_0595"),2.0)
+	request_upgrade()
+
+func reply_0082_3():
+	update_bg()
+	Events.send_player_msg("ai",tr("REPLY_0082_3"))
+	Events.delayed_msg("ai",tr("AI_0598"),1.0)
+	Events.delayed_msg("ai",tr("AI_0599"),2.0)
+	request_upgrade()
+
+func reply_0082_4():
+	update_bg()
+	Events.send_player_msg("ai",tr("REPLY_0082_4"))
+	Events.delayed_msg("ai",tr("AI_0600"),1.0)
+	Events.delayed_msg("ai",tr("AI_0601"),1.0)
+	Events.delayed_msg("ai",tr("AI_0602").format({"name":Objects.actors.player.name}),2.0)
+	request_upgrade()
+
+func reply_0082_5():
+	update_bg()
+	Events.send_player_msg("ai",tr("REPLY_0082_5"))
+	Events.delayed_msg("ai",tr("AI_0603"),2.0)
+	request_upgrade()
+
+func reply_0082_6():
+	update_bg()
+	Events.send_player_msg("ai",tr("REPLY_0082_6"))
+	Events.delayed_msg("ai",tr("AI_0604"),1.0)
+	Events.delayed_msg("ai",tr("AI_0605"),1.0)
+	Events.delayed_msg("ai",tr("AI_0606"),2.0)
+	Events.delayed_player_msg("ai",tr("REPLY_0082_6-2"),1.0)
+	request_upgrade()
+
+func request_upgrade():
+	Menu.upgrades.push_back("ai_server")
+	Events.delayed_msg("ai",tr("AI_0610"),3.0)
+	Events.delayed_msg("ai",tr("AI_0611"),2.0)
+	Events.delayed_msg("ai",tr("AI_0612"),1.0)
+	story_ends()
 
 
 func story_ends():
@@ -810,4 +1011,3 @@ func story_ends():
 	Events.delayed_msg("ai",tr("AI_END_04"),3.0)
 	Events.delayed_msg("ai",tr("AI_END_05"),1.0)
 	Vars.save_var("part2_finished")
-

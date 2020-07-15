@@ -1,7 +1,9 @@
 ,en
-CPU_DESC,"Increase your CPU by %d."
-MEMORY_DESC,"Increase your memory by %d."
-TIME_LIMIT_DESC,"Increases yout time limit for hacks by %ds."
+CPU_DESC,"Increase your CPU by {value}."
+MEMORY_DESC,"Increase your memory by {value}."
+TIME_LIMIT_DESC,"Increases yout time limit for hacks by {value}s."
 COMPILER_CPU,Compiler CPU
-COMPILER_CPU_DESC,"Increase your compiler CPU by %d."
+COMPILER_CPU_DESC,"Increase your compiler CPU by {value}."
+AI_SERVER,AI Server
+AI_SERVER_DESC,"Upgrade Hally's server increasing her capabilities."
 

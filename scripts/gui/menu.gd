@@ -906,7 +906,7 @@ func update_upgrades():
 			$Gear/Techs/HBoxContainer.add_child(ci)
 		ci.get_node("Card/Image").set_texture(load(Upgrades.upgrades[upgrades[i]]["icon"]))
 		ci.get_node("Card/Name").text = tr(Upgrades.upgrades[upgrades[i]]["name"])
-		ci.get_node("Card/Desc").text = tr(Upgrades.upgrades[upgrades[i]]["name"]+"_DESC")%Upgrades.upgrades[upgrades[i]]["args"]
+		ci.get_node("Card/Desc").text = tr(Upgrades.upgrades[upgrades[i]]["name"]+"_DESC").format({"value":Upgrades.upgrades[upgrades[i]]["args"]})
 		ci.get_node("Card/Cpu").text = str(Upgrades.upgrades[upgrades[i]]["compile_cpu"])
 		ci.get_node("Card/Size").text = str(lvl)
 		if ci.get_node("Button").is_connected("pressed",self,"_upgrade"):
@@ -1550,6 +1550,7 @@ func add_log_msg(name,text=name):
 
 
 func get_save_files():
+	# Add paths of all save files to save_files.
 	var filename : String
 	var dir := Directory.new()
 	var error := dir.open("user://saves")
@@ -1650,6 +1651,7 @@ func _load(filename):
 	update_main_menu()
 
 func _select_file(ID):
+	# The save file button was pressed. Load the file in in the load menu, save when in the save menu.
 	if mode=="load":
 		_load(save_files[ID])
 	elif mode=="save":

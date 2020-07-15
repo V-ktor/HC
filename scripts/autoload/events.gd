@@ -239,14 +239,16 @@ func riley_chat():
 	Menu.textbox.set_portrait("res://images/gui/portraits/AI.png")
 	Menu.textbox.show_text(tr("AI_0450").format({"name":Objects.actors.player.name}))
 	Menu.chat_add_portrait["riley"] = "ai"
+	if !Menu.get_node("Chat").visible:
+		Menu._show_chat()
 	Menu._select_contact("riley")
 	call_chat("riley","riley_chat")
 
 func riley_dissolve():
 	var timer = Timer.new()
+	Menu.chat_add_portrait["riley"] = "ai"
 	if !Menu.get_node("Chat").visible:
 		Menu._show_chat()
-	Menu.chat_add_portrait["riley"] = "ai"
 	if Menu.contact_selected!="riley":
 		Menu._select_contact("riley")
 	Objects.actors["riley"].name = "Riley"
@@ -268,6 +270,39 @@ func chat_riley_defeated():
 	Menu.chat_add_portrait.erase("riley")
 	Menu.add_log_msg("LOG_ATTACKER_DEFEATED","LOG_ATTACKER_SELFDESTRUCT")
 	call_chat("ai","riley_defeated")
+
+func _data_search(victory):
+	call_chat("ai","_data_search",[victory])
+
+func second_contact():
+	delayed_msg("ai",tr("AI_0527"),2.0)
+	delayed_msg("crypto",tr("CRYPTO_0050"),4.0)
+	delayed_msg("crypto",tr("CRYPTO_0051"),3.0)
+	delayed_choice("crypto",[
+		{"text":"REPLY_0071_1","required":{"fear":4}},
+		{"text":"REPLY_0071_2","required":{"focus":4}},
+		{"text":"REPLY_0071_3","required":{"cunning":4}},
+		{"text":"REPLY_0071_4","required":{"curiosity":4}},
+	],1.0)
+	Music.play("Of_Far_Different_Nature-Escape-10-Control.ogg",-4)
+
+func hally_death_reaction():
+	Menu.textbox.set_portrait("res://images/gui/portraits/AI.png")
+	Menu.textbox.show_text(tr("AI_0530"))
+	Menu.textbox.show_text(tr("AI_0531"))
+	Menu.textbox.show_text(tr("AI_0532").format({"name":Objects.actors.player.name}))
+	Menu.textbox.show_text(tr("AI_0533"))
+
+func hally_riley_reaction():
+	Menu.chat_add_portrait["crypto"] = "ai"
+	if !Menu.get_node("Chat").visible:
+		Menu._show_chat()
+	Menu._select_contact("crypto")
+	call_chat("crypto","chat03")
+
+func crypto_talk_end():
+	Menu.chat_add_portrait.erase("crypto")
+	call_chat("ai","crypto_talk_end")
 
 
 func _remove_target(victory):
