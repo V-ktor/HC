@@ -15,7 +15,7 @@ func ai_random(player):
 #	if gamestate.cpu[player]-2<0.1*gamestate.max_cpu[player]:
 #		cancel_random_program(player)
 #		return
-	if nodes.size()==0 || gamestate.cpu[player]<gamestate.max_cpu[player]/10 || gamestate.cpu[player]<get_mean_program_cpu(player):
+	if nodes.size()==0 || gamestate.cpu[player]<gamestate.max_cpu[player]/10 || gamestate.max_cpu[player]<3.0*get_mean_program_cpu(player):
 		# No nodes or low on CPU.
 		return
 	for program in programs:
