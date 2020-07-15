@@ -8,11 +8,11 @@ func save_var(n,v=true):
 func clear_var(n):
 	vars.erase(n)
 
-func inc_var(n):
+func inc_var(n,delta=1):
 	if vars.has(n) && (typeof(vars[n])==TYPE_INT || typeof(vars[n])==TYPE_REAL):
-		vars[n] += 1
+		vars[n] += delta
 	else:
-		vars[n] = 1
+		vars[n] = delta
 
 func get_var(n):
 	if vars.has(n):
