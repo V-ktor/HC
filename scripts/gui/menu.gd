@@ -333,8 +333,8 @@ func update_main_menu():
 		$Left/ScrollContainer/VBoxContainer/Button4/Notice.visible = total_unread>0
 	if $Chat.visible:
 		for name in chat_log.keys():
-			get_node("Chat/ScrollContainer/VBoxContainer/"+name+"/Notice/Label").text = str(chat_log[name].size()-chat_read[name])
-			get_node("Chat/ScrollContainer/VBoxContainer/"+name+"/Notice").visible = chat_read[name]<chat_log[name].size()
+			get_node("Chat/ScrollContainer/VBoxContainer/"+name+"/Notice/Label").text = str(min(chat_log[name].size()-chat_read[name],9))
+			get_node("Chat/ScrollContainer/VBoxContainer/"+name+"/Notice").visible = chat_read[name]<chat_log[name].size() && contact_selected!=name
 		$Left/ScrollContainer/VBoxContainer/Button4/Notice.hide()
 	if $Targets.visible:
 		new_targets = 0
@@ -471,6 +471,8 @@ func _select_contact(contact):
 	var bg = load(Objects.actors[contact].bg).instance()
 	var portrait = load(Objects.actors[contact].portrait).instance()
 	var scale := max($Chat/Panel/Portrait.rect_size.x/portrait.get_node("Rect").rect_size.x,$Chat/Panel/Portrait.rect_size.y/portrait.get_node("Rect").rect_size.y)
+	if $Chat.visible && chat_read.has(contact_selected):
+		chat_read[contact_selected] = chat_log[contact_selected].size()
 	contact_selected = contact
 	$Chat/Panel/Tween.interpolate_property($Chat/Panel,"self_modulate",$Chat/Panel.self_modulate,Objects.actors[contact].color,0.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 	$Chat/Panel/Tween.start()
@@ -1697,13 +1699,13 @@ func _show_chat():
 		c.hide()
 	for c in contacts:
 		var bi
-		if !has_node("Chat/Input/ScrollContainer/HBoxContainer/"+c):
+		if !has_node("Chat/ScrollContainer/VBoxContainer/"+c):
 			bi = $Chat/ScrollContainer/VBoxContainer/Button0.duplicate()
 			bi.name = c
 			$Chat/ScrollContainer/VBoxContainer.add_child(bi)
 			bi.connect("pressed",self,"_select_contact",[c])
 		else:
-			bi = get_node("Chat/Input/ScrollContainer/HBoxContainer/"+c)
+			bi = get_node("Chat/ScrollContainer/VBoxContainer/"+c)
 		bi.show()
 		bi.text = tr(Objects.actors[c].name)
 		bi.get_node("Panel").modulate = Objects.actors[c].color

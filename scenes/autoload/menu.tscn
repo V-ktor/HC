@@ -2027,6 +2027,9 @@ margin_left = 68.0
 margin_top = 36.0
 theme = SubResource( 28 )
 custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Panel2" type="Panel" parent="Chat"]
 anchor_left = 1.0
@@ -2058,6 +2061,9 @@ margin_right = -204.0
 margin_bottom = -2.0
 rect_clip_content = true
 custom_styles/panel = SubResource( 30 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Portrait" type="Control" parent="Chat/Panel"]
 anchor_left = 0.6
