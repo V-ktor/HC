@@ -241,18 +241,18 @@ func update_inventory():
 	for prog in Objects.actors.player.programs.keys():
 		var ci
 		var number := 0
+		var prgm := Programs.Program.new(Programs.programs[prog])
 		if has_node("Deck/Inventory/HBoxContainer/"+prog):
 			ci = get_node("Deck/Inventory/HBoxContainer/"+prog)
 		else:
-			var prgm = Programs.Program.new(Programs.programs[prog])
 			ci = $Deck/Deck/HBoxContainer/Card0.duplicate(0)
 			ci.name = prog
-			ci.get_node("Card/Image").set_texture(load("res://images/cards/"+Programs.programs[prog].icon+".png"))
-			ci.get_node("Card/Name").text = tr(Programs.programs[prog].name)
-			ci.get_node("Card/Desc").text = tr(Programs.programs[prog].description)
-			ci.get_node("Card/Cpu").text = str(round(prgm.mean_cpu))+"("+str(prgm.max_cpu)+")"
-			ci.get_node("Card/Size").text = str(prgm.size)
 			get_node("Deck/Inventory/HBoxContainer").add_child(ci)
+		ci.get_node("Card/Image").set_texture(load("res://images/cards/"+Programs.programs[prog].icon+".png"))
+		ci.get_node("Card/Name").text = tr(Programs.programs[prog].name)
+		ci.get_node("Card/Desc").text = tr(Programs.programs[prog].description)
+		ci.get_node("Card/Cpu").text = str(round(prgm.mean_cpu))+"("+str(prgm.max_cpu)+")"
+		ci.get_node("Card/Size").text = str(prgm.size)
 		if ci.get_node("Panel/HBoxContainer/ButtonAdd").is_connected("pressed",self,"_add_card"):
 			ci.get_node("Panel/HBoxContainer/ButtonAdd").disconnect("pressed",self,"_add_card")
 		ci.get_node("Panel/HBoxContainer/ButtonAdd").connect("pressed",self,"_add_card",[prog])
