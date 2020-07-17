@@ -1567,6 +1567,7 @@ func get_save_files():
 			save_files.push_back(filename.replace(".sav",""))
 		filename = dir.get_next()
 	dir.list_dir_end()
+	save_files.sort()
 
 func _save(filename=$Saves/ScrollContainer/VBoxContainer/New/LineEdit.text):
 	filename = filename.split(".")[0]
