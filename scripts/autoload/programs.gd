@@ -135,7 +135,7 @@ const COMMANDS = {
 	"initialize":{
 		"cpu":1,
 		"size":1,
-		"cost":30,
+		"cost":60,
 		"delay":2.0,
 		"argument":"none",
 		"sustained":"return",
@@ -143,7 +143,7 @@ const COMMANDS = {
 	"terminate":{
 		"cpu":0,
 		"size":0,
-		"cost":20,
+		"cost":40,
 		"delay":1.0,
 		"argument":"none",
 		"sustained":false,
@@ -151,7 +151,7 @@ const COMMANDS = {
 	"disconnect":{
 		"cpu":1,
 		"size":1,
-		"cost":30,
+		"cost":60,
 		"delay":0.5,
 		"argument":"none",
 		"sustained":false,
@@ -159,7 +159,7 @@ const COMMANDS = {
 	"connect":{
 		"cpu":1,
 		"size":1,
-		"cost":60,
+		"cost":100,
 		"delay":0.5,
 		"argument":"target",
 		"sustained":"disconnect",
@@ -167,7 +167,7 @@ const COMMANDS = {
 	"attack":{
 		"cpu":"attack_cpu",
 		"size":4,
-		"cost":150,
+		"cost":300,
 		"delay":"attack_delay",
 		"argument":"number",
 		"sustained":false,
@@ -175,7 +175,7 @@ const COMMANDS = {
 	"protect":{
 		"cpu":"attack_cpu",
 		"size":3,
-		"cost":150,
+		"cost":300,
 		"delay":"protect_delay",
 		"argument":"number",
 		"sustained":false,
@@ -183,7 +183,7 @@ const COMMANDS = {
 	"disrupt":{
 		"cpu":"disrupt_cpu",
 		"size":5,
-		"cost":300,
+		"cost":500,
 		"delay":10.0,
 		"argument":"number",
 		"sustained":false,
@@ -191,7 +191,7 @@ const COMMANDS = {
 	"translocate":{
 		"cpu":4,
 		"size":4,
-		"cost":300,
+		"cost":600,
 		"delay":5.0,
 		"argument":"none",
 		"sustained":false,
@@ -199,7 +199,7 @@ const COMMANDS = {
 	"clone":{
 		"cpu":4,
 		"size":8,
-		"cost":1000,
+		"cost":2000,
 		"delay":2.0,
 		"argument":"none",
 		"sustained":false,
@@ -207,7 +207,7 @@ const COMMANDS = {
 	"sleep":{
 		"cpu":0,
 		"size":1,
-		"cost":30,
+		"cost":80,
 		"delay":1.0,
 		"argument":"number",
 		"sustained":false,
@@ -215,7 +215,7 @@ const COMMANDS = {
 	"if":{
 		"cpu":2,
 		"size":4,
-		"cost":50,
+		"cost":100,
 		"delay":0.1,
 		"argument":"statement",
 		"sustained":false,
