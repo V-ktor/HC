@@ -184,7 +184,7 @@ func under_attack():
 	call_chat("ai","under_attack")
 
 func add_riley():
-	var c = Objects.Actor.new("???",Color(0.4,0.02,0.01),"res://scenes/portraits/character02.tscn","res://scenes/gui/chat_bg/riley.tscn",35,175,60.0,{"pulse":4,"phalanx":4,"scythe":6,"parry":6,"lock":4},0,0,8,{},0)
+	var c = Objects.Actor.new("???",Color(0.4,0.02,0.01),"res://scenes/portraits/character02.tscn","res://scenes/gui/chat_bg/riley.tscn",35,175,60.0,{"pulse":3,"phalanx":3,"scythe":6,"parry":4,"lock":3},0,0,8,{},0)
 	Objects.actors["riley"] = c
 	Menu.contacts.push_back("riley")
 	call_chat("riley","chat01")
@@ -225,7 +225,8 @@ func _local_server_defence(victory):
 
 func break_free():
 	Objects.actors["riley"].programs["silence"] = 2
-	Objects.actors["riley"].cpu += 10
+	Objects.actors["riley"].programs["lock"] += 1
+	Objects.actors["riley"].cpu += 5
 	Objects.actors["riley"].memory += 75
 	Objects.add_target("ai_server",tr("HALLY_SERVER"),null,tr("HALLY_SERVER"),Color(0.6,0.05,0.04),"radial",[5,4,12,2],Objects.actors["riley"].programs.duplicate(),Objects.actors["riley"].cpu,"ai_random",3000,30,"_riley_attack","Of_Far_Different_Nature-Escape-14-Crypt.ogg")
 	triggered_method("on_hack_started","_riley_attack_start",[],"ai")
