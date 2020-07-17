@@ -725,7 +725,7 @@ func _process(delta):
 			if e.delay<=0.0:
 				e.delay = 0.0
 				parse(e)
-			e.node.get_node("VBoxContainer/Duration").text = tr("REMAINING_TIME")%(e.delay/scale)
+			e.node.get_node("VBoxContainer/Duration").text = tr("REMAINING_TIME")%min(e.delay/max(scale,0.01),999.9)
 			e.node.get_node("VBoxContainer/Status").value = e.node.get_node("VBoxContainer/Status").max_value-e.delay
 			e.update(delta)
 
