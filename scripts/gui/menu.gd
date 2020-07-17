@@ -599,7 +599,7 @@ func _hack_ended(winner):
 		$Hack/Result/LabelReward.text = ""
 	Music.play_default()
 	Events._on_hack_ended(winner==0,target)
-	Objects.trigger_on_win(winner==0)
+	Objects.trigger_on_win(winner==0,target)
 	
 	$Hack/Panel/Text.clear()
 	if winner==0:
@@ -865,6 +865,8 @@ func update_hack_chat():
 	var contact := "ai"
 	if hack_contact_overwrite!="":
 		contact = hack_contact_overwrite
+		for c in $Hack/Panel/Portrait.get_children():
+			c.queue_free()
 	for c in $Hack/Panel/ScrollContainer/VBoxContainer.get_children():
 		c.queue_free()
 	for i in range(min(chat_hack_read,chat_hack_log.size())):

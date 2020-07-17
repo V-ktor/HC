@@ -468,10 +468,11 @@ func _load(file):
 		events[i] = obj
 
 
-func trigger_on_win(victory):
-	for object in targets.values():
-		if object is Server && object.method_on_win!=null && Events.has_method(object.method_on_win):
-			Events.call(object.method_on_win,victory)
+func trigger_on_win(victory,object):
+#	for object in targets.values():
+	if object.method_on_win!=null && Events.has_method(object.method_on_win):
+		Events.call(object.method_on_win,victory)
+	pass
 
 func get_total_node_count(type,params):
 	if type=="radial":
