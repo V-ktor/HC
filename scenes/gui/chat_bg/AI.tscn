@@ -22,6 +22,7 @@ void fragment()
 //	COLOR = vec4(UV.x,UV.y,0.0,1.0);
 }
 "
+custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
@@ -151,6 +152,8 @@ func remove_connection():
 		nodes[group][parent][1] = 2
 
 func _ready():
+	if !Options.show_particles:
+		queue_free()
 	for i in range(3):
 		add_group()
 "
@@ -198,6 +201,7 @@ void fragment()
 	else
 		COLOR = vec4(0.0);
 }"
+custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=5]
 shader = SubResource( 4 )
@@ -284,6 +288,7 @@ void fragment()
 	vec2 uv = UV+vec2(speed*TIME,0);
 	COLOR = texture(TEXTURE,uv);
 }"
+custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=10]
 shader = SubResource( 9 )
