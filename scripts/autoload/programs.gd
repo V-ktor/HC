@@ -101,7 +101,7 @@ const SILENCE = {
 
 const WORM = {
 	Vector2( 8, 4):{"type":"initialize","dir":[0]},
-	Vector2( 9, 4):{"type":"if","arguments":[">","cpu",75],"dir":[0,2]},
+	Vector2( 9, 4):{"type":"if","arguments":[">","cpu",5],"dir":[0,2]},
 	Vector2( 8, 5):{"type":"terminate"},
 	Vector2(10, 5):{"type":"if","arguments":["enemy_adjacent"],"dir":[1,0]},
 	Vector2(10, 6):{"type":"connect","arguments":["random_enemy"],"dir":[1]},
@@ -113,21 +113,21 @@ const WORM = {
 	Vector2(12, 4):{"type":"connect","arguments":["random_controled"],"dir":[3]},
 	Vector2(12, 5):{"type":"clone","arguments":[],"dir":[4]},
 	Vector2(12, 6):{"type":"connect","arguments":["local"],"dir":[5]},
-	Vector2(13, 4):{"type":"connect","arguments":["local"],"dir":[3]},
+	Vector2(13, 4):{"type":"disconnect","dir":[3]},
 	Vector2(13, 5):{"type":"attack","arguments":[2],"dir":[4]}
 }
 
 const AGENT = {
-	Vector2( 8, 5):{"type":"initialize","dir":[5]},
-	Vector2( 9, 4):{"type":"if","arguments":["controled_adjacent"],"dir":[4,1]},
-	Vector2( 9, 5):{"type":"terminate"},
+	Vector2( 8, 4):{"type":"initialize","dir":[5]},
+	Vector2(10, 4):{"type":"if","arguments":["controled_adjacent"],"dir":[0,5]},
+	Vector2(11, 3):{"type":"terminate"},
 	Vector2( 9, 2):{"type":"connect","arguments":["random_enemy"],"dir":[5]},
 	Vector2(10, 2):{"type":"attack","arguments":[1],"dir":[1]},
-	Vector2( 9, 3):{"type":"if","arguments":["controled_adjacent"],"dir":[4,0]},
+	Vector2( 9, 3):{"type":"if","arguments":["enemy_adjacent"],"dir":[4,0]},
 	Vector2(10, 3):{"type":"disconnect","dir":[2]},
-	Vector2(10, 4):{"type":"connect","arguments":["random_controled"],"dir":[0]},
-	Vector2(11, 4):{"type":"translocate","dir":[2]},
-	Vector2(10, 5):{"type":"disconnect","dir":[3]}
+	Vector2(11, 4):{"type":"connect","arguments":["random_controled"],"dir":[2]},
+	Vector2(10, 5):{"type":"translocate","dir":[3]},
+	Vector2( 9, 4):{"type":"disconnect","dir":[4]}
 }
 
 
@@ -511,3 +511,4 @@ func _load(file):
 					code[pos] = known_programs[k1].code[k2]
 			known_programs[k1].code = to_class(code)
 			programs[k1] = known_programs[k1]
+	
