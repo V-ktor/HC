@@ -196,13 +196,13 @@ margin_right = -32.0
 margin_bottom = 40.0
 focus_mode = 2
 mouse_filter = 2
-columns = 3
+columns = 4
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Option0" type="OptionButton" parent="Arguments"]
-margin_right = 50.0
+margin_right = 37.0
 margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -227,8 +227,8 @@ max_value = 999.0
 value = 1.0
 
 [node name="Option1" type="OptionButton" parent="Arguments"]
-margin_left = 54.0
-margin_right = 104.0
+margin_left = 41.0
+margin_right = 78.0
 margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -253,8 +253,8 @@ max_value = 999.0
 value = 1.0
 
 [node name="Option2" type="OptionButton" parent="Arguments"]
-margin_left = 108.0
-margin_right = 158.0
+margin_left = 82.0
+margin_right = 119.0
 margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
