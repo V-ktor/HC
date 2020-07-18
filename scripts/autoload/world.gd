@@ -540,12 +540,7 @@ func create_group_target(strength):
 	var color : Color
 	var memory := 0
 	var str_eff = sqrt(strength)
-	var programs := {
-		"pulse":int(rand_range(0.4,1.25)*str_eff+2),
-		"wave":int(rand_range(0.2,0.75)*max(str_eff-2,0.0)),
-		"anti_virus":int(rand_range(0.25,1.0)*max(str_eff-1,0)),
-		"agent":int(rand_range(0.125,0.5)*max(str_eff-5,0.0))
-	}
+	var programs := {}
 	var cpu := int(rand_range(1.2,1.4)*strength+rand_range(0.5,3.0))
 	var credits := int(rand_range(80,100)*strength+rand_range(100,300))
 	var prestige := int(rand_range(3.0,3.5)*sqrt(strength))
@@ -563,7 +558,15 @@ func create_group_target(strength):
 	name = groups[group].name+" "+tr(groups[group].departments[randi()%+groups[group].departments.size()])
 	
 	ID = name.to_lower().replace(" ","_")
-	action_strength = programs["pulse"]+1.2*programs["wave"]+0.75*programs["anti_virus"]
+	if strength>100 && randf()<0.33:
+		programs["wave"] = int(rand_range(0.8,2.0)*str_eff+4)
+		programs["phalanx"] = int(rand_range(0.4,1.0)*str_eff+1)
+		programs["agent"] = int(rand_range(0.4,1.25)*str_eff+2)
+	else:
+		programs["pulse"] = int(rand_range(0.4,1.25)*str_eff+2)
+		programs["anti_virus"] = int(rand_range(0.4,1.25)*str_eff+2)
+		programs["agent"] = int(rand_range(0.4,1.25)*str_eff+1)
+	action_strength = programs["pulse"]+programs["wave"]+0.75*programs["anti_virus"]
 	programs["fire_wall"] = int(rand_range(0.25,0.75)*(strength-action_strength))
 	action_strength += 1.5*programs["fire_wall"]
 	if cpu>25:
