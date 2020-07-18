@@ -117,6 +117,7 @@ CLOSE,Close
 QUIT,Quit
 YES,Yes
 NO,No
+GRAB_FOCUS,Grab Focus
 WARNING,Warning
 NO_INIT_NODE,"No initialization node!"
 MULTIPLE_INIT_NODES,"Multiple initialization nodes!"
