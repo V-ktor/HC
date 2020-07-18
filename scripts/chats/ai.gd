@@ -627,10 +627,10 @@ func _riley_attack(victory):
 		Menu.chat_hack_log.clear()
 		Events.delayed_hack_msg(tr("AI_0440"),1.0)
 		Events.delayed_hack_msg(tr("AI_0441"),2.0)
-		Events.delayed_hack_msg(tr("AI_0442"),3.0)
-		Events.delayed_hack_msg(tr("AI_0443"),5.0)
+		Events.delayed_hack_msg(tr("AI_0442"),1.0)
+		Events.delayed_hack_msg(tr("AI_0443"),3.0)
 		Events.delayed_hack_msg(tr("AI_0444"),2.0)
-		Events.delayed_hack_msg(tr("AI_0445"),3.0)
+		Events.delayed_hack_msg(tr("AI_0445"),2.0)
 		Events.delayed_msg("riley","...",1.0)
 		Events.delayed_choice("riley",[
 			{"text":"REPLY_0050_1","required":{"curiosity":4}},

@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-const VERSION = "v0.1.1-alpha"
+const VERSION = "v0.2-alpha"
 const MAX_MSG = 100
 const PROGRAM_ICONS = [
 	"anti_virus_green","anti_virus_purple","beam_cannon","bombardment",
