@@ -1,4 +1,4 @@
-[gd_scene load_steps=215 format=2]
+[gd_scene load_steps=217 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -56,6 +56,8 @@
 [ext_resource path="res://images/masks/ball.png" type="Texture" id=54]
 [ext_resource path="res://images/masks/grid_mask_blury.png" type="Texture" id=55]
 [ext_resource path="res://images/characters/AI_title_eyes_open.png" type="Texture" id=56]
+[ext_resource path="res://images/gui/menu_delete.png" type="Texture" id=57]
+[ext_resource path="res://images/gui/menu_icon.png" type="Texture" id=58]
 
 [sub_resource type="ViewportTexture" id=1]
 flags = 4
@@ -982,10 +984,10 @@ font_data = ExtResource( 10 )
 
 [sub_resource type="Theme" id=58]
 default_font = SubResource( 57 )
-Button/colors/font_color = Color( 0.376471, 1, 0.376471, 1 )
-Button/colors/font_color_disabled = Color( 0, 0.25098, 0, 0.2 )
-Button/colors/font_color_hover = Color( 0.752941, 1, 0.752941, 1 )
-Button/colors/font_color_pressed = Color( 0, 1, 0, 1 )
+Button/colors/font_color = Color( 1, 1, 1, 1 )
+Button/colors/font_color_disabled = Color( 0.25098, 0, 0, 0.2 )
+Button/colors/font_color_hover = Color( 0.752941, 0.878431, 1, 1 )
+Button/colors/font_color_pressed = Color( 0.501961, 0.501961, 0.501961, 1 )
 Button/constants/hseparation = 2
 Button/fonts/font = null
 Button/styles/disabled = SubResource( 42 )
@@ -1013,7 +1015,7 @@ CheckBox/styles/normal = null
 CheckBox/styles/pressed = null
 HSeparator/constants/separation = 4
 HSeparator/styles/separator = SubResource( 47 )
-Label/colors/font_color = Color( 0.376471, 1, 0.376471, 1 )
+Label/colors/font_color = Color( 1, 1, 1, 1 )
 Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
 Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
 Label/constants/line_spacing = 3
@@ -1025,7 +1027,7 @@ Label/styles/normal = null
 LineEdit/colors/clear_button_color = Color( 0.878431, 0.878431, 0.878431, 1 )
 LineEdit/colors/clear_button_color_pressed = Color( 1, 1, 1, 1 )
 LineEdit/colors/cursor_color = Color( 0.941176, 0.941176, 0.941176, 1 )
-LineEdit/colors/font_color = Color( 0.376471, 1, 0.376471, 1 )
+LineEdit/colors/font_color = Color( 1, 1, 1, 1 )
 LineEdit/colors/font_color_selected = Color( 0, 0, 0, 1 )
 LineEdit/colors/selection_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 LineEdit/constants/minimum_spaces = 12
@@ -1068,6 +1070,12 @@ PopupMenu/styles/labeled_separator_right = null
 PopupMenu/styles/panel = SubResource( 45 )
 PopupMenu/styles/panel_disabled = null
 PopupMenu/styles/separator = SubResource( 47 )
+TooltipLabel/colors/font_color = Color( 1, 1, 1, 1 )
+TooltipLabel/colors/font_color_shadow = Color( 0, 0, 0, 0.1 )
+TooltipLabel/constants/shadow_offset_x = 1
+TooltipLabel/constants/shadow_offset_y = 1
+TooltipLabel/fonts/font = SubResource( 24 )
+TooltipPanel/styles/panel = SubResource( 25 )
 VScrollBar/icons/decrement = null
 VScrollBar/icons/decrement_highlight = null
 VScrollBar/icons/increment = null
@@ -3260,7 +3268,7 @@ size_flags_vertical = 3
 
 [node name="Tech0" type="Panel" parent="Gear/Techs/HBoxContainer"]
 margin_right = 175.0
-margin_bottom = 262.0
+margin_bottom = 250.0
 rect_min_size = Vector2( 175, 250 )
 
 [node name="Card" parent="Gear/Techs/HBoxContainer/Tech0" instance=ExtResource( 9 )]
@@ -3449,6 +3457,7 @@ __meta__ = {
 margin_right = 64.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "NEW_FILE"
 custom_styles/hover = SubResource( 8 )
 custom_styles/pressed = SubResource( 9 )
 custom_styles/focus = SubResource( 10 )
@@ -3460,21 +3469,19 @@ modulate = Color( 1, 1, 1, 0.752941 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-
-[node name="Label" type="Label" parent="Code/Top/Button0"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "NEW_FILE"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Button1" type="Button" parent="Code/Top"]
 margin_left = 68.0
 margin_right = 132.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "SAVE"
 custom_styles/hover = SubResource( 8 )
 custom_styles/pressed = SubResource( 9 )
 custom_styles/focus = SubResource( 10 )
@@ -3486,21 +3493,19 @@ modulate = Color( 1, 1, 1, 0.752941 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-
-[node name="Label" type="Label" parent="Code/Top/Button1"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "SAVE"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Button2" type="Button" parent="Code/Top"]
 margin_left = 136.0
 margin_right = 200.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "CHANGE_ICON"
 custom_styles/hover = SubResource( 8 )
 custom_styles/pressed = SubResource( 9 )
 custom_styles/focus = SubResource( 10 )
@@ -3512,21 +3517,19 @@ modulate = Color( 1, 1, 1, 0.752941 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-
-[node name="Label" type="Label" parent="Code/Top/Button2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "CHANGE_ICON"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
+texture = ExtResource( 58 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Button3" type="Button" parent="Code/Top"]
 margin_left = 204.0
 margin_right = 268.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "DELETE"
 custom_styles/hover = SubResource( 8 )
 custom_styles/pressed = SubResource( 9 )
 custom_styles/focus = SubResource( 10 )
@@ -3538,15 +3541,9 @@ modulate = Color( 1, 1, 1, 0.752941 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-
-[node name="Label" type="Label" parent="Code/Top/Button3"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "DELETE"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
+texture = ExtResource( 57 )
+expand = true
+stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
