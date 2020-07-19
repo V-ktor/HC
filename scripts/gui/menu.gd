@@ -119,6 +119,7 @@ func reset():
 	$Left/ScrollContainer/VBoxContainer/Button9.hide()
 	$Left/ScrollContainer/VBoxContainer/Button10.hide()
 	$Left/ScrollContainer/VBoxContainer/Button11.show()
+	$Background/AnimationPlayer.play("fade_in")
 	Music.play_default()
 
 func _start_new_game(name=null):
@@ -134,6 +135,7 @@ func _start_new_game(name=null):
 	new_targets = 0
 	decks = [{"pulse":8}]
 	
+	$Background/AnimationPlayer.play("open_eyes")
 	$Login/Input/LineEdit.editable = false
 	$Login/Input/ButtonConfirm.disabled = true
 	$Left/ScrollContainer/VBoxContainer/Button0.disabled = true
@@ -1610,6 +1612,7 @@ func _load(filename):
 		return
 	quicksave()
 	reset()
+	$Background/AnimationPlayer.play("fade_out")
 	currentline = JSON.parse(file.get_line()).result
 	contacts = currentline.contacts
 	targets = currentline.targets
