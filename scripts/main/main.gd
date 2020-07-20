@@ -270,18 +270,18 @@ class Program:
 			elif cmd=="translocate":
 				var index := -1
 				var move_to = targets[randi()%targets.size()]
-				init_command("disconnect","DISCONNECTED")
 				gamestate.nodes[ID].remove_program(self)
 				ID = move_to
 				index = gamestate.nodes[ID].add_program(self)
 				# Move tooltip
 				gamestate.Main.get_node("GUI/Tooltips").remove_child(tooltip)
+				stop()
 				if index>=0:
 # warning-ignore:integer_division
 					var d = 2*Vector2((index+1)%2,int(index/2))-Vector2(1,1)
 					tooltip.rect_position = d*Vector2(192,128)
 					tooltip.self_modulate = gamestate.colors[owner]
-					tooltip.node = gamestate.points[ID].node
+					tooltip.node = gamestate.nodes[ID].node
 					gamestate.Main.get_node("GUI/Tooltips").add_child(tooltip)
 			elif cmd=="clone":
 				gamestate.Main.add_program(owner,type,ID)
@@ -809,7 +809,7 @@ func stop():
 	emit_signal("timeout",get_winner())
 
 
-func create_radial_system(num_inner,num_outer,num_central,num_layers):
+func create_radial_system(num_inner,num_outer,num_central,num_layers) -> Array:
 # warning-ignore:shadowed_variable
 	var points := []
 	var num_layer := []
@@ -832,19 +832,14 @@ func create_radial_system(num_inner,num_outer,num_central,num_layers):
 	for j in num_layers:
 		for i in range(last,last+num_layer[j]):
 			var c1
-#			var c2
 			var mean
 			if j==0:
 				mean = float(i-last)/num_layer[j]*num_inner+last-num_inner
 				c1 = floor((mean+round(mean))/2.0)
-#				c2 = ceil((mean+round(mean))/2.0)
 			else:
 				mean = float(i-last)/num_layer[j]*num_layer[j-1]+last-num_layer[j-1]
 				c1 = floor((mean+round(mean))/2.0)
-#				c2 = ceil((mean+round(mean))/2.0)
 			points[i] = {"position":Vector2(192+256*(j+1),0).rotated(2.0*PI*(i-last)/num_layer[j]),"connections":[c1],"owner":-1}
-#			if c1!=c2:
-#				points[i]["connections"].push_back(c2)
 		last += num_layer[j]
 	for i in range(last-num_layer[num_layers-1],last):
 		if randf()<0.4:
@@ -871,7 +866,7 @@ func create_radial_system(num_inner,num_outer,num_central,num_layers):
 				points[j]["connections"].push_back(i)
 	return points
 
-func create_layered_system(num_layers,num_outer,num_nodes):
+func create_layered_system(num_layers,num_outer,num_nodes) -> Array:
 	var nodes_per_layer
 	var last
 	var xoffset := 256.0
@@ -927,7 +922,7 @@ func create_layered_system(num_layers,num_outer,num_nodes):
 				points[j]["connections"].push_back(i)
 	return points
 
-func create_radial_layer_system(num_inner,num_outer,num_central,num_layers):
+func create_radial_layer_system(num_inner,num_outer,num_central,num_layers) -> Array:
 # warning-ignore:shadowed_variable
 	var points := []
 	var num_layer := []
@@ -987,6 +982,33 @@ func create_radial_layer_system(num_inner,num_outer,num_central,num_layers):
 		for j in range(points.size()):
 			if j in points[i]["connections"] && !(i in points[j]["connections"]):
 				points[j]["connections"].push_back(i)
+	return points
+
+func create_hex_system(num_layers):
+# warning-ignore:shadowed_variable
+	var points := [{"position":Vector2(0,0),"connections":[],"owner":1}]
+	var owner := -1
+	var last_layer_start := 0
+	
+	for i in range(1,num_layers):
+		var num_nodes := 6*i
+		if i==num_layers-1:
+			owner = 0
+		for j in range(num_nodes):
+			var pos := Vector2(0,256*i).rotated(2.0*PI*float(j)/float(num_nodes))
+			var index = points.size()
+			points.push_back({"position":pos,"connections":[],"owner":owner})
+			if randf()<0.5/(1.0+i):
+				points[index]["owner"] = 1
+			for _k in range(1+randi()%2):
+# warning-ignore:integer_division
+				var c := int(clamp(round(last_layer_start+int(float(j)/float(num_nodes)*max(6*(i-1),1))+rand_range(-0.25,0.25)*(1.0+i)),last_layer_start,last_layer_start+6*(i-1)))
+				if !points[index]["connections"].has(c):
+					points[index]["connections"].push_back(c)
+				if !points[c]["connections"].has(index):
+					points[c]["connections"].push_back(index)
+		last_layer_start = points.size()-num_nodes
+	
 	return points
 
 func _ready():

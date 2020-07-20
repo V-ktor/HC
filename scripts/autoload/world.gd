@@ -475,12 +475,15 @@ func trigger_on_win(victory,object):
 	pass
 
 func get_total_node_count(type,params):
-	if type=="radial":
-		return params[0]+params[1]+params[2]
-	elif type=="layered":
-		return params[2]
-	elif type=="radial_layer":
-		return params[0]+params[1]+params[2]
+	match type:
+		"radial":
+			return params[0]+params[1]+params[2]
+		"layered":
+			return params[2]
+		"radial_layer":
+			return params[0]+params[1]+params[2]
+		"hex":
+			return 1+3*params[0]*(params[0]+1)
 	return 0
 
 func add_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win=null,music_overwrite=null) -> Server:
@@ -544,8 +547,15 @@ func create_group_target(strength):
 	var cpu := int(rand_range(1.2,1.4)*strength+rand_range(0.5,3.0))
 	var credits := int(rand_range(80,100)*strength+rand_range(100,300))
 	var prestige := int(rand_range(3.0,3.5)*sqrt(strength))
-	var params := [5,4,max(int(rand_range(10.0,16.0)+strength*rand_range(0.1,0.2)),1),max(int(sqrt(strength)*rand_range(0.25,0.6)+rand_range(0.0,0.75)),1)]
+	var architecture
+	var params
 	var best_match := 999
+	if strength>100 && randf()<0.4:
+		architecture = "hex"
+		params = [3+randi()%2]
+	else:
+		architecture = "radial_layer"
+		[5,4,max(int(rand_range(10.0,16.0)+strength*rand_range(0.1,0.2)),1),max(int(sqrt(strength)*rand_range(0.25,0.6)+rand_range(0.0,0.75)),1)]
 	
 	for k in groups.keys():
 		var score = abs(groups[k].influence*rand_range(0.75,1.25)+rand_range(-5.0,5.0)-strength)
@@ -566,7 +576,12 @@ func create_group_target(strength):
 		programs["pulse"] = int(rand_range(0.4,1.25)*str_eff+2)
 		programs["anti_virus"] = int(rand_range(0.4,1.25)*str_eff+2)
 		programs["agent"] = int(rand_range(0.4,1.25)*str_eff+1)
-	action_strength = programs["pulse"]+programs["wave"]+0.75*programs["anti_virus"]
+	if programs.has("pulse"):
+		action_strength = programs["pulse"]
+	if programs.has("wave"):
+		action_strength = programs["wave"]
+	if programs.has("anti_virus"):
+		action_strength = 0.75*programs["anti_virus"]
 	programs["fire_wall"] = int(rand_range(0.25,0.75)*(strength-action_strength))
 	action_strength += 1.5*programs["fire_wall"]
 	if cpu>25:
@@ -578,9 +593,9 @@ func create_group_target(strength):
 	for type in programs.keys():
 		var prog = Programs.Program.new(Programs.programs[type])
 		memory += prog.size*programs[type]
-	desc += tr("NODES")+": "+str(get_total_node_count("radial_layer",params))+"\n"+tr("CPU")+": "+str(cpu)+"\n"+tr("MEMORY")+": "+str(memory)
+	desc += tr("NODES")+": "+str(get_total_node_count(architecture,params))+"\n"+tr("CPU")+": "+str(cpu)+"\n"+tr("MEMORY")+": "+str(memory)
 	
-	add_opt_target(ID,name,group,desc,color,"radial_layer",params,programs,cpu,"ai_random",credits,prestige,"_remove_opt_target")
+	add_opt_target(ID,name,group,desc,color,architecture,params,programs,cpu,"ai_random",credits,prestige,"_remove_opt_target")
 	return ID
 
 

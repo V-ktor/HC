@@ -1,4 +1,4 @@
-[gd_scene load_steps=209 format=2]
+[gd_scene load_steps=211 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -41,6 +41,7 @@
 [ext_resource path="res://images/gui/menu_button_normal.png" type="Texture" id=42]
 [ext_resource path="res://images/gui/menu_button_hover.png" type="Texture" id=43]
 [ext_resource path="res://images/gui/menu_button_focus.png" type="Texture" id=44]
+[ext_resource path="res://images/gui/log_panel.png" type="Texture" id=45]
 [ext_resource path="res://images/misc/crown.png" type="Texture" id=47]
 [ext_resource path="res://images/misc/star.png" type="Texture" id=48]
 [ext_resource path="res://images/gui/menu_options.png" type="Texture" id=49]
@@ -48,6 +49,7 @@
 [ext_resource path="res://images/masks/grid_mask.png" type="Texture" id=53]
 [ext_resource path="res://images/masks/ball.png" type="Texture" id=54]
 [ext_resource path="res://images/masks/grid_mask_blury.png" type="Texture" id=55]
+[ext_resource path="res://images/characters/AI_title_eyes_open.png" type="Texture" id=56]
 [ext_resource path="res://images/gui/menu_delete.png" type="Texture" id=57]
 [ext_resource path="res://images/gui/menu_icon.png" type="Texture" id=58]
 
@@ -103,7 +105,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ null ]
+"values": [ ExtResource( 52 ) ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -154,7 +156,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ null ]
+"values": [ ExtResource( 52 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -207,7 +209,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ null ]
+"values": [ ExtResource( 56 ) ]
 }
 
 [sub_resource type="StyleBoxFlat" id=5]
@@ -609,7 +611,8 @@ outline_color = Color( 0, 0, 0, 0.25098 )
 font_data = ExtResource( 3 )
 
 [sub_resource type="StyleBoxTexture" id=28]
-region_rect = Rect2( 0, 0, 520, 72 )
+texture = ExtResource( 45 )
+region_rect = Rect2( 0, 0, 136, 200 )
 margin_left = 4.0
 margin_right = 4.0
 margin_top = 4.0
