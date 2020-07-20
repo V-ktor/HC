@@ -995,10 +995,10 @@ func create_hex_system(num_layers):
 		if i==num_layers-1:
 			owner = 0
 		for j in range(num_nodes):
-			var pos := Vector2(0,256*i).rotated(2.0*PI*float(j)/float(num_nodes))
+			var pos := Vector2(0,320*i).rotated(2.0*PI*float(j)/float(num_nodes))
 			var index = points.size()
 			points.push_back({"position":pos,"connections":[],"owner":owner})
-			if randf()<0.5/(1.0+i):
+			if randf()<0.8/(1.0+i):
 				points[index]["owner"] = 1
 			for _k in range(1+randi()%2):
 # warning-ignore:integer_division
