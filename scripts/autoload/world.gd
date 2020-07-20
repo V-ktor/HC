@@ -200,7 +200,7 @@ class Server extends Obj:
 	var music_overwrite
 	var optional := false
 	
-	func _init(_name,_group,_desc,_color,_layout,_layout_params,_programs,_cpu,_ai,_credits,_prestige,_method_on_win=null,_music_overwrite=null):
+	func _init(_name,_group,_desc,_color,_layout,_layout_params,_programs,_cpu,_ai,_credits,_prestige,_method_on_win=null,_music_overwrite=null,_optional=false):
 		name = _name
 		group = _group
 		desc = _desc
@@ -212,11 +212,12 @@ class Server extends Obj:
 		cpu = _cpu
 		credits = _credits
 		prestige = _prestige
+		optional = _optional
 		method_on_win = _method_on_win
 		music_overwrite = _music_overwrite
 	
 	func to_dict():
-		var dict = {"type":"server","name":name,"group":group,"desc":desc,"color":color,"layout":layout,"layout_params":layout_params,"ai":ai,"programs":programs,"cpu":cpu,"credits":credits,"prestige":prestige,"method_on_win":method_on_win,"music_overwrite":music_overwrite}
+		var dict = {"type":"server","name":name,"group":group,"desc":desc,"color":color,"layout":layout,"layout_params":layout_params,"ai":ai,"programs":programs,"cpu":cpu,"credits":credits,"prestige":prestige,"optional":optional,"method_on_win":method_on_win,"music_overwrite":music_overwrite}
 		return dict
 
 class Group extends Obj:
@@ -413,7 +414,9 @@ func _load(file):
 		var color = Color(array[0],array[1],array[2],array[3])
 		if !dict.has("music_overwrite"):
 			dict.music_overwrite = null
-		obj = Server.new(dict.name,dict.group,dict.desc,color,dict.layout,dict.layout_params,dict.programs,dict.cpu,dict.ai,dict.credits,dict.prestige,dict.method_on_win,dict.music_overwrite)
+		if !dict.has("optional"):
+			dict.optional = false
+		obj = Server.new(dict.name,dict.group,dict.desc,color,dict.layout,dict.layout_params,dict.programs,dict.cpu,dict.ai,dict.credits,dict.prestige,dict.method_on_win,dict.music_overwrite,dict.optional)
 		targets[ID] = obj
 	currentline = JSON.parse(file.get_line()).result
 	actors.clear()
@@ -550,12 +553,12 @@ func create_group_target(strength):
 	var architecture
 	var params
 	var best_match := 999
-	if strength>100 && randf()<0.4:
+	if strength>15 && randf()<0.4:
 		architecture = "hex"
 		params = [3+randi()%2]
 	else:
 		architecture = "radial_layer"
-		[5,4,max(int(rand_range(10.0,16.0)+strength*rand_range(0.1,0.2)),1),max(int(sqrt(strength)*rand_range(0.25,0.6)+rand_range(0.0,0.75)),1)]
+		params = [5,4,max(int(rand_range(10.0,16.0)+strength*rand_range(0.1,0.2)),1),max(int(sqrt(strength)*rand_range(0.25,0.6)+rand_range(0.0,0.75)),1)]
 	
 	for k in groups.keys():
 		var score = abs(groups[k].influence*rand_range(0.75,1.25)+rand_range(-5.0,5.0)-strength)
@@ -568,7 +571,7 @@ func create_group_target(strength):
 	name = groups[group].name+" "+tr(groups[group].departments[randi()%+groups[group].departments.size()])
 	
 	ID = name.to_lower().replace(" ","_")
-	if strength>100 && randf()<0.33:
+	if strength>15 && randf()<0.33:
 		programs["wave"] = int(rand_range(0.8,2.0)*str_eff+4)
 		programs["phalanx"] = int(rand_range(0.4,1.0)*str_eff+1)
 		programs["agent"] = int(rand_range(0.4,1.25)*str_eff+2)
