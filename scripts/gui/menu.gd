@@ -1087,6 +1087,7 @@ func _select_program_icon(ID):
 func _set_program_icon():
 	program_icon = PROGRAM_ICONS[program_icon_selected]
 	$Code/IconName.texture = load("res://images/icons/"+program_icon+".png")
+	$Code/Icon.hide()
 
 func _set_program_name(text):
 	if text in Programs.programs.keys():
