@@ -1,4 +1,5 @@
 ,en
+AI_DESC,""
 LOG_HACK_SUCCESS,"Succesfully hacked %s."
 LOG_HACK_FAILED,"Hacking attempt on %s failed."
 LOG_NEW_PROGRAM_ACQUIRED,"Acquired the %s program."

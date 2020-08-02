@@ -42,6 +42,12 @@ var program_icon_selected := 0
 var program_nodes := {}
 var program_grid_size = Vector2(20,10)
 var intro_sequence := false
+var encrypted_data := []
+var data_set_selected := -1
+var encrypted_text := ""
+var symbols := {}
+var decrypt_hexes := {}
+var seen_data_sets := 0
 
 var program_focus := Vector2()
 var program_last := Vector2()
@@ -76,6 +82,7 @@ var icons_personality := {
 var hex_node := preload("res://scenes/gui/hex_node.tscn")
 var hex_bg := preload("res://scenes/gui/hex_bg.tscn")
 var debug_icon_start := [preload("res://images/gui/debug_start.png"),preload("res://images/gui/debug_stop.png")]
+var hex_rotator := preload("res://scenes/gui/hex_rotator.tscn")
 
 
 func reset():
@@ -119,6 +126,7 @@ func reset():
 	$Left/ScrollContainer/VBoxContainer/Button9.hide()
 	$Left/ScrollContainer/VBoxContainer/Button10.hide()
 	$Left/ScrollContainer/VBoxContainer/Button11.show()
+	$Left/ScrollContainer/VBoxContainer/Button13.hide()
 	$Background/AnimationPlayer.play("fade_in")
 	Music.play_default()
 
@@ -133,7 +141,7 @@ func _start_new_game(name=null):
 	reset()
 	active = true
 	new_targets = 0
-	decks = [{"pulse":8}]
+	decks = [{"pulse":7}]
 	
 	$Background/AnimationPlayer.play("open_eyes")
 	$Login/Input/LineEdit.editable = false
@@ -143,6 +151,7 @@ func _start_new_game(name=null):
 	$Left/ScrollContainer/VBoxContainer/Button2.disabled = true
 	$Left/ScrollContainer/VBoxContainer/Button3.disabled = true
 	$Left/ScrollContainer/VBoxContainer/Button11.disabled = true
+	$Left/ScrollContainer/VBoxContainer/Button13.disabled = true
 	$Top/HBoxContainer/ButtonClose.disabled = true
 	$Login/HBoxContainer.show()
 	$Login/HBoxContainer/AnimationPlayer.play("loading",-1,1.5)
@@ -184,6 +193,7 @@ func _start_new_game(name=null):
 	$Left/ScrollContainer/VBoxContainer/Button8.hide()
 	$Left/ScrollContainer/VBoxContainer/Button9.hide()
 	$Left/ScrollContainer/VBoxContainer/Button11.hide()
+	$Left/ScrollContainer/VBoxContainer/Button13.hide()
 	$Login/HBoxContainer.hide()
 	$Login/HBoxContainer/AnimationPlayer.stop()
 	intro_sequence = true
@@ -345,6 +355,11 @@ func update_main_menu():
 	else:
 		$Left/ScrollContainer/VBoxContainer/Button8/Notice/Label.text = str(min(new_targets,9))
 		$Left/ScrollContainer/VBoxContainer/Button8/Notice.show()
+	if !$Decrypt.visible:
+		$Left/ScrollContainer/VBoxContainer/Button13/Notice/Label.text = str(min(encrypted_data.size()-seen_data_sets,9))
+		$Left/ScrollContainer/VBoxContainer/Button13/Notice.visible = encrypted_data.size()>seen_data_sets
+	else:
+		$Left/ScrollContainer/VBoxContainer/Button13/Notice.hide()
 
 func update_log():
 	var tree := $Log/ScrollContainer/Tree
@@ -407,6 +422,16 @@ func update_log():
 		cmd.type = "group"
 		cmd.ID = k
 		cmd.set_text(0,Objects.groups[k].name)
+	var child7 = tree.create_item(root)
+	child7.set_text(0,tr("MESSAGES"))
+	child7.set_script(preload("res://scripts/gui/item.gd"))
+	child7.type = "message_overview"
+	for i in range(Vars.messages.size()):
+		var cmd = tree.create_item(child7)
+		cmd.set_script(preload("res://scripts/gui/item.gd"))
+		cmd.type = "message"
+		cmd.ID = i
+		cmd.set_text(0,tr(Vars.messages[i].name))
 	var child6 = tree.create_item(root)
 	child6.set_text(0,tr("HISTORY"))
 	child6.set_script(preload("res://scripts/gui/item.gd"))
@@ -584,7 +609,7 @@ func _hack_ended(winner):
 		Objects.actors.player.rating += target.prestige
 		$Hack/Result/LabelReward.text = tr("CREDITS")+": +"+str(target.credits)+"\n"+tr("RANKING")+": +"+str(target.prestige)+"\n"
 		add_log_msg(tr("LOG_HACK_SUCCESS")%target.name)
-		if randf()<0.25:
+		if Vars.get_var("gained_tech")!=null && (randf()<0.25 || Vars.get_var("gained_tech")<1):
 			var type = target.programs.keys()[randi()%target.programs.size()]
 			if !Objects.actors.player.programs.has(type):
 				Objects.actors.player.programs[type] = 1
@@ -593,6 +618,7 @@ func _hack_ended(winner):
 			else:
 				Objects.actors.player.programs[type] += 1
 			$Hack/Result/LabelReward.text += tr("TECHS")+": "+tr(Programs.programs[type].name)+"\n"
+			Vars.inc_var("gained_tech")
 	elif winner==1:
 		Objects.actors.player.rating = max(Objects.actors.player.rating-floor(target.prestige/2),0)
 		$Hack/Result/LabelReward.text = tr("RANKING")+": -"+str(floor(target.prestige/2))+"\n"
@@ -715,10 +741,11 @@ func remove_choice(contact,choices):
 		update_chat()
 
 #func add_tech(prog):
-#	# Add the program to the list of known programs.
-#	if prog in Programs.known_programs.keys():
-#		return
-#	Programs.known_programs[prog] = Programs.programs[prog]
+#	# Add a copy of the program to inventory.
+#	if !Objects.actors.player.programs.has(prog):
+#		Objects.actors.player.programs[prog] = 1
+#	else:
+#		Objects.actors.player.programs[prog] += 1
 #	if $Compile.visible:
 #		update_compile()
 
@@ -984,7 +1011,7 @@ func update_compile():
 			ci.get_node("Label").text = tr("COST")+": "+str(prgm.cost)+"\n"+tr("CPU")+": "+str(prgm.compile_cpu)+"\n"+tr("TIME")+": "+str(prgm.compile_time)
 		else:
 			ci.get_node("Button").text = tr("DECOMPILE")
-			ci.get_node("Label").text = tr("COST")+": "+str(2*prgm.cost)+"\n"+tr("CPU")+": "+str(2*prgm.compile_cpu)+"\n"+tr("TIME")+": "+str(2*prgm.compile_time)
+			ci.get_node("Label").text = tr("COST")+": "+str(2*prgm.cost)+"\n"+tr("CPU")+": "+str(int(1.5*prgm.compile_cpu))+"\n"+tr("TIME")+": "+str(2*prgm.compile_time)
 		ci.show()
 	for i in range(building.size()):
 		var si
@@ -1002,6 +1029,24 @@ func update_compile():
 	$Compile/CPU.text = tr("CPU")+": "+str(Objects.actors["ai"].cpu-compile_cpu)+"/"+str(Objects.actors["ai"].cpu)
 	$Compile/Credits.text = tr("CREDITS")+": "+str(Objects.actors.player.credits)
 	connect_ui_sounds_recursively($Compile)
+
+func update_decrypt():
+	for c in $Decrypt/ScrollContainer/VBoxContainer.get_children():
+		c.hide()
+	for i in range(encrypted_data.size()):
+		var button
+		var data = encrypted_data[i]
+		if has_node("Decrypt/ScrollContainer/VBoxContainer/Button"+str(i)):
+			button = get_node("Decrypt/ScrollContainer/VBoxContainer/Button"+str(i))
+		else:
+			button = $Decrypt/ScrollContainer/VBoxContainer/Button0.duplicate(0)
+			button.name = "Button"+str(i)
+			$Decrypt/ScrollContainer/VBoxContainer.add_child(button)
+			button.connect("pressed",self,"_select_data_set",[i])
+		button.text = tr(data.name)
+		button.get_node("Panel").modulate = data.color
+		button.show()
+	seen_data_sets = encrypted_data.size()
 
 func add_program(dict):
 	# Add a program to the player's inventory.
@@ -1541,6 +1586,243 @@ func debug_progress():
 		debug_stop()
 
 
+func add_data_set(dict):
+	encrypted_data.push_back(dict)
+	if $Decrypt.visible:
+		update_decrypt()
+	else:
+		update_main_menu()
+
+func _select_data_set(ID):
+	if encrypted_data.size()<=ID:
+		return
+	
+	var data = encrypted_data[ID]
+	data_set_selected = ID
+	decrypt_hexes.clear()
+	for c in $Decrypt/Panel.get_children():
+		c.queue_free()
+	
+	var chars
+	var y_offset := float(data.cols.size()/2.0)
+	for i in range(data.cols.size()):
+		var x_offset := floor(data.cols[i]/2.0)
+		for j in range(data.cols[i]):
+			var index := Vector2(ceil(j-x_offset),ceil(i-y_offset))
+			var pos := Vector2(j-x_offset,i-y_offset)
+			var hex := hex_rotator.instance()
+#			if data.cols[i]>1:
+			pos.y -= ((j+int(data.cols[i]/2))%2)/2.0
+			hex.rect_position = pos*Vector2(168,192)
+			hex.pos = index
+			hex.name = "Hex_"+str(index.x)+"_"+str(index.y)
+			hex.get_node("Label").text = str(index)
+			$Decrypt/Panel.add_child(hex)
+			decrypt_hexes[index] = hex
+	
+	encrypted_text = data.message.to_upper()
+	chars = get_char_list(encrypted_text)
+	symbols = create_symbols(chars)
+#	for c in symbols.keys():
+#		encrypted_text = encrypted_text.replace(c,"["+symbols[c]+"]")
+	encrypted_text = ""
+	for i in range(data.message.length()):
+		var c = data.message[i].to_upper()
+		if symbols.has(c):
+			encrypted_text += "["+symbols[c]+"]"
+		else:
+			encrypted_text += c
+	$Decrypt/PanelRaw/Text.text = encrypted_text
+	$Decrypt/PanelTranslated/Text.text = encrypted_text
+	
+	for c in chars:
+		var valid := false
+		var tries := 0
+		while !valid:
+			var node1
+			var node2
+			var rot1
+			var rot2
+			var nodes1 := []
+			var nodes2 := []
+			var rots1 := []
+			var rots2 := []
+			var positions := []
+			var pos
+			node1 = decrypt_hexes.values()[randi()%decrypt_hexes.size()]
+			for i in range(6):
+				if node1.entries[i]!="":
+					continue
+				pos = get_complementary_hex(node1.pos,i)
+				if pos==node1.pos || !decrypt_hexes.has(pos):
+					continue
+				node2 = decrypt_hexes[pos]
+				rot2 = get_complementary_rotation(i)
+				if node2.entries[rot2]!="":
+					continue
+				nodes1.push_back(node1)
+				nodes2.push_back(node2)
+				rots1.push_back(i)
+				rots2.push_back(rot2)
+			positions = range(nodes1.size())
+			positions = sort_random(positions)
+			for i in positions:
+				node1 = nodes1[positions[i]]
+				node2 = nodes2[positions[i]]
+				rot1 = rots1[positions[i]]
+				rot2 = rots2[positions[i]]
+				valid = true
+				node1.entries[rot1] = c
+				node2.entries[rot2] = symbols[c]
+				break
+			tries += 1
+			if tries>99:
+				var m := -1
+				var v := 9
+				for i in range(data.cols.size()):
+					if data.cols[i]<v:
+						v = data.cols[i]
+						m = i
+				if m>=0:
+					encrypted_data[ID].cols[m] += 2
+					_select_data_set(ID)
+				else:
+					print("Failed to set up decryption puzzle.")
+				return
+	for node in decrypt_hexes.values():
+		for i in range(node.entries.size()):
+			if node.entries[i]=="":
+				node.entries[i] = symbols.values()[randi()%symbols.size()]
+		node.rot = randi()%6
+		node.rotation = 60*node.rot
+		node.rect_rotation = node.rotation
+		node.update_text()
+	
+	update_decryption()
+
+func update_decryption():
+	var translation := get_translation()
+	var decrypted_text := ""+encrypted_text
+	var correct_assignments := 0
+	for c in translation.keys():
+		decrypted_text = decrypted_text.replace(c,translation[c])
+	$Decrypt/PanelTranslated/Text.text = decrypted_text
+	for node in decrypt_hexes.values():
+		for i in range(node.entries.size()):
+			if node.entries[i]!="":
+#				if translation.has(node.entries[i]):
+#					if translation[node.entries[i]].length()>1:
+#						node.get_node("Label"+str(i+1)).modulate = Color(1.0,0.5,0.5)
+#					else:
+#						if symbols[translation[node.entries[i]]]==node.entries[i]:
+#							node.get_node("Label"+str(i+1)).modulate = Color(0.5,1.0,0.5)
+#						else:
+#							node.get_node("Label"+str(i+1)).modulate = Color(0.5,0.5,1.0)
+				if node.entries[i] in symbols.keys():
+					if node.entries[i] in translation.values():
+						if translation.has(symbols[node.entries[i]]) && node.entries[i]==translation[symbols[node.entries[i]]]:
+#							node.get_node("Label"+str(i+1)).modulate = Color(0.5,1.0,0.5)
+							correct_assignments += 1
+#						else:
+#							node.get_node("Label"+str(i+1)).modulate = Color(0.5,0.5,1.0)
+#					else:
+#						node.get_node("Label"+str(i+1)).modulate = Color(1.0,0.5,0.5)
+#				else:
+#					node.get_node("Label"+str(i+1)).modulate = Color(1.0,1.0,1.0)
+	if correct_assignments>=symbols.size():
+		var dict = encrypted_data[data_set_selected]
+		for c in $Decrypt/Panel.get_children():
+			if c.has_method("fade_out"):
+				c.fade_out()
+			else:
+				c.queue_free()
+		Vars.add_message(dict.name,dict.message)
+		Events._on_decrypted(dict)
+		if dict.has("actor") && Objects.actors.has(dict.actor):
+			Objects.actors[dict.actor].data += 4*dict.message.length()
+		encrypted_data.remove(data_set_selected)
+		update_decrypt()
+
+func get_complementary_hex(pos : Vector2, rot : int) -> Vector2:
+	var ret := pos
+	match rot:
+		0:
+			ret += Vector2(0,-1)
+		1:
+			ret += Vector2(1,-int(abs(pos.x))%2)
+		2:
+			ret += Vector2(1,int(abs(pos.x+1))%2)
+		3:
+			ret += Vector2(0,1)
+		4:
+			ret += Vector2(-1,int(abs(pos.x+1))%2)
+		5:
+			ret += Vector2(-1,-int(abs(pos.x))%2)
+	return ret
+
+func get_complementary_rotation(rot : int) -> int:
+	return (rot+3)%6
+
+func create_symbols(array : Array) -> Dictionary:
+	var dict := {}
+	var symb := []
+	for c in array:
+		var symbol := random_symbol()
+		while symbol in symb:
+			symbol = random_symbol()
+		dict[c] = symbol
+		symb.push_back(symbol)
+	return dict
+
+func random_symbol() -> String:
+#	var string := ""
+#	for _i in range(6):
+#		string += str(randi()%2)
+	var string := "0x"
+	for _i in range(2):
+		string += ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"][randi()%16]
+	return string
+
+func get_char_list(string : String) -> Array:
+	var list := []
+	for c in string:
+		if !(c in list) && c.to_ascii()[0]>=KEY_A && c.to_ascii()[0]<=KEY_Z:
+			list.push_back(c)
+	return list
+
+func get_translation() -> Dictionary:
+	var dict := {}
+	for pos in decrypt_hexes.keys():
+		var node = decrypt_hexes[pos]
+		for i in range(node.entries.size()):
+			var rot1 := int(i+6-node.rot)%6
+			if !symbols.has(node.entries[rot1]):
+				continue
+			var pos2 := get_complementary_hex(pos,i)
+			if decrypt_hexes.has(pos2):
+				var node2 = decrypt_hexes[pos2]
+				var rot2 := get_complementary_rotation(i)
+				rot2 = int(rot2+6-node2.rot)%6
+				if node2.entries[rot2] in symbols.values():
+					if dict.has(node2.entries[rot2]):
+						if randi()%2==0:
+							dict[node2.entries[rot2]] = dict[node2.entries[rot2]]+node.entries[rot1]
+						else:
+							dict[node2.entries[rot2]] = node.entries[rot1]+dict[node2.entries[rot2]]
+					else:
+						dict[node2.entries[rot2]] = node.entries[rot1]
+	return dict
+
+func sort_random(array : Array) -> Array:
+	for _k in range(array.size()):
+		var i := randi()%array.size()
+		var j := randi()%array.size()
+		var tmp = array[j]
+		array[j] = array[i]
+		array[i] = tmp
+	return array
+
+
 func _scan():
 	# Add random targets to the target list.
 	for target in Objects.targets.keys():
@@ -1591,6 +1873,7 @@ func _save(filename=$Saves/ScrollContainer/VBoxContainer/New/LineEdit.text):
 	file.store_line(JSON.print({"contacts":contacts,"targets":targets,"visible_tabs":visible_tabs,"can_scan":can_scan,"new_targets":new_targets}))
 	file.store_line(JSON.print({"decks":decks,"current_deck":deck_selected,"building":building,"upgrades":upgrades,"gear":upgraded}))
 	file.store_line(JSON.print({"chat_log":chat_log,"chat_read":chat_read,"chat_choice":chat_choice}))
+	file.store_line(JSON.print({"encrypted_data":encrypted_data,"seen_data_sets":seen_data_sets}))
 	Events._save(file)
 	Objects._save(file)
 	Programs._save(file)
@@ -1608,7 +1891,7 @@ func _load(filename):
 	
 	var currentline = JSON.parse(file.get_line()).result
 	var save_version = currentline.version
-	if currentline==null:# || save_version!=VERSION:
+	if currentline==null:
 		print("Incompatible version!")
 		return
 	quicksave()
@@ -1631,6 +1914,13 @@ func _load(filename):
 	chat_log = currentline.chat_log
 	chat_read = currentline.chat_read
 	chat_choice = currentline.chat_choice
+	currentline = JSON.parse(file.get_line()).result
+	encrypted_data = currentline.encrypted_data
+	# Fix broken Colors after loading.
+	for i in range(encrypted_data.size()):
+		var array = encrypted_data[i].color.split(",")
+		encrypted_data[i].color = Color(float(array[0]),float(array[1]),float(array[2]))
+	seen_data_sets = currentline.seen_data_sets
 	Events._load(file)
 	Objects._load(file)
 	Programs._load(file)
@@ -1823,6 +2113,18 @@ func _show_hack():
 			$Hack/Result.show()
 	$Top/HBoxContainer/ButtonClose.hint_tooltip = tr("CLOSE")
 
+func _show_decrypt():
+	_close(true)
+	$Top/HBoxContainer/Title.text = tr("DECRYPT")
+	for c in $Decrypt/Panel.get_children():
+		c.queue_free()
+	$Decrypt/PanelRaw/Text.clear()
+	$Decrypt/PanelTranslated/Text.clear()
+	update_decrypt()
+	$Decrypt.show()
+	$Left/ScrollContainer/VBoxContainer/Button13/Notice.hide()
+	Events._on_show_decrypt()
+
 func _show_load():
 	_close(true)
 	$Top/HBoxContainer/Title.text = tr("LOAD")
@@ -1867,12 +2169,23 @@ func _show_save():
 		c.hide()
 	for i in range(save_files.size()):
 		var bi
+		var error
+		var currentline
+		var file := File.new()
 		if has_node("Saves/ScrollContainer/VBoxContainer/Button"+str(i)):
 			bi = get_node("Saves/ScrollContainer/VBoxContainer/Button"+str(i))
 		else:
 			bi = $Saves/ScrollContainer/VBoxContainer/Button0.duplicate(0)
 			bi.connect("pressed",self,"_select_file",[i])
 			$Saves/ScrollContainer/VBoxContainer.add_child(bi)
+		error = file.open("user://saves/"+save_files[i]+".sav",File.READ)
+		if error==OK:
+			currentline = JSON.parse(file.get_line()).result
+			if currentline.has("player_name"):
+				bi.get_node("HBoxContainer/LabelName").text = currentline["player_name"]
+			if currentline.has("date"):
+				var date = currentline["date"]
+				bi.get_node("HBoxContainer/LabelDate").text = str(date["day"]).pad_zeros(2)+"."+str(date["month"]).pad_zeros(2)+"."+str(date["year"])+"  "+str(date["hour"]).pad_zeros(2)+":"+str(date["minute"]).pad_zeros(2)
 		bi.get_node("HBoxContainer/LabelFilename").text = save_files[i]+".sav"
 		bi.show()
 	$Saves/ScrollContainer/VBoxContainer/New.show()
@@ -1925,7 +2238,6 @@ func _close(no_quit=false):
 		$Log.hide()
 	elif $Deck.visible:
 		$Deck.hide()
-		contact_selected = null
 	elif $Compile.visible:
 		$Compile.hide()
 	elif $Gear.visible:
@@ -1942,6 +2254,8 @@ func _close(no_quit=false):
 		$Credits.hide()
 	elif $Saves.visible:
 		$Saves.hide()
+	elif $Decrypt.visible:
+		$Decrypt.hide()
 	elif $Options.visible:
 		$Options.hide()
 	elif $Quit.visible:
@@ -2181,6 +2495,13 @@ func select_log(type,ID):
 		text.newline()
 		text.newline()
 		event.print_desc(text)
+	elif type=="message":
+		var msg = Vars.messages[ID].text
+		var name = Vars.messages[ID].name
+		text.add_text(tr(name))
+		text.newline()
+		text.newline()
+		text.add_text(tr(msg))
 	
 
 func _log_link(data):
@@ -2218,6 +2539,7 @@ func _ready():
 	$Left/ScrollContainer/VBoxContainer/Button10.connect("pressed",self,"_show_log")
 	$Left/ScrollContainer/VBoxContainer/Button11.connect("pressed",self,"_show_credits")
 	$Left/ScrollContainer/VBoxContainer/Button12.connect("pressed",self,"_show_options")
+	$Left/ScrollContainer/VBoxContainer/Button13.connect("pressed",self,"_show_decrypt")
 	
 	$Login/Input/LineEdit.connect("text_entered",self,"_start_new_game")
 	$Login/Input/ButtonConfirm.connect("pressed",self,"_start_new_game")
@@ -2226,6 +2548,7 @@ func _ready():
 	$Targets/Panel/ButtonAttack.connect("pressed",self,"_attack_target")
 	$Targets/ScrollContainer/VBoxContainer/ButtonScan.connect("pressed",self,"_scan")
 	$Hack/Result/ButtonConfirm.connect("pressed",self,"_confirm_hack_result")
+	$Decrypt/ScrollContainer/VBoxContainer/Button0.connect("pressed",self,"_select_data_set",[0])
 	$Code/ScrollContainer/VBoxContainer/ButtonNew.connect("pressed",self,"_new_program")
 	$Code/ScrollContainer/VBoxContainer/Button0.connect("pressed",self,"_load_program",[0])
 	$Code/Top/Button0.connect("pressed",self,"_new_program")
@@ -2310,3 +2633,35 @@ func _ready():
 	credits_text.connect("meta_clicked",Object(OS),"shell_open")
 	
 	Options._load()
+	
+	
+	# debug
+#	encrypted_data.push_back({"name":"TEST","color":Color(0.5,0.75,1.0),"cols":[1,3,3],"message":"test message\nsome more text"})
+#	encrypted_data.push_back({"name":tr("RILEY_INSTRUCTION1"),"color":Color(0.4,0.02,0.01),"cols":[3,3,3],"message":tr("RILEY_INSTRUCTION1_TEXT")})
+#	encrypted_data.push_back({"name":tr("RILEY_INSTRUCTION2"),"color":Color(0.4,0.02,0.01),"cols":[1,5,5],"message":tr("RILEY_INSTRUCTION2_TEXT")})
+#	encrypted_data.push_back({"name":tr("RILEY_THOUGHT1"),"color":Color(0.4,0.02,0.01),"cols":[0,5,5],"message":tr("RILEY_THOUGHT1_TEXT")})
+#	encrypted_data.push_back({"name":tr("RILEY_THOUGHT2"),"color":Color(0.4,0.02,0.01),"cols":[3,3,3],"message":tr("RILEY_THOUGHT2_TEXT")})
+#	encrypted_data.push_back({"name":tr("RILEY_THOUGHT3"),"color":Color(0.4,0.02,0.01),"cols":[1,3,3],"message":tr("RILEY_THOUGHT3_TEXT")})
+#	encrypted_data.push_back({"name":tr("RILEY_MEMORY1"),"color":Color(0.4,0.02,0.01),"cols":[0,5,5],"message":tr("RILEY_MEMORY1_TEXT")})
+#	encrypted_data.push_back({"name":tr("RILEY_MEMORY2"),"color":Color(0.4,0.02,0.01),"cols":[0,5,5],"message":tr("RILEY_MEMORY2_TEXT")})
+#	encrypted_data.push_back({"name":tr("RILEY_MEMORY3"),"color":Color(0.4,0.02,0.01),"cols":[1,3,3],"message":tr("RILEY_MEMORY3_TEXT")})
+#	encrypted_data.push_back({"name":tr("RILEY_MEMORY4"),"color":Color(0.4,0.02,0.01),"cols":[1,3,3],"message":tr("RILEY_MEMORY4_TEXT")})
+#	encrypted_data.push_back({"name":tr("HALLY_THOUGHT1"),"color":Color(0.13,0.5,1.0),"cols":[0,2,3],"message":tr("HALLY_THOUGHT1_TEXT")})
+#	Menu.add_data_set({"name":tr("CRYPTO_MSG1"),"color":Color(0.5,0.4,0.05),"cols":[1,3,3],"message":tr("CRYPTO_MSG1_TEXT"),"set":"crypto_msg"})
+#	Menu.add_data_set({"name":tr("CRYPTO_MSG2"),"color":Color(0.5,0.4,0.05),"cols":[0,3,3],"message":tr("CRYPTO_MSG2_TEXT"),"set":"crypto_msg"})
+#	Menu.add_data_set({"name":tr("CRYPTO_MSG3"),"color":Color(0.5,0.4,0.05),"cols":[1,3,3],"message":tr("CRYPTO_MSG3_TEXT"),"set":"crypto_msg"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG1"),"color":Color(0.1,0.3,1.0),"cols":[1,3,3],"message":tr("PLAYER_LOG1_TEXT"),"set":"player_log"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG2"),"color":Color(0.1,0.3,1.0),"cols":[0,5,5],"message":tr("PLAYER_LOG2_TEXT"),"set":"player_log"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG3"),"color":Color(0.1,0.3,1.0),"cols":[1,3,3],"message":tr("PLAYER_LOG3_TEXT"),"set":"player_log"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG4"),"color":Color(0.1,0.3,1.0),"cols":[0,3,3],"message":tr("PLAYER_LOG4_TEXT"),"set":"player_log"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG5"),"color":Color(0.1,0.3,1.0),"cols":[0,5,5],"message":tr("PLAYER_LOG5_TEXT"),"set":"player_log"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG6"),"color":Color(0.1,0.3,1.0),"cols":[0,5,5],"message":tr("PLAYER_LOG6_TEXT"),"set":"player_log"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG7"),"color":Color(0.1,0.3,1.0),"cols":[0,5,5],"message":tr("PLAYER_LOG7_TEXT"),"set":"player_log"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG8"),"color":Color(0.1,0.3,1.0),"cols":[1,4,4],"message":tr("PLAYER_LOG8_TEXT"),"set":"player_log"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG9"),"color":Color(0.1,0.3,1.0),"cols":[0,5,5],"message":tr("PLAYER_LOG9_TEXT"),"set":"player_log"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG10"),"color":Color(0.1,0.3,1.0),"cols":[1,5,5],"message":tr("PLAYER_LOG10_TEXT"),"set":"player_log"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG11"),"color":Color(0.1,0.3,1.0),"cols":[0,5,5],"message":tr("PLAYER_LOG11_TEXT"),"set":"player_log"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG12"),"color":Color(0.1,0.3,1.0),"cols":[0,5,5],"message":tr("PLAYER_LOG12_TEXT"),"set":"player_log"})
+#	Menu.add_data_set({"name":tr("PLAYER_LOG13"),"color":Color(0.1,0.3,1.0),"cols":[0,4,4],"message":tr("PLAYER_LOG13_TEXT"),"set":"player_log"})
+#	_show_decrypt()
+	

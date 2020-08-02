@@ -38,23 +38,23 @@ func first_reply():
 func continue_questioning():
 	var choices := [{"text":"REPLY_0050_0"}]
 	if Vars.get_var("question_riley_1")==null || !Vars.get_var("question_riley_1"):
-		choices.push_back({"text":"REPLY_0050_1","required":{"curiosity":4}})
+		choices.push_back({"text":"REPLY_0050_1","required":{"curiosity":3}})
 	if Vars.get_var("question_riley_2")==null || !Vars.get_var("question_riley_2"):
-		choices.push_back({"text":"REPLY_0050_2","required":{"focus":4}})
+		choices.push_back({"text":"REPLY_0050_2","required":{"focus":3}})
 	if Vars.get_var("question_riley_3")==null || !Vars.get_var("question_riley_3"):
-		choices.push_back({"text":"REPLY_0050_3","required":{"cunning":4}})
+		choices.push_back({"text":"REPLY_0050_3","required":{"cunning":3}})
 	if Vars.get_var("question_riley_1") && (Vars.get_var("question_riley_4")==null || !Vars.get_var("question_riley_4")):
-		choices.push_back({"text":"REPLY_0050_4","required":{"charisma":4}})
+		choices.push_back({"text":"REPLY_0050_4","required":{"charisma":3}})
 	if Vars.get_var("question_riley_4") && (Vars.get_var("question_riley_5")==null || !Vars.get_var("question_riley_5")):
-		choices.push_back({"text":"REPLY_0050_5","required":{"focus":5}})
+		choices.push_back({"text":"REPLY_0050_5","required":{"focus":4}})
 	if Vars.get_var("question_riley_6")==null || !Vars.get_var("question_riley_6"):
-		choices.push_back({"text":"REPLY_0050_6","required":{"charisma":4}})
+		choices.push_back({"text":"REPLY_0050_6","required":{"charisma":3}})
 	if Vars.get_var("question_riley_6") && (Vars.get_var("question_riley_7")==null || !Vars.get_var("question_riley_7")):
-		choices.push_back({"text":"REPLY_0050_7","required":{"cunning":5}})
+		choices.push_back({"text":"REPLY_0050_7","required":{"cunning":4}})
 	if Vars.get_var("question_riley_2") && (Vars.get_var("question_riley_8")==null || !Vars.get_var("question_riley_8")):
-		choices.push_back({"text":"REPLY_0050_8","required":{"fear":4}})
+		choices.push_back({"text":"REPLY_0050_8","required":{"fear":3}})
 	if Vars.get_var("question_riley_8") && (Vars.get_var("question_riley_9")==null || !Vars.get_var("question_riley_9")):
-		choices.push_back({"text":"REPLY_0050_9","required":{"focus":5}})
+		choices.push_back({"text":"REPLY_0050_9","required":{"focus":4}})
 	
 	Events.delayed_choice("riley",choices,1.0)
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=211 format=2]
+[gd_scene load_steps=199 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -10,13 +10,16 @@
 [ext_resource path="res://images/gui/menu_save.png" type="Texture" id=8]
 [ext_resource path="res://scenes/gui/card.tscn" type="PackedScene" id=9]
 [ext_resource path="res://fonts/kenvector_future_thin.ttf" type="DynamicFontData" id=10]
+[ext_resource path="res://images/masks/radial.png" type="Texture" id=11]
 [ext_resource path="res://scripts/gui/code_bg.gd" type="Script" id=12]
+[ext_resource path="res://images/masks/noise_color_small.png" type="Texture" id=13]
 [ext_resource path="res://images/cards/pulse.png" type="Texture" id=14]
 [ext_resource path="res://images/cards/template.png" type="Texture" id=15]
 [ext_resource path="res://scenes/gui/textbox.tscn" type="PackedScene" id=16]
 [ext_resource path="res://fonts/logo_font_01.tres" type="DynamicFont" id=17]
 [ext_resource path="res://sounds/288955__littlerobotsoundfactory__click-electronic-05.wav" type="AudioStream" id=18]
 [ext_resource path="res://sounds/288965__littlerobotsoundfactory__click-electronic-13.wav" type="AudioStream" id=19]
+[ext_resource path="res://images/masks/noise_color.png" type="Texture" id=20]
 [ext_resource path="res://sounds/257235__javierzumer__ui-interface-negative.wav" type="AudioStream" id=21]
 [ext_resource path="res://sounds/257226__javierzumer__ui-interface-neutral.wav" type="AudioStream" id=22]
 [ext_resource path="res://sounds/65428__gumballrimpoche__glitchys.ogg" type="AudioStream" id=23]
@@ -1204,13 +1207,20 @@ bg_color = Color( 0, 0, 0, 1 )
 [sub_resource type="StyleBoxFlat" id=81]
 bg_color = Color( 0.25098, 0.25098, 0.25098, 0.501961 )
 
-[sub_resource type="StyleBoxFlat" id=82]
-bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
+[sub_resource type="DynamicFont" id=82]
+size = 20
+font_data = ExtResource( 3 )
 
 [sub_resource type="StyleBoxFlat" id=83]
-bg_color = Color( 0.627451, 0.752941, 0.878431, 1 )
+bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
 
 [sub_resource type="StyleBoxFlat" id=84]
+bg_color = Color( 0.501961, 0.501961, 0.501961, 1 )
+
+[sub_resource type="StyleBoxFlat" id=85]
+bg_color = Color( 0.627451, 0.752941, 0.878431, 1 )
+
+[sub_resource type="StyleBoxFlat" id=86]
 bg_color = Color( 0.627451, 0.752941, 0.878431, 1 )
 corner_detail = 1
 expand_margin_left = 1.0
@@ -1218,27 +1228,23 @@ expand_margin_right = 1.0
 expand_margin_top = 2.0
 expand_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id=85]
+[sub_resource type="StyleBoxFlat" id=87]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 
-[sub_resource type="DynamicFont" id=86]
+[sub_resource type="DynamicFont" id=88]
 size = 18
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=87]
+[sub_resource type="DynamicFont" id=89]
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=88]
+[sub_resource type="DynamicFont" id=90]
 size = 22
 outline_size = 1
 font_data = ExtResource( 3 )
 
-[sub_resource type="StyleBoxFlat" id=89]
+[sub_resource type="StyleBoxFlat" id=91]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
-
-[sub_resource type="StyleBoxEmpty" id=90]
-
-[sub_resource type="StyleBoxEmpty" id=91]
 
 [sub_resource type="StyleBoxEmpty" id=92]
 
@@ -1258,31 +1264,35 @@ bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 
 [sub_resource type="StyleBoxEmpty" id=100]
 
-[sub_resource type="Theme" id=101]
+[sub_resource type="StyleBoxEmpty" id=101]
+
+[sub_resource type="StyleBoxEmpty" id=102]
+
+[sub_resource type="Theme" id=103]
 HScrollBar/icons/decrement = null
 HScrollBar/icons/decrement_highlight = null
 HScrollBar/icons/increment = null
 HScrollBar/icons/increment_highlight = null
-HScrollBar/styles/grabber = SubResource( 90 )
-HScrollBar/styles/grabber_highlight = SubResource( 91 )
-HScrollBar/styles/grabber_pressed = SubResource( 92 )
-HScrollBar/styles/scroll = SubResource( 93 )
-HScrollBar/styles/scroll_focus = SubResource( 94 )
-ScrollContainer/styles/bg = SubResource( 95 )
+HScrollBar/styles/grabber = SubResource( 92 )
+HScrollBar/styles/grabber_highlight = SubResource( 93 )
+HScrollBar/styles/grabber_pressed = SubResource( 94 )
+HScrollBar/styles/scroll = SubResource( 95 )
+HScrollBar/styles/scroll_focus = SubResource( 96 )
+ScrollContainer/styles/bg = SubResource( 97 )
 VScrollBar/icons/decrement = null
 VScrollBar/icons/decrement_highlight = null
 VScrollBar/icons/increment = null
 VScrollBar/icons/increment_highlight = null
-VScrollBar/styles/grabber = SubResource( 96 )
-VScrollBar/styles/grabber_highlight = SubResource( 97 )
-VScrollBar/styles/grabber_pressed = SubResource( 98 )
-VScrollBar/styles/scroll = SubResource( 99 )
-VScrollBar/styles/scroll_focus = SubResource( 100 )
+VScrollBar/styles/grabber = SubResource( 98 )
+VScrollBar/styles/grabber_highlight = SubResource( 99 )
+VScrollBar/styles/grabber_pressed = SubResource( 100 )
+VScrollBar/styles/scroll = SubResource( 101 )
+VScrollBar/styles/scroll_focus = SubResource( 102 )
 
-[sub_resource type="DynamicFont" id=102]
+[sub_resource type="DynamicFont" id=104]
 font_data = ExtResource( 3 )
 
-[sub_resource type="Shader" id=103]
+[sub_resource type="Shader" id=105]
 code = "shader_type canvas_item;
 
 uniform float speed = 1.0;
@@ -1294,18 +1304,18 @@ void fragment()
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=104]
-shader = SubResource( 103 )
+[sub_resource type="ShaderMaterial" id=106]
+shader = SubResource( 105 )
 shader_param/speed = 10.0
 
-[sub_resource type="StyleBoxFlat" id=105]
+[sub_resource type="StyleBoxFlat" id=107]
 bg_color = Color( 0.752941, 0, 0, 0.501961 )
 
-[sub_resource type="ShaderMaterial" id=106]
-shader = SubResource( 103 )
+[sub_resource type="ShaderMaterial" id=108]
+shader = SubResource( 105 )
 shader_param/speed = -10.0
 
-[sub_resource type="Shader" id=107]
+[sub_resource type="Shader" id=109]
 code = "shader_type canvas_item;
 
 uniform float speed = 1.0;
@@ -1317,20 +1327,20 @@ void fragment()
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=108]
-shader = SubResource( 107 )
+[sub_resource type="ShaderMaterial" id=110]
+shader = SubResource( 109 )
 shader_param/speed = 0.8
 shader_param/offset = 0.0
 
-[sub_resource type="ViewportTexture" id=109]
+[sub_resource type="ViewportTexture" id=111]
 viewport_path = NodePath("Boss/Viewport")
 
-[sub_resource type="ShaderMaterial" id=110]
-shader = SubResource( 107 )
+[sub_resource type="ShaderMaterial" id=112]
+shader = SubResource( 109 )
 shader_param/speed = 0.7
 shader_param/offset = 0.5
 
-[sub_resource type="Shader" id=111]
+[sub_resource type="Shader" id=113]
 code = "shader_type canvas_item;
 
 uniform vec4 color : hint_color = vec4(0.75,0.0,0.0,0.75);
@@ -1345,34 +1355,34 @@ void fragment()
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=112]
-shader = SubResource( 111 )
+[sub_resource type="ShaderMaterial" id=114]
+shader = SubResource( 113 )
 shader_param/color = Color( 0.752941, 0.0627451, 0, 0.74902 )
 shader_param/speed = 2.0
-
-[sub_resource type="ShaderMaterial" id=113]
-shader = SubResource( 111 )
-shader_param/color = Color( 0.752941, 0.0627451, 0, 0.74902 )
-shader_param/speed = -2.0
-
-[sub_resource type="ShaderMaterial" id=114]
-shader = SubResource( 111 )
-shader_param/color = Color( 0.752941, 0, 0.12549, 0.25098 )
-shader_param/speed = -2.0
 
 [sub_resource type="ShaderMaterial" id=115]
-shader = SubResource( 111 )
+shader = SubResource( 113 )
+shader_param/color = Color( 0.752941, 0.0627451, 0, 0.74902 )
+shader_param/speed = -2.0
+
+[sub_resource type="ShaderMaterial" id=116]
+shader = SubResource( 113 )
+shader_param/color = Color( 0.752941, 0, 0.12549, 0.25098 )
+shader_param/speed = -2.0
+
+[sub_resource type="ShaderMaterial" id=117]
+shader = SubResource( 113 )
 shader_param/color = Color( 0.752941, 0, 0.12549, 0.25098 )
 shader_param/speed = 2.0
 
-[sub_resource type="StyleBoxFlat" id=116]
+[sub_resource type="StyleBoxFlat" id=118]
 bg_color = Color( 0.752941, 0, 0, 0.752941 )
 
-[sub_resource type="DynamicFont" id=117]
+[sub_resource type="DynamicFont" id=119]
 size = 42
 font_data = ExtResource( 10 )
 
-[sub_resource type="Animation" id=118]
+[sub_resource type="Animation" id=120]
 length = 10.0
 step = 0.5
 tracks/0/type = "value"
@@ -1616,7 +1626,7 @@ tracks/19/keys = {
 "values": [ "-    CAUTION", "-    BOSS    -", "-    WARNING" ]
 }
 
-[sub_resource type="Shader" id=119]
+[sub_resource type="Shader" id=121]
 code = "shader_type canvas_item;
 
 uniform float noise_scale = 0.0;
@@ -1654,18 +1664,21 @@ void fragment()
 "
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=120]
-shader = SubResource( 119 )
+[sub_resource type="ShaderMaterial" id=122]
+shader = SubResource( 121 )
 shader_param/noise_scale = 0.0
 shader_param/glitch_scale = 1.0
 shader_param/glitch_blend = 0.0
 shader_param/block_scale = 0.0
+shader_param/noise = ExtResource( 20 )
+shader_param/noise_mask = ExtResource( 11 )
+shader_param/block_mask = ExtResource( 13 )
 
-[sub_resource type="StyleBoxFlat" id=121]
+[sub_resource type="StyleBoxFlat" id=123]
 bg_color = Color( 0, 0, 0, 0 )
 border_color = Color( 0, 0, 0, 0 )
 
-[sub_resource type="Animation" id=122]
+[sub_resource type="Animation" id=124]
 length = 3.0
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:material:shader_param/noise_scale")
@@ -1728,7 +1741,7 @@ tracks/4/keys = {
 "values": [ true, false ]
 }
 
-[sub_resource type="Animation" id=123]
+[sub_resource type="Animation" id=125]
 length = 2.0
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:visible")
@@ -1791,7 +1804,7 @@ tracks/4/keys = {
 "values": [ 0.0, 0.16, 0.165, 0.17, 0.175, 0.18, 0.185, 2.0 ]
 }
 
-[sub_resource type="Animation" id=124]
+[sub_resource type="Animation" id=126]
 length = 30.0
 loop = true
 tracks/0/type = "value"
@@ -1843,7 +1856,7 @@ tracks/3/keys = {
 "values": [ 0.0, 0.25, 0.0, 0.175, 0.0, 0.5, 0.0, 1.0, 0.0, 2.0, 0.0, 0.2, 0.0, 0.17, 0.0 ]
 }
 
-[sub_resource type="Animation" id=125]
+[sub_resource type="Animation" id=127]
 length = 20.0
 loop = true
 tracks/0/type = "value"
@@ -1895,7 +1908,7 @@ tracks/3/keys = {
 "values": [ 1.0, 0.0, 1.0, 0.18, 0.0, 0.17, 0.0, 0.2, 10.0, 0.0, 0.175, 0.0 ]
 }
 
-[sub_resource type="Animation" id=126]
+[sub_resource type="Animation" id=128]
 length = 20.0
 loop = true
 tracks/0/type = "value"
@@ -1947,7 +1960,7 @@ tracks/3/keys = {
 "values": [ 0.0, 0.18, 0.0, 0.25, 0.165, 0.0, 0.185, 0.0, 0.3, 0.0, 0.25, 0.0, 0.3, 0.0, 0.2, 0.0, 0.35, 0.0, 0.165, 0.0, 0.275, 0.0, 0.5, 0.0, 2.0, 0.0 ]
 }
 
-[sub_resource type="GDScript" id=127]
+[sub_resource type="GDScript" id=129]
 script/source = "extends Control
 
 var ring : Dictionary
@@ -1989,7 +2002,7 @@ func _draw():
 	
 "
 
-[sub_resource type="Environment" id=128]
+[sub_resource type="Environment" id=130]
 background_mode = 4
 glow_enabled = true
 glow_levels/2 = true
@@ -2001,28 +2014,28 @@ glow_strength = 0.8
 glow_bloom = 0.3
 glow_blend_mode = 0
 
-[sub_resource type="World" id=129]
-environment = SubResource( 128 )
+[sub_resource type="World" id=131]
+environment = SubResource( 130 )
 
-[sub_resource type="CanvasItemMaterial" id=130]
+[sub_resource type="CanvasItemMaterial" id=132]
 blend_mode = 1
 
-[sub_resource type="Gradient" id=131]
+[sub_resource type="Gradient" id=133]
 offsets = PoolRealArray( 0, 0.0655738, 0.852459, 1 )
 colors = PoolColorArray( 1, 1, 1, 0, 0.501961, 0.752941, 1, 1, 0.501961, 0.752941, 1, 1, 0.501961, 0.752941, 1, 0 )
 
-[sub_resource type="GradientTexture" id=132]
-gradient = SubResource( 131 )
+[sub_resource type="GradientTexture" id=134]
+gradient = SubResource( 133 )
 
-[sub_resource type="Curve" id=133]
+[sub_resource type="Curve" id=135]
 min_value = 0.1
 max_value = 1.25
 _data = [ Vector2( 0, 1.25 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.1 ), -1.56692, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=134]
-curve = SubResource( 133 )
+[sub_resource type="CurveTexture" id=136]
+curve = SubResource( 135 )
 
-[sub_resource type="ParticlesMaterial" id=135]
+[sub_resource type="ParticlesMaterial" id=137]
 emission_shape = 2
 emission_box_extents = Vector3( 256, 1, 1 )
 flag_disable_z = true
@@ -2035,12 +2048,12 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 0.2
 scale_random = 0.5
-scale_curve = SubResource( 134 )
-color_ramp = SubResource( 132 )
+scale_curve = SubResource( 136 )
+color_ramp = SubResource( 134 )
 hue_variation = 1.0
 hue_variation_random = 0.13
 
-[sub_resource type="ParticlesMaterial" id=136]
+[sub_resource type="ParticlesMaterial" id=138]
 emission_shape = 2
 emission_box_extents = Vector3( 1, 192, 1 )
 flag_disable_z = true
@@ -2053,12 +2066,12 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 0.2
 scale_random = 0.5
-scale_curve = SubResource( 134 )
-color_ramp = SubResource( 132 )
+scale_curve = SubResource( 136 )
+color_ramp = SubResource( 134 )
 hue_variation = 1.0
 hue_variation_random = 0.13
 
-[sub_resource type="Shader" id=137]
+[sub_resource type="Shader" id=139]
 code = "shader_type canvas_item;
 
 void fragment()
@@ -2069,10 +2082,10 @@ void fragment()
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=138]
-shader = SubResource( 137 )
+[sub_resource type="ShaderMaterial" id=140]
+shader = SubResource( 139 )
 
-[sub_resource type="Shader" id=139]
+[sub_resource type="Shader" id=141]
 code = "shader_type canvas_item;
 
 uniform sampler2D mask;
@@ -2084,103 +2097,12 @@ void fragment()
 }"
 custom_defines = ""
 
-[sub_resource type="ShaderMaterial" id=140]
-shader = SubResource( 139 )
+[sub_resource type="ShaderMaterial" id=142]
+shader = SubResource( 141 )
 shader_param/mask = ExtResource( 55 )
 
-[sub_resource type="StyleBoxFlat" id=142]
+[sub_resource type="StyleBoxFlat" id=143]
 bg_color = Color( 0.0313726, 0.0627451, 0.0941176, 1 )
-
-[sub_resource type="Shader" id=143]
-code = "shader_type canvas_item;
-
-uniform float freq = 16.0;
-uniform float phase = 0.0;
-
-void fragment()
-{
-	COLOR.a *= abs(1.0-2.0*fract(TIME*freq+phase));
-	COLOR.a *= 0.25+1.5*COLOR.a;
-}"
-custom_defines = ""
-
-[sub_resource type="ShaderMaterial" id=144]
-shader = SubResource( 143 )
-shader_param/freq = 3.0
-shader_param/phase = 0.0
-
-[sub_resource type="StyleBoxFlat" id=145]
-bg_color = Color( 1, 0, 0, 0.501961 )
-
-[sub_resource type="ShaderMaterial" id=146]
-shader = SubResource( 143 )
-shader_param/freq = 19.0
-shader_param/phase = 0.1
-
-[sub_resource type="ShaderMaterial" id=147]
-shader = SubResource( 143 )
-shader_param/freq = 17.0
-shader_param/phase = 0.2
-
-[sub_resource type="ShaderMaterial" id=148]
-shader = SubResource( 143 )
-shader_param/freq = 17.1
-shader_param/phase = 0.79
-
-[sub_resource type="ShaderMaterial" id=149]
-shader = SubResource( 143 )
-shader_param/freq = 13.0
-shader_param/phase = 0.4
-
-[sub_resource type="ShaderMaterial" id=150]
-shader = SubResource( 143 )
-shader_param/freq = 13.7
-shader_param/phase = 0.37
-
-[sub_resource type="ShaderMaterial" id=151]
-shader = SubResource( 143 )
-shader_param/freq = 17.3
-shader_param/phase = 0.731
-
-[sub_resource type="ShaderMaterial" id=152]
-shader = SubResource( 143 )
-shader_param/freq = 19.1
-shader_param/phase = 0.479
-
-[sub_resource type="ShaderMaterial" id=153]
-shader = SubResource( 143 )
-shader_param/freq = 5.0
-shader_param/phase = 0.71
-
-[sub_resource type="ShaderMaterial" id=154]
-shader = SubResource( 143 )
-shader_param/freq = 7.0
-shader_param/phase = 0.83
-
-[sub_resource type="ShaderMaterial" id=155]
-shader = SubResource( 143 )
-shader_param/freq = 21.3
-shader_param/phase = 0.731
-
-[sub_resource type="ShaderMaterial" id=156]
-shader = SubResource( 143 )
-shader_param/freq = 20.7
-shader_param/phase = 0.31
-
-[sub_resource type="ShaderMaterial" id=157]
-shader = SubResource( 143 )
-shader_param/freq = 20.3
-shader_param/phase = 0.574
-
-[sub_resource type="ShaderMaterial" id=158]
-shader = SubResource( 143 )
-shader_param/freq = 2.7
-shader_param/phase = 0.48
-
-[sub_resource type="ShaderMaterial" id=159]
-shader = SubResource( 143 )
-shader_param/freq = 20.1
-shader_param/phase = 0.17
 
 [node name="Menu" type="CanvasLayer"]
 layer = 50
@@ -2815,7 +2737,7 @@ size_flags_vertical = 3
 
 [node name="Card0" type="Panel" parent="Deck/Deck/HBoxContainer"]
 margin_right = 175.0
-margin_bottom = 250.0
+margin_bottom = 262.0
 rect_min_size = Vector2( 175, 250 )
 
 [node name="Card" parent="Deck/Deck/HBoxContainer/Card0" instance=ExtResource( 9 )]
@@ -3258,7 +3180,7 @@ size_flags_vertical = 3
 
 [node name="Tech0" type="Panel" parent="Gear/Techs/HBoxContainer"]
 margin_right = 175.0
-margin_bottom = 250.0
+margin_bottom = 262.0
 rect_min_size = Vector2( 175, 250 )
 
 [node name="Card" parent="Gear/Techs/HBoxContainer/Tech0" instance=ExtResource( 9 )]
@@ -4280,6 +4202,182 @@ margin_bottom = -32.0
 custom_fonts/font = SubResource( 6 )
 text = "TEXT"
 
+[node name="Decrypt" type="Panel" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 68.0
+margin_top = 36.0
+custom_styles/panel = SubResource( 32 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel3" type="Panel" parent="Decrypt"]
+anchor_left = 0.8
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+rect_clip_content = true
+custom_styles/panel = SubResource( 33 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Panel1" type="Panel" parent="Decrypt"]
+anchor_right = 0.2
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 2.0
+margin_bottom = 28.0
+rect_clip_content = true
+custom_styles/panel = SubResource( 33 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="Decrypt/Panel1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 6 )
+text = "RAW"
+valign = 1
+
+[node name="Panel2" type="Panel" parent="Decrypt"]
+anchor_left = 0.4
+anchor_right = 0.6
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 2.0
+margin_bottom = 28.0
+rect_clip_content = true
+custom_styles/panel = SubResource( 33 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="Decrypt/Panel2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 6 )
+text = "TRANSLATED"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelRaw" type="Panel" parent="Decrypt"]
+anchor_right = 0.4
+anchor_bottom = 0.6
+margin_left = 2.0
+margin_top = 28.0
+margin_right = -2.0
+margin_bottom = -2.0
+rect_clip_content = true
+custom_styles/panel = SubResource( 33 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Text" type="RichTextLabel" parent="Decrypt/PanelRaw"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+custom_fonts/normal_font = SubResource( 82 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelTranslated" type="Panel" parent="Decrypt"]
+anchor_left = 0.4
+anchor_right = 0.8
+anchor_bottom = 0.6
+margin_left = 2.0
+margin_top = 28.0
+margin_right = -2.0
+margin_bottom = -2.0
+rect_clip_content = true
+custom_styles/panel = SubResource( 33 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Text" type="RichTextLabel" parent="Decrypt/PanelTranslated"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+custom_fonts/normal_font = SubResource( 82 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Control" parent="Decrypt"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -320.0
+margin_top = -320.0
+margin_right = 320.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Decrypt"]
+anchor_left = 0.8
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Decrypt/ScrollContainer"]
+margin_right = 187.2
+margin_bottom = 26.0
+size_flags_horizontal = 3
+
+[node name="Button0" type="Button" parent="Decrypt/ScrollContainer/VBoxContainer"]
+margin_right = 187.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 32, 24 )
+custom_styles/hover = SubResource( 35 )
+custom_styles/pressed = SubResource( 36 )
+custom_styles/focus = SubResource( 37 )
+custom_styles/disabled = SubResource( 38 )
+custom_styles/normal = SubResource( 39 )
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color_disabled = Color( 1, 0.188235, 0.12549, 1 )
+custom_colors/font_color = Color( 0.752941, 0.752941, 0.752941, 1 )
+custom_colors/font_color_hover = Color( 0.878431, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0.25098, 0.25098, 0.25098, 1 )
+text = "NAME"
+
+[node name="Panel" type="Panel" parent="Decrypt/ScrollContainer/VBoxContainer/Button0"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 83 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Saves" type="Panel" parent="."]
 visible = false
 anchor_right = 1.0
@@ -4360,7 +4458,7 @@ margin_right = 952.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 36, 40 )
 size_flags_horizontal = 3
-custom_styles/panel = SubResource( 82 )
+custom_styles/panel = SubResource( 84 )
 
 [node name="LineEdit" type="LineEdit" parent="Saves/ScrollContainer/VBoxContainer/New"]
 anchor_right = 1.0
@@ -4441,7 +4539,7 @@ margin_left = 2.0
 margin_top = 2.0
 margin_right = -2.0
 margin_bottom = 34.0
-custom_styles/panel = SubResource( 83 )
+custom_styles/panel = SubResource( 85 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -4505,7 +4603,7 @@ size_flags_vertical = 3
 margin_top = 44.0
 margin_right = 944.0
 margin_bottom = 48.0
-custom_styles/separator = SubResource( 84 )
+custom_styles/separator = SubResource( 86 )
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
 margin_top = 52.0
@@ -4570,7 +4668,7 @@ align = 1
 margin_top = 90.0
 margin_right = 944.0
 margin_bottom = 94.0
-custom_styles/separator = SubResource( 84 )
+custom_styles/separator = SubResource( 86 )
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
 margin_top = 98.0
@@ -4596,7 +4694,7 @@ align = 1
 margin_top = 136.0
 margin_right = 944.0
 margin_bottom = 140.0
-custom_styles/separator = SubResource( 84 )
+custom_styles/separator = SubResource( 86 )
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
 margin_top = 144.0
@@ -4623,7 +4721,7 @@ rect_min_size = Vector2( 34, 0 )
 margin_top = 188.0
 margin_right = 944.0
 margin_bottom = 192.0
-custom_styles/separator = SubResource( 84 )
+custom_styles/separator = SubResource( 86 )
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="Options/ScrollContainer/VBoxContainer/Video/Panel/VBoxContainer"]
 margin_top = 196.0
@@ -4658,7 +4756,7 @@ margin_left = 2.0
 margin_top = 2.0
 margin_right = -2.0
 margin_bottom = 34.0
-custom_styles/panel = SubResource( 83 )
+custom_styles/panel = SubResource( 85 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -4721,7 +4819,7 @@ align = 1
 margin_top = 38.0
 margin_right = 944.0
 margin_bottom = 42.0
-custom_styles/separator = SubResource( 84 )
+custom_styles/separator = SubResource( 86 )
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Options/ScrollContainer/VBoxContainer/Audio/Panel/VBoxContainer"]
 margin_top = 46.0
@@ -4753,7 +4851,7 @@ margin_left = -206.0
 margin_top = -70.0
 margin_right = -2.0
 margin_bottom = -2.0
-custom_styles/panel = SubResource( 85 )
+custom_styles/panel = SubResource( 87 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -4786,7 +4884,7 @@ stretch_mode = 5
 [node name="Label" type="Label" parent="Options/Panel/HBoxContainer/Button1"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 86 )
+custom_fonts/font = SubResource( 88 )
 text = "APPLY"
 align = 1
 valign = 1
@@ -4839,7 +4937,7 @@ stretch_mode = 5
 [node name="Label" type="Label" parent="Options/Panel/HBoxContainer/Button3"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 87 )
+custom_fonts/font = SubResource( 89 )
 text = "REVERT"
 align = 1
 valign = 1
@@ -4866,7 +4964,7 @@ margin_top = 2.0
 margin_right = -2.0
 margin_bottom = -2.0
 focus_mode = 2
-custom_fonts/bold_font = SubResource( 88 )
+custom_fonts/bold_font = SubResource( 90 )
 custom_fonts/normal_font = SubResource( 6 )
 bbcode_enabled = true
 selection_enabled = true
@@ -4911,7 +5009,7 @@ anchor_bottom = 1.0
 margin_top = 36.0
 margin_right = 68.0
 theme = SubResource( 31 )
-custom_styles/panel = SubResource( 89 )
+custom_styles/panel = SubResource( 91 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -4921,12 +5019,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -4.0
 margin_bottom = -4.0
-theme = SubResource( 101 )
+theme = SubResource( 103 )
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Left/ScrollContainer"]
 margin_right = 68.0
-margin_bottom = 884.0
+margin_bottom = 952.0
 size_flags_horizontal = 3
 
 [node name="Space" type="Control" parent="Left/ScrollContainer/VBoxContainer"]
@@ -5272,10 +5370,65 @@ valign = 1
 autowrap = true
 clip_text = true
 
-[node name="Button10" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
+[node name="Button13" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
 margin_top = 684.0
 margin_right = 68.0
 margin_bottom = 748.0
+rect_min_size = Vector2( 64, 64 )
+hint_tooltip = "DECRYPT"
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 40 )
+texture_hover = ExtResource( 43 )
+texture_disabled = ExtResource( 41 )
+texture_focused = ExtResource( 44 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Icon" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button13"]
+modulate = Color( 1, 1, 1, 0.752941 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Notice" type="TextureRect" parent="Left/ScrollContainer/VBoxContainer/Button13"]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -32.0
+margin_top = -32.0
+mouse_filter = 2
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button13/Notice"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 6 )
+text = "0"
+align = 1
+valign = 1
+autowrap = true
+clip_text = true
+
+[node name="Button10" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
+margin_top = 752.0
+margin_right = 68.0
+margin_bottom = 816.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "LOG"
 texture_normal = ExtResource( 42 )
@@ -5303,9 +5456,9 @@ __meta__ = {
 }
 
 [node name="Button12" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 752.0
+margin_top = 820.0
 margin_right = 68.0
-margin_bottom = 816.0
+margin_bottom = 884.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "OPTIONS"
 texture_normal = ExtResource( 42 )
@@ -5333,9 +5486,9 @@ __meta__ = {
 }
 
 [node name="Button11" type="TextureButton" parent="Left/ScrollContainer/VBoxContainer"]
-margin_top = 820.0
+margin_top = 888.0
 margin_right = 68.0
-margin_bottom = 884.0
+margin_bottom = 952.0
 rect_min_size = Vector2( 64, 64 )
 hint_tooltip = "CREDITS"
 texture_normal = ExtResource( 42 )
@@ -5374,7 +5527,7 @@ __meta__ = {
 anchor_right = 1.0
 margin_bottom = 36.0
 theme = SubResource( 31 )
-custom_styles/panel = SubResource( 85 )
+custom_styles/panel = SubResource( 87 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -5422,7 +5575,7 @@ margin_left = 878.0
 margin_right = 918.0
 margin_bottom = 32.0
 size_flags_vertical = 3
-custom_fonts/font = SubResource( 102 )
+custom_fonts/font = SubResource( 104 )
 text = "00:00"
 align = 1
 valign = 1
@@ -5432,7 +5585,7 @@ margin_left = 922.0
 margin_right = 984.0
 margin_bottom = 32.0
 size_flags_vertical = 3
-custom_fonts/font = SubResource( 102 )
+custom_fonts/font = SubResource( 104 )
 text = "00.00.00"
 align = 1
 valign = 1
@@ -5471,62 +5624,62 @@ __meta__ = {
 
 [node name="Panel1" type="Panel" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 104 )
+material = SubResource( 106 )
 anchor_right = 1.0
 margin_top = 8.0
 margin_bottom = 16.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 105 )
+custom_styles/panel = SubResource( 107 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Panel2" type="Panel" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 104 )
+material = SubResource( 106 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -16.0
 margin_bottom = -8.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 105 )
+custom_styles/panel = SubResource( 107 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Panel3" type="Panel" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 106 )
+material = SubResource( 108 )
 anchor_right = 1.0
 margin_top = 232.0
 margin_bottom = 240.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 105 )
+custom_styles/panel = SubResource( 107 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Panel4" type="Panel" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 106 )
+material = SubResource( 108 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -240.0
 margin_bottom = -232.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 105 )
+custom_styles/panel = SubResource( 107 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Text1" type="TextureRect" parent="Boss"]
-material = SubResource( 108 )
+material = SubResource( 110 )
 margin_top = 48.0
 margin_bottom = 96.0
 mouse_filter = 2
-texture = SubResource( 109 )
+texture = SubResource( 111 )
 expand = true
 stretch_mode = 2
 __meta__ = {
@@ -5535,13 +5688,13 @@ __meta__ = {
 }
 
 [node name="Text2" type="TextureRect" parent="Boss"]
-material = SubResource( 110 )
+material = SubResource( 112 )
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_top = -96.0
 margin_bottom = -48.0
 mouse_filter = 2
-texture = SubResource( 109 )
+texture = SubResource( 111 )
 expand = true
 stretch_mode = 2
 __meta__ = {
@@ -5550,7 +5703,7 @@ __meta__ = {
 
 [node name="Crown1" type="TextureRect" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 112 )
+material = SubResource( 114 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -5565,7 +5718,7 @@ __meta__ = {
 
 [node name="Crown2" type="TextureRect" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 113 )
+material = SubResource( 115 )
 anchor_right = 1.0
 margin_top = 144.0
 margin_bottom = 192.0
@@ -5575,7 +5728,7 @@ stretch_mode = 2
 
 [node name="Star1" type="TextureRect" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 114 )
+material = SubResource( 116 )
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -5590,7 +5743,7 @@ __meta__ = {
 
 [node name="Star2" type="TextureRect" parent="Boss"]
 modulate = Color( 1, 1, 1, 0 )
-material = SubResource( 115 )
+material = SubResource( 117 )
 anchor_right = 1.0
 margin_top = 104.0
 margin_bottom = 136.0
@@ -5614,7 +5767,7 @@ render_target_v_flip = true
 anchor_right = 1.0
 anchor_bottom = 0.5
 mouse_filter = 2
-custom_styles/panel = SubResource( 116 )
+custom_styles/panel = SubResource( 118 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -5622,7 +5775,7 @@ __meta__ = {
 [node name="Label" type="Label" parent="Boss/Viewport/Panel1"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 117 )
+custom_fonts/font = SubResource( 119 )
 text = "-    CAUTION"
 align = 1
 valign = 1
@@ -5636,7 +5789,7 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 116 )
+custom_styles/panel = SubResource( 118 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -5644,7 +5797,7 @@ __meta__ = {
 [node name="Label" type="Label" parent="Boss/Viewport/Panel2"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 117 )
+custom_fonts/font = SubResource( 119 )
 text = "-    WARNING"
 align = 1
 valign = 1
@@ -5654,17 +5807,17 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Boss"]
-anims/boss = SubResource( 118 )
+anims/boss = SubResource( 120 )
 
 [node name="Textbox" parent="." instance=ExtResource( 16 )]
 
 [node name="Glitch" type="Panel" parent="."]
 visible = false
-material = SubResource( 120 )
+material = SubResource( 122 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 121 )
+custom_styles/panel = SubResource( 123 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -5674,11 +5827,11 @@ stream = ExtResource( 23 )
 volume_db = -80.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Glitch"]
-anims/burst_off = SubResource( 122 )
-anims/intro = SubResource( 123 )
-anims/sequence1 = SubResource( 124 )
-anims/sequence2 = SubResource( 125 )
-anims/sequence3 = SubResource( 126 )
+anims/burst_off = SubResource( 124 )
+anims/intro = SubResource( 125 )
+anims/sequence1 = SubResource( 126 )
+anims/sequence2 = SubResource( 127 )
+anims/sequence3 = SubResource( 128 )
 
 [node name="ViewportLogo" type="Viewport" parent="."]
 size = Vector2( 256, 256 )
@@ -5694,7 +5847,7 @@ margin_bottom = 256.0
 rect_min_size = Vector2( 256, 256 )
 expand = true
 stretch_mode = 6
-script = SubResource( 127 )
+script = SubResource( 129 )
 
 [node name="Label" type="Label" parent="ViewportLogo/Draw"]
 anchor_right = 1.0
@@ -5713,28 +5866,28 @@ autowrap = true
 [node name="ViewportBackground" type="Viewport" parent="."]
 size = Vector2( 1280, 600 )
 own_world = true
-world = SubResource( 129 )
+world = SubResource( 131 )
 disable_3d = true
 usage = 0
 
 [node name="ParticlesVertical" type="Particles2D" parent="ViewportBackground"]
-material = SubResource( 130 )
+material = SubResource( 132 )
 position = Vector2( 704, 0 )
 amount = 6
 lifetime = 5.0
-process_material = SubResource( 135 )
+process_material = SubResource( 137 )
 texture = ExtResource( 54 )
 
 [node name="ParticlesHorizontal" type="Particles2D" parent="ViewportBackground"]
-material = SubResource( 130 )
+material = SubResource( 132 )
 position = Vector2( 1216, 288 )
 amount = 6
 lifetime = 8.0
-process_material = SubResource( 136 )
+process_material = SubResource( 138 )
 texture = ExtResource( 54 )
 
 [node name="Grid" type="Sprite" parent="ViewportBackground"]
-material = SubResource( 138 )
+material = SubResource( 140 )
 position = Vector2( 160, -32 )
 scale = Vector2( 1.389, 1.406 )
 texture = ExtResource( 53 )
@@ -5742,7 +5895,7 @@ centered = false
 
 [node name="Sprite" type="Sprite" parent="ViewportBackground"]
 modulate = Color( 0.752941, 0.752941, 0.752941, 1 )
-material = SubResource( 140 )
+material = SubResource( 142 )
 position = Vector2( 448, -32 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 52 )
@@ -5752,13 +5905,13 @@ centered = false
 anchor_bottom = 1.0
 margin_top = 240.0
 margin_right = 202.0
-custom_styles/panel = SubResource( 142 )
+custom_styles/panel = SubResource( 143 )
 
 [node name="PanelCutoff3" type="Panel" parent="ViewportBackground"]
 anchor_bottom = 1.0
 margin_top = 284.0
 margin_right = 247.0
-custom_styles/panel = SubResource( 142 )
+custom_styles/panel = SubResource( 143 )
 __meta__ = {
 "_editor_description_": ""
 }
@@ -5767,7 +5920,7 @@ __meta__ = {
 anchor_bottom = 1.0
 margin_top = 328.0
 margin_right = 292.0
-custom_styles/panel = SubResource( 142 )
+custom_styles/panel = SubResource( 143 )
 __meta__ = {
 "_editor_description_": ""
 }
@@ -5776,7 +5929,7 @@ __meta__ = {
 anchor_bottom = 1.0
 margin_top = 373.0
 margin_right = 337.0
-custom_styles/panel = SubResource( 142 )
+custom_styles/panel = SubResource( 143 )
 __meta__ = {
 "_editor_description_": ""
 }
@@ -5785,7 +5938,7 @@ __meta__ = {
 anchor_bottom = 1.0
 margin_top = 463.0
 margin_right = 382.0
-custom_styles/panel = SubResource( 142 )
+custom_styles/panel = SubResource( 143 )
 __meta__ = {
 "_editor_description_": ""
 }
@@ -5794,7 +5947,7 @@ __meta__ = {
 anchor_bottom = 1.0
 margin_top = 508.0
 margin_right = 426.0
-custom_styles/panel = SubResource( 142 )
+custom_styles/panel = SubResource( 143 )
 __meta__ = {
 "_editor_description_": ""
 }
@@ -5803,186 +5956,10 @@ __meta__ = {
 anchor_bottom = 1.0
 margin_top = 553.0
 margin_right = 471.0
-custom_styles/panel = SubResource( 142 )
+custom_styles/panel = SubResource( 143 )
 __meta__ = {
 "_editor_description_": ""
 }
-
-[node name="PanelBlock1" type="Panel" parent="ViewportBackground"]
-material = SubResource( 144 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_top = -40.0
-margin_right = 64.0
-margin_bottom = 24.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock2" type="Panel" parent="ViewportBackground"]
-material = SubResource( 146 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -16.0
-margin_top = -24.0
-margin_right = 16.0
-margin_bottom = 8.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock3" type="Panel" parent="ViewportBackground"]
-material = SubResource( 147 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 16.0001
-margin_top = -40.0
-margin_right = 48.0001
-margin_bottom = -8.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock4" type="Panel" parent="ViewportBackground"]
-material = SubResource( 148 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 32.0001
-margin_top = -72.0
-margin_right = 64.0001
-margin_bottom = -40.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock5" type="Panel" parent="ViewportBackground"]
-material = SubResource( 149 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 48.0001
-margin_top = -24.0
-margin_right = 80.0001
-margin_bottom = 8.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock6" type="Panel" parent="ViewportBackground"]
-material = SubResource( 150 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 16.0001
-margin_top = 8.0
-margin_right = 48.0001
-margin_bottom = 40.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock7" type="Panel" parent="ViewportBackground"]
-material = SubResource( 151 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -16.0
-margin_top = -56.0
-margin_right = 16.0
-margin_bottom = -24.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock8" type="Panel" parent="ViewportBackground"]
-material = SubResource( 152 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_top = -72.0
-margin_right = 32.0
-margin_bottom = -40.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock9" type="Panel" parent="ViewportBackground"]
-material = SubResource( 153 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 24.0001
-margin_top = -64.0
-margin_right = 72.0001
-margin_bottom = -16.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock10" type="Panel" parent="ViewportBackground"]
-material = SubResource( 154 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_top = -16.0
-margin_right = 48.0
-margin_bottom = 32.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock11" type="Panel" parent="ViewportBackground"]
-material = SubResource( 155 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 16.0001
-margin_top = -80.0
-margin_right = 32.0001
-margin_bottom = -64.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock12" type="Panel" parent="ViewportBackground"]
-material = SubResource( 156 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_top = -104.0
-margin_right = 16.0
-margin_bottom = -88.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock13" type="Panel" parent="ViewportBackground"]
-material = SubResource( 157 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 32.0001
-margin_top = -120.0
-margin_right = 48.0001
-margin_bottom = -104.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock14" type="Panel" parent="ViewportBackground"]
-material = SubResource( 158 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -8.0
-margin_top = -64.0
-margin_right = 72.0
-margin_bottom = 16.0
-custom_styles/panel = SubResource( 145 )
-
-[node name="PanelBlock15" type="Panel" parent="ViewportBackground"]
-material = SubResource( 159 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 8.00006
-margin_top = -152.0
-margin_right = 24.0001
-margin_bottom = -136.0
-custom_styles/panel = SubResource( 145 )
 
 [node name="SoundHover" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 18 )

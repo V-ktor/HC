@@ -113,12 +113,17 @@ func _on_show_compile():
 func _on_show_code():
 	trigger("on_show_code")
 
+func _on_show_decrypt():
+	trigger("on_show_decrypt")
+
 func _on_gained_tech(tech):
 	trigger("on_gained_tech",[tech])
 
 func _on_decompile(prgm):
 	trigger("on_decompile",[prgm])
 
+func _on_decrypted(dict):
+	trigger("on_decrypted",[dict])
 
 
 # Events #
@@ -143,6 +148,9 @@ func show_compile():
 func show_code():
 	Menu.get_node("Left/ScrollContainer/VBoxContainer/Button9").show()
 
+func show_decrypt():
+	Menu.get_node("Left/ScrollContainer/VBoxContainer/Button13").show()
+
 func allow_scan():
 	Menu.can_scan = true
 	if Menu.get_node("Targets").visible:
@@ -153,7 +161,7 @@ func _local_server_hack(victory):
 
 func add_npc1():
 	var c = Objects.Actor.new("Crypto Maniac",Color(0.5,0.4,0.05),"res://scenes/portraits/crypto.tscn","res://scenes/gui/chat_bg/crypto.tscn",30,150,60.0,{"wave":16,"phalanx":6},0,0,128,{},0)
-	Objects.actors["crypto"] = c
+	Objects.actors.crypto = c
 	Menu.contacts.push_back("crypto")
 	call_chat("crypto","chat01")
 	if Menu.get_node("Chat").visible:
@@ -185,7 +193,7 @@ func under_attack():
 
 func add_riley():
 	var c = Objects.Actor.new("???",Color(0.4,0.02,0.01),"res://scenes/portraits/character02.tscn","res://scenes/gui/chat_bg/riley.tscn",35,175,60.0,{"pulse":3,"phalanx":3,"scythe":6,"parry":4,"lock":3},0,0,8,{},0)
-	Objects.actors["riley"] = c
+	Objects.actors.riley = c
 	Menu.contacts.push_back("riley")
 	call_chat("riley","chat01")
 	Menu.add_log_msg("LOG_UNDER_ATTACK","LOG_INTRUDER")
@@ -194,7 +202,7 @@ func add_riley():
 
 func add_riley_local_server():
 	var mi = Menu.main_scene.instance()
-	var target = Objects.add_target("local_server",tr("YOUR_SERVER")%Objects.actors["player"].name,null,"127.0.0.1",Color(0.6,0.05,0.04),"layered",[4,4,18],Objects.actors["riley"].programs.duplicate(),Objects.actors["riley"].cpu,"ai_random",2500,25,"_local_server_defence")
+	var target = Objects.add_target("local_server",tr("YOUR_SERVER").format({"name":Objects.actors["player"].name}),null,"127.0.0.1",Color(0.6,0.05,0.04),"layered",[4,4,18],Objects.actors["riley"].programs.duplicate(),Objects.actors["riley"].cpu,"ai_random",2500,25,"_local_server_defence")
 	target.music_overwrite = "Of_Far_Different_Nature-Escape-14-Crypt.ogg"
 	triggered_method("on_hack_started","_riley_defence_start",[],"ai")
 	Menu.add_log_msg("LOG_DEFENCE","LOG_DEFENCE_HACK")
@@ -203,6 +211,9 @@ func add_riley_local_server():
 	mi.start(2,30.0,[Objects.actors["player"].cpu,30],[Objects.actors["player"].programs,Objects.actors["riley"].programs.duplicate()],["human","ai_random"],[Objects.actors["player"].color,Color(0.6,0.05,0.04)],mi.callv("create_layered_system",[4,3,14]))
 	Music.play("Of_Far_Different_Nature-Escape-14-Crypt.ogg")
 	if !Options.disable_screen_shader:
+		for c in Menu.get_node("Hack/Panel/Portrait").get_children():
+			c.queue_free()
+		yield(get_tree(),"idle_frame")
 		Menu.get_node("Boss/AnimationPlayer").play("boss")
 		Menu.hack_contact_overwrite = "riley"
 		Menu.update_hack_chat()
@@ -303,6 +314,9 @@ func hally_riley_reaction():
 
 func crypto_talk_end():
 	Menu.chat_add_portrait.erase("crypto")
+	Menu.add_data_set({"name":tr("CRYPTO_MSG1"),"color":Color(0.5,0.4,0.05),"cols":[1,3,3],"message":tr("CRYPTO_MSG1_TEXT"),"set":"crypto_msg"})
+	Menu.add_data_set({"name":tr("CRYPTO_MSG2"),"color":Color(0.5,0.4,0.05),"cols":[0,3,3],"message":tr("CRYPTO_MSG2_TEXT"),"set":"crypto_msg"})
+	Menu.add_data_set({"name":tr("CRYPTO_MSG3"),"color":Color(0.5,0.4,0.05),"cols":[0,3,3],"message":tr("CRYPTO_MSG3_TEXT"),"set":"crypto_msg"})
 	call_chat("ai","crypto_talk_end")
 
 

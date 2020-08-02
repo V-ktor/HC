@@ -7,7 +7,6 @@ func chat01():
 		{"text":"REPLY_0030_2","required":{"focus":3}},
 		{"text":"REPLY_0030_3","required":{"cunning":3}}
 	],2.0)
-	Menu.add_log_msg("LOG_CRYPTO","LOG_MET_CRYPTO")
 	Music.play("Of_Far_Different_Nature-Escape-10-Control.ogg",-4)
 
 func reply_0030_1():
@@ -82,9 +81,9 @@ func reply_0033_2():
 
 func next_try():
 	Events.delayed_choice("crypto",[
-		{"text":"REPLY_0034_1","required":{"focus":3}},
-		{"text":"REPLY_0034_2","required":{"cunning":3}},
-		{"text":"REPLY_0034_3","required":{"fear":3}}
+		{"text":"REPLY_0034_1","required":{"focus":2}},
+		{"text":"REPLY_0034_2","required":{"cunning":2}},
+		{"text":"REPLY_0034_3","required":{"fear":2}}
 	],1.0)
 
 func reply_0034_1():
@@ -175,7 +174,6 @@ func chat02():
 	Events.delayed_player_msg("crypto",tr("AI_0366"),3.0,{"from_ally":"ai"})
 	Events.delayed_method(1.0,"failed_communication_attempt2")
 	
-	Menu.add_log_msg("LOG_CRYPTO","LOG_MET_CRYPTO")
 	Music.play("Of_Far_Different_Nature-Escape-10-Control.ogg",-4)
 
 func reply_0071_1():
@@ -184,9 +182,9 @@ func reply_0071_1():
 	Events.delayed_msg("crypto",tr("CRYPTO_0053"),1.0)
 	Events.delayed_msg("crypto",tr("CRYPTO_0054"),2.0)
 	Events.delayed_choice("crypto",[
-		{"text":"REPLY_0072_1","required":{"focus":5}},
-		{"text":"REPLY_0072_2","required":{"cunning":5}},
-		{"text":"REPLY_0072_3","required":{"charisma":5}}
+		{"text":"REPLY_0072_1","required":{"focus":4}},
+		{"text":"REPLY_0072_2","required":{"cunning":4}},
+		{"text":"REPLY_0072_3","required":{"charisma":4}}
 	],1.0)
 
 func reply_0071_2():
@@ -195,9 +193,9 @@ func reply_0071_2():
 	Events.delayed_msg("crypto",tr("CRYPTO_0056"),1.0)
 	Events.delayed_msg("crypto",tr("CRYPTO_0054"),2.0)
 	Events.delayed_choice("crypto",[
-		{"text":"REPLY_0072_1","required":{"focus":5}},
-		{"text":"REPLY_0072_2","required":{"cunning":5}},
-		{"text":"REPLY_0072_3","required":{"charisma":5}}
+		{"text":"REPLY_0072_1","required":{"focus":4}},
+		{"text":"REPLY_0072_2","required":{"cunning":4}},
+		{"text":"REPLY_0072_3","required":{"charisma":4}}
 	],1.0)
 
 func reply_0071_3():
@@ -209,9 +207,9 @@ func reply_0071_3():
 	Events.delayed_msg("crypto",tr("CRYPTO_0061"),1.0)
 	Events.delayed_msg("crypto",tr("CRYPTO_0054"),2.0)
 	Events.delayed_choice("crypto",[
-		{"text":"REPLY_0072_1","required":{"focus":5}},
-		{"text":"REPLY_0072_2","required":{"cunning":5}},
-		{"text":"REPLY_0072_3","required":{"charisma":5}}
+		{"text":"REPLY_0072_1","required":{"focus":4}},
+		{"text":"REPLY_0072_2","required":{"cunning":4}},
+		{"text":"REPLY_0072_3","required":{"charisma":4}}
 	],1.0)
 
 func reply_0071_4():
@@ -221,9 +219,9 @@ func reply_0071_4():
 	Events.delayed_msg("crypto",tr("CRYPTO_0064"),2.0)
 	Events.delayed_msg("crypto",tr("CRYPTO_0054"),2.0)
 	Events.delayed_choice("crypto",[
-		{"text":"REPLY_0072_1","required":{"focus":5}},
-		{"text":"REPLY_0072_2","required":{"cunning":5}},
-		{"text":"REPLY_0072_3","required":{"charisma":5}}
+		{"text":"REPLY_0072_1","required":{"focus":4}},
+		{"text":"REPLY_0072_2","required":{"cunning":4}},
+		{"text":"REPLY_0072_3","required":{"charisma":4}}
 	],1.0)
 
 func reply_0072_1():
@@ -232,18 +230,18 @@ func reply_0072_1():
 	Events.delayed_msg("crypto","...",2.0)
 	Events.delayed_msg("crypto",tr("CRYPTO_0071"),2.0)
 	Events.delayed_choice("crypto",[
-		{"text":"REPLY_0073_1","required":{"focus":5}},
-		{"text":"REPLY_0073_2","required":{"fear":5}},
-		{"text":"REPLY_0073_3","required":{"cunning":5}}
+		{"text":"REPLY_0073_1","required":{"focus":4}},
+		{"text":"REPLY_0073_2","required":{"fear":4}},
+		{"text":"REPLY_0073_3","required":{"cunning":4}}
 	],1.0)
 
 func reply_0072_2():
 	Events.send_player_msg("crypto",tr("REPLY_0072_2"))
 	Events.delayed_msg("crypto",tr("CRYPTO_0071"),1.0)
 	Events.delayed_choice("crypto",[
-		{"text":"REPLY_0073_1","required":{"focus":5}},
-		{"text":"REPLY_0073_2","required":{"fear":5}},
-		{"text":"REPLY_0073_3","required":{"cunning":5}}
+		{"text":"REPLY_0073_1","required":{"focus":4}},
+		{"text":"REPLY_0073_2","required":{"fear":4}},
+		{"text":"REPLY_0073_3","required":{"cunning":4}}
 	],1.0)
 
 func reply_0072_3():
@@ -252,9 +250,9 @@ func reply_0072_3():
 	Events.delayed_player_msg("crypto",tr("REPLY_0034_2"),1.0)
 	Events.delayed_msg("crypto",tr("CRYPTO_0073"),3.0)
 	Events.delayed_choice("crypto",[
-		{"text":"REPLY_0073_1","required":{"focus":5}},
-		{"text":"REPLY_0073_2","required":{"fear":5}},
-		{"text":"REPLY_0073_3","required":{"cunning":5}}
+		{"text":"REPLY_0073_1","required":{"focus":4}},
+		{"text":"REPLY_0073_2","required":{"fear":4}},
+		{"text":"REPLY_0073_3","required":{"cunning":4}}
 	],1.0)
 
 func reply_0073_1():
@@ -266,10 +264,10 @@ func reply_0073_1():
 	Events.delayed_msg("crypto",tr("CRYPTO_0078"),3.0)
 	Events.delayed_method(7.0,"hally_death_reaction")
 	Events.delayed_choice("crypto",[
-		{"text":"REPLY_0074_1","required":{"fear":5}},
-		{"text":"REPLY_0074_2","required":{"focus":5}},
-		{"text":"REPLY_0074_3","required":{"curiosity":5}},
-		{"text":"REPLY_0074_4","required":{"cunning":5}},
+		{"text":"REPLY_0074_1","required":{"fear":4}},
+		{"text":"REPLY_0074_2","required":{"focus":4}},
+		{"text":"REPLY_0074_3","required":{"curiosity":4}},
+		{"text":"REPLY_0074_4","required":{"cunning":4}},
 	],1.0)
 
 func reply_0073_2():
@@ -281,10 +279,10 @@ func reply_0073_2():
 	Events.delayed_msg("crypto",tr("CRYPTO_0078"),3.0)
 	Events.delayed_method(7.0,"hally_death_reaction")
 	Events.delayed_choice("crypto",[
-		{"text":"REPLY_0074_1","required":{"fear":5}},
-		{"text":"REPLY_0074_2","required":{"focus":5}},
-		{"text":"REPLY_0074_3","required":{"curiosity":5}},
-		{"text":"REPLY_0074_4","required":{"cunning":5}},
+		{"text":"REPLY_0074_1","required":{"fear":4}},
+		{"text":"REPLY_0074_2","required":{"focus":4}},
+		{"text":"REPLY_0074_3","required":{"curiosity":4}},
+		{"text":"REPLY_0074_4","required":{"cunning":4}},
 	],1.0)
 
 func reply_0073_3():
@@ -296,10 +294,10 @@ func reply_0073_3():
 	Events.delayed_msg("crypto",tr("CRYPTO_0078"),3.0)
 	Events.delayed_method(7.0,"hally_death_reaction")
 	Events.delayed_choice("crypto",[
-		{"text":"REPLY_0074_1","required":{"fear":5}},
-		{"text":"REPLY_0074_2","required":{"focus":5}},
-		{"text":"REPLY_0074_3","required":{"curiosity":5}},
-		{"text":"REPLY_0074_4","required":{"cunning":5}},
+		{"text":"REPLY_0074_1","required":{"fear":4}},
+		{"text":"REPLY_0074_2","required":{"focus":4}},
+		{"text":"REPLY_0074_3","required":{"curiosity":4}},
+		{"text":"REPLY_0074_4","required":{"cunning":4}},
 	],1.0)
 
 func reply_0074_1():

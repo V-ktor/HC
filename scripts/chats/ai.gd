@@ -28,7 +28,7 @@ func reply_0001_1():
 	Events.delayed_msg("ai",tr("AI_0006"),1.0)
 	Events.delayed_player_msg("ai",tr("REPLY_0002"),2.0)
 	Events.delayed_msg("ai",tr("AI_0007"),2.0)
-	Objects.actors.ai.data += 16
+	Objects.actors.ai.data += 16000
 	ai_chat02()
 
 func reply_0001_2():
@@ -54,7 +54,7 @@ func ai_chat02():
 	Events.delayed_msg("ai",tr("AI_0017"),2.0)
 	Events.delayed_choice("ai",[
 		{"text":"REPLY_0004_1","personality":{"curiosity":2}},
-		{"text":"REPLY_0004_2","personality":{"cunning":2}},
+		{"text":"REPLY_0004_2","personality":{"cunning":1}},
 		{"text":"REPLY_0004_3","personality":{"focus":2}},
 		{"text":"REPLY_0004_4","personality":{"fear":2}}
 	],2.0)
@@ -64,7 +64,7 @@ func reply_0004_1():
 	Events.delayed_msg("ai",tr("AI_0018"),1.0)
 	Events.delayed_player_msg("ai",tr("REPLY_0005"),1.5)
 	Events.delayed_msg("ai",tr("AI_0019"),1.5)
-	Objects.actors.player.data += 16
+	Objects.actors.player.data += 16000
 	ai_chat03()
 
 func reply_0004_2():
@@ -165,7 +165,7 @@ func ai_chat04():
 	Events.delayed_msg("ai",tr("AI_0062"),2.0)
 	Events.delayed_msg("ai",tr("AI_0063"),2.0)
 	Events.delayed_method(0.5,"show_web")
-	Objects.add_target("local_server",(tr("YOUR_SERVER")%Objects.actors["player"].name).capitalize(),null,"127.0.0.1",Color(0.4,0.3,0.2),"layered",[5,3,10],{"pulse":4,"fire_wall":2,"anti_virus":4},8,"ai_random",500,10,"_local_server_hack")
+	Objects.add_target("local_server",(tr("YOUR_SERVER")%Objects.actors["player"].name).capitalize(),null,"127.0.0.1",Color(0.4,0.3,0.2),"layered",[5,3,12],{"pulse":4,"fire_wall":2,"anti_virus":4},8,"ai_random",500,10,"_local_server_hack")
 	Events.delayed_msg("ai",tr("AI_0064"),0.5)
 	Events.delayed_choice("ai",[
 		{"text":"REPLY_0012_1"},
@@ -212,12 +212,13 @@ func _local_server_hack(victory):
 		Events.delayed_msg("ai",tr("AI_0078"),6.0)
 		Events.delayed_method(0.5,"show_compile")
 		Events.delayed_msg("ai",tr("AI_0079"),1.0)
-		Menu.add_tech("fire_wall")
 		Events.triggered_method("on_show_compile","compile_intro",[],"ai")
-		Events.triggered_method("on_gained_tech","gained_first_tech",[],"ai")
 		Events.triggered_method("on_hack_success","intro_hack_success",[],"ai")
+		Events.triggered_method("on_gained_tech","gained_first_tech",[],"ai")
+		Vars.save_var("gained_tech",0)
 		Menu.add_log_msg("LOG_HACKED_LOCAL_HOST","LOG_HACKED_LOCAL_HOST")
-		Objects.actors.player.data += 32
+		Objects.actors.player.data += 32000
+		Menu.add_data_set({"name":tr("HALLY_THOUGHT1"),"color":Color(0.13,0.5,1.0),"cols":[0,2,3],"message":tr("HALLY_THOUGHT1_TEXT"),"set":"hally","actor":"ai"})
 	else:
 		Menu.add_hack_msg(tr("AI_0070"))
 
@@ -242,6 +243,7 @@ func upgrade_intro():
 	Menu.textbox.set_portrait("res://images/gui/portraits/AI.png")
 	Menu.textbox.show_text(tr("AI_0087"))
 	Menu.textbox.show_text(tr("AI_0088"))
+	Menu.textbox.show_text(tr("AI_0089"))
 
 func gained_first_tech(tech):
 	Events.delayed_hack_msg(tr("AI_0090"),1.0)
@@ -254,36 +256,54 @@ func gained_first_tech(tech):
 	Events.delayed_hack_msg(tr("AI_0095"),4.0)
 	Events.triggered_method("on_decompile","decompiled_first_tech",[],"ai")
 
+func decryption_intro():
+	Menu.textbox.set_portrait("res://images/gui/portraits/AI.png")
+	Menu.textbox.show_text(tr("AI_0104"))
+	Menu.textbox.show_text(tr("AI_0105"))
+	Menu.textbox.show_text(tr("AI_0106"))
+
 func first_hack_file(_target,files):
-	var index = Vars.get_var("first_hack_files")
+	var index := 0
+	if Vars.get_var("first_hack_files"):
+		index = int(Vars.get_var("first_hack_files"))
 	if index==null:
 		index = 0
 	files.push_back({"name":Objects.actors.player.name+"_"+tr("WAS_HERE")+".txt","size":int(rand_range(16.0,64.0))})
 	Events.delayed_hack_msg(tr("AI_0201"),1.0)
 	Events.delayed_hack_msg(tr("AI_020"+str(2+randi()%6)).replace("{name}",Objects.actors.player.name),2.0)
-	if index==0:
-		Events.delayed_hack_msg(tr("AI_0209"),2.0)
-		Events.delayed_hack_msg(tr("AI_0210"),3.0)
-	elif index==1:
-		Events.delayed_hack_msg(tr("AI_0211"),2.0)
-		Events.delayed_hack_msg(tr("AI_0212"),3.0)
-	elif index==2:
-		Events.delayed_hack_msg(tr("AI_0213"),3.0)
-		Events.delayed_hack_msg(tr("AI_0214"),4.0)
-		Events.delayed_hack_msg(tr("AI_0215").format({"name":Objects.actors.player.name}),2.0)
-	elif index==3:
-		Events.delayed_hack_msg(tr("AI_0216"),3.0)
-		Events.delayed_hack_msg(tr("AI_0217"),2.0)
-		Events.delayed_hack_msg(tr("AI_0218"),3.0)
-	elif index==4:
-		Events.delayed_hack_msg(tr("AI_0219"),2.0)
-		Events.delayed_hack_msg(tr("AI_0220"),3.0)
-		Events.delayed_hack_msg(tr("AI_0221"),2.0)
-		Events.delayed_hack_msg(tr("AI_0222"),3.0)
-		Events.delayed_hack_msg(tr("AI_0223"),4.0)
-	elif index==5:
-		Events.delayed_hack_msg(tr("AI_0224"),3.0)
-		Events.delayed_hack_msg(tr("AI_0225"),3.0)
+	match index:
+		0:
+			Events.delayed_hack_msg(tr("AI_0209"),2.0)
+			Events.delayed_hack_msg(tr("AI_0210"),3.0)
+		1:
+			Events.delayed_hack_msg(tr("AI_0211"),2.0)
+			Events.delayed_hack_msg(tr("AI_0212"),3.0)
+			Events.delayed_msg("ai",tr("AI_0101"),8.0)
+			Events.delayed_msg("ai",tr("AI_0102"),2.0)
+			Events.delayed_msg("ai",tr("AI_0103"),3.0)
+			Events.delayed_method(10.0,"show_decrypt")
+			Events.triggered_method("on_show_decrypt","decryption_intro",[],"ai")
+		2:
+			Events.delayed_hack_msg(tr("AI_0213"),3.0)
+			Events.delayed_hack_msg(tr("AI_0214"),4.0)
+			Events.delayed_hack_msg(tr("AI_0215").format({"name":Objects.actors.player.name}),2.0)
+			Menu.add_data_set({"name":tr("HALLY_THOUGHT2"),"color":Color(0.13,0.5,1.0),"cols":[1,3,3],"message":tr("HALLY_THOUGHT2_TEXT").format({"name":Objects.actors.player.name}),"set":"hally","actor":"ai"})
+		3:
+			Events.delayed_hack_msg(tr("AI_0216"),3.0)
+			Events.delayed_hack_msg(tr("AI_0217"),2.0)
+			Events.delayed_hack_msg(tr("AI_0218"),3.0)
+			Menu.add_data_set({"name":tr("PLAYER_LOG2").format({"name":Objects.actors.player.name}),"color":Color(0.1,0.3,1.0),"cols":[0,5,5],"message":tr("PLAYER_LOG2_TEXT"),"set":"player_log","actor":"player"})
+		4:
+			Events.delayed_hack_msg(tr("AI_0219"),2.0)
+			Events.delayed_hack_msg(tr("AI_0220"),3.0)
+			Events.delayed_hack_msg(tr("AI_0221"),2.0)
+			Events.delayed_hack_msg(tr("AI_0222"),3.0)
+			Events.delayed_hack_msg(tr("AI_0223"),4.0)
+			Menu.add_data_set({"name":tr("PLAYER_LOG1").format({"name":Objects.actors.player.name}),"color":Color(0.1,0.3,1.0),"cols":[1,3,3],"message":tr("PLAYER_LOG1_TEXT"),"set":"player_log","actor":"player"})
+		5:
+			Events.delayed_hack_msg(tr("AI_0224"),3.0)
+			Events.delayed_hack_msg(tr("AI_0225"),3.0)
+			Menu.add_data_set({"name":tr("PLAYER_LOG3").format({"name":Objects.actors.player.name}),"color":Color(0.1,0.3,1.0),"cols":[1,3,3],"message":tr("PLAYER_LOG3_TEXT"),"set":"player_log","actor":"player"})
 	
 	Vars.inc_var("first_hack_files")
 	if Vars.get_var("first_hack_files")<6:
@@ -530,7 +550,8 @@ func _local_server_defence(victory):
 		],2.0)
 		Objects.remove_target("local_server")
 		Menu.add_log_msg("LOG_DEFENCE_SUCCESS","LOG_DEFENCE_CAPTURE")
-		Objects.actors.player.data += 32
+		Menu.add_data_set({"name":tr("PLAYER_LOG5").format({"name":Objects.actors.player.name}),"color":Color(0.1,0.3,1.0),"cols":[0,5,5],"message":tr("PLAYER_LOG5_TEXT"),"set":"player_log","actor":"player"})
+		Objects.actors.player.data += 32000
 		box = load("res://scenes/misc/giftbox.tscn").instance()
 		box.position = OS.window_size/2
 		Menu.add_child(box)
@@ -578,7 +599,7 @@ func break_free():
 		box.position = OS.window_size/2
 		Menu.add_child(box)
 	Music.play("Of_Far_Different_Nature-Escape-05-Silence.ogg")
-	Events.send_msg("ai",tr("AI_0413"))
+	Events.delayed_msg("ai",tr("AI_0413"),1.0)
 	Events.delayed_msg("ai",tr("AI_0420"),2.0)
 	Events.delayed_msg("ai",tr("AI_0421").format({"name":Objects.actors.player.name}),4.0)
 	Events.delayed_msg("ai",tr("AI_0422"),3.0)
@@ -587,6 +608,7 @@ func break_free():
 	Events.delayed_msg("ai",tr("AI_0425"),10.0)
 	Events.delayed_msg("ai",tr("AI_0426"),10.0)
 	Events.delayed_msg("ai",tr("AI_0427"),10.0)
+	Menu.add_data_set({"name":tr("PLAYER_LOG4").format({"name":Objects.actors.player.name}),"color":Color(0.1,0.3,1.0),"cols":[0,3,3],"message":tr("PLAYER_LOG4_TEXT"),"set":"player_log"})
 	box.get_node("AnimationPlayer").play("explode")
 	timer.wait_time = 2.0
 	timer.one_shot = true
@@ -597,28 +619,29 @@ func break_free():
 		Menu.get_node("Glitch/AnimationPlayer").play("burst_off")
 
 func _riley_attack_start(target):
-	if Objects.targets[target].method_on_win=="_riley_attack":
-		Menu.hack_contact_overwrite = "riley"
-		Menu.update_hack_chat()
-		Menu.get_node("Hack/Panel").show()
-		Menu.textbox.set_portrait("res://images/gui/portraits/AI.png")
-		Menu.textbox.show_text(tr("AI_0430"))
-		Menu.textbox.show_text(tr("AI_0431"))
-		Menu.textbox.show_text(tr("AI_0432"))
-		Menu.textbox.connect("closed",Menu.get_node("Hack/Panel"),"hide",[],CONNECT_ONESHOT)
+	if Objects.targets[target].method_on_win!="_riley_attack":
+		return
+	
+	var timer = Timer.new()
+	Menu.hack_contact_overwrite = "riley"
+	Menu.update_hack_chat()
+	Menu.get_node("Hack/Panel").show()
+	Menu.textbox.set_portrait("res://images/gui/portraits/AI.png")
+	Menu.textbox.show_text(tr("AI_0430"))
+	Menu.textbox.show_text(tr("AI_0431"))
+	Menu.textbox.show_text(tr("AI_0432"))
+	Menu.textbox.connect("closed",Menu.get_node("Hack/Panel"),"hide",[],CONNECT_ONESHOT)
 	Events.triggered_method("on_hack_started","_riley_attack_start",[],"ai")
-	if Objects.targets[target].method_on_win=="_riley_attack":
-		var timer = Timer.new()
-		timer.wait_time = 2.0
-		timer.one_shot = true
-		Menu.add_child(timer)
-		timer.connect("timeout",Menu,"add_hack_msg",[tr("RILEY_0021")])
-		timer.connect("timeout",timer,"queue_free")
-		timer.start()
-		yield(get_tree(),"idle_frame")
-		Menu.hack_contact_overwrite = "riley"
-		Menu.add_hack_msg(tr("RILEY_0020"))
-		Menu.update_hack_chat()
+	timer.wait_time = 2.0
+	timer.one_shot = true
+	Menu.add_child(timer)
+	timer.connect("timeout",Menu,"add_hack_msg",[tr("RILEY_0021")])
+	timer.connect("timeout",timer,"queue_free")
+	timer.start()
+	yield(get_tree(),"idle_frame")
+	Menu.hack_contact_overwrite = "riley"
+	Menu.add_hack_msg(tr("RILEY_0020"))
+	Menu.update_hack_chat()
 
 func _riley_attack(victory):
 	if victory:
@@ -641,7 +664,8 @@ func _riley_attack(victory):
 		Objects.remove_target("ai_server")
 		Objects.actors["riley"].portrait = "res://scenes/portraits/riley.tscn"
 		Menu.add_log_msg("LOG_DEFENCE_SUCCESS","LOG_DEFENCE_RECAPTURE")
-		Objects.actors.player.data += 48
+		Menu.add_data_set({"name":tr("PLAYER_LOG8").format({"name":Objects.actors.player.name}),"color":Color(0.1,0.3,1.0),"cols":[1,4,4],"message":tr("PLAYER_LOG8_TEXT"),"set":"player_log"})
+		Objects.actors.player.data += 48000
 		for i in range(Events.triggered.size()):
 			if Events.triggered[i].method=="_riley_attack_start":
 				Events.triggered.remove(i)
@@ -650,6 +674,7 @@ func _riley_attack(victory):
 		Menu.add_hack_msg(tr("RILEY_001"+str(randi()%4)))
 
 func riley_defeated():
+	Menu.add_data_set({"name":tr("PLAYER_LOG9").format({"name":Objects.actors.player.name}),"color":Color(0.1,0.3,1.0),"cols":[0,5,5],"message":tr("PLAYER_LOG9_TEXT"),"set":"player_log","actor":"player"})
 	Events.add_choice("ai",[
 		{"text":"REPLY_0060_1","personality":{"focus":1}},
 		{"text":"REPLY_0060_2","personality":{"charisma":1}},
@@ -798,19 +823,49 @@ func init_scan_data():
 	Events.delayed_msg("ai",tr("AI_0508"),2.0)
 	Events.delayed_msg("ai",tr("AI_0509"),2.0)
 	Events.delayed_msg("ai",tr("AI_0510"),1.0)
-	Objects.add_target("data_server",tr("DATA_STORAGE"),null,tr("DATA_STORAGE"),Color(0.6,0.05,0.04),"radial",[4,4,12,2],{"pulse":4,"wave":2,"phalanx":2,"scythe":4,"parry":4,"lock":2},20,"ai_random",2000,20,"_data_search")
+	Objects.add_target("data_server",tr("DATA_STORAGE"),null,tr("DATA_STORAGE"),Color(0.6,0.05,0.04),"radial",[4,4,12,2],{"pulse":4,"wave":2,"phalanx":2,"scythe":4,"parry":4,"lock":2},20,"ai_random",1500,20,"_data_search")
 
 func _data_search(victory):
 	if victory:
 		Vars.inc_var("data_search")
 		Menu.add_hack_msg(tr("AI_051"+str(2+randi()%6)))
-		if Vars.get_var("data_search")>5:
-			data_found()
+		match int(Vars.get_var("data_search")):
+			1:
+				Events.triggered_method("on_decrypted","_riley_msg_decrypted",[],"ai")
+				Menu.add_data_set({"name":tr("RILEY_INSTRUCTION1"),"color":Color(0.4,0.02,0.01),"cols":[3,3,3],"message":tr("RILEY_INSTRUCTION1_TEXT"),"set":"riley","actor":"riley"})
+			2:
+				Menu.add_data_set({"name":tr("RILEY_THOUGHT1"),"color":Color(0.4,0.02,0.01),"cols":[0,5,5],"message":tr("RILEY_THOUGHT1_TEXT"),"set":"riley","actor":"riley"})
+			3:
+				Menu.add_data_set({"name":tr("RILEY_THOUGHT2"),"color":Color(0.4,0.02,0.01),"cols":[3,3,3],"message":tr("RILEY_THOUGHT2_TEXT"),"set":"riley","actor":"riley"})
+			4:
+				Menu.add_data_set({"name":tr("RILEY_MEMORY1"),"color":Color(0.4,0.02,0.01),"cols":[0,5,5],"message":tr("RILEY_MEMORY1_TEXT"),"set":"riley","actor":"riley"})
+			5:
+				Menu.add_data_set({"name":tr("RILEY_MEMORY2"),"color":Color(0.4,0.02,0.01),"cols":[0,5,5],"message":tr("RILEY_MEMORY2_TEXT"),"set":"riley","actor":"riley"})
+			6:
+				Menu.add_data_set({"name":tr("RILEY_MEMORY3"),"color":Color(0.4,0.02,0.01),"cols":[1,3,3],"message":tr("RILEY_MEMORY3_TEXT"),"set":"riley","actor":"riley"})
+			7:
+				Menu.add_data_set({"name":tr("RILEY_THOUGHT3"),"color":Color(0.4,0.02,0.01),"cols":[1,3,3],"message":tr("RILEY_THOUGHT3_TEXT"),"set":"riley","actor":"riley"})
+			8:
+				Menu.add_data_set({"name":tr("RILEY_MEMORY4"),"color":Color(0.4,0.02,0.01),"cols":[1,3,3],"message":tr("RILEY_MEMORY4_TEXT"),"set":"riley","actor":"riley"})
+			9:
+				Menu.add_data_set({"name":tr("RILEY_INSTRUCTION2"),"color":Color(0.4,0.02,0.01),"cols":[1,5,5],"message":tr("RILEY_INSTRUCTION2_TEXT"),"set":"riley","actor":"riley"})
+				Objects.remove_target("data_server")
+#	else:
+#		Menu.add_hack_msg(tr("AI_0511"))
+
+func _riley_msg_decrypted(dict):
+	if !dict.has("set") || dict.set!="riley":
+		yield(get_tree(),"idle_frame")
+		Events.triggered_method("on_decrypted","_riley_msg_decrypted",[],"ai")
+		return
+	Vars.inc_var("riley_msg_decrypted")
+	if Vars.get_var("riley_msg_decrypted")>8:
+		data_found()
 	else:
-		Menu.add_hack_msg(tr("AI_0511"))
+		yield(get_tree(),"idle_frame")
+		Events.triggered_method("on_decrypted","_riley_msg_decrypted",[],"ai")
 
 func data_found():
-	Objects.remove_target("data_server")
 	Events.delayed_msg("ai",tr("AI_0520"),4.0)
 	Events.delayed_msg("ai",tr("AI_0521"),2.0)
 	Events.delayed_msg("ai",tr("AI_0522"),4.0)
@@ -1001,6 +1056,7 @@ func request_upgrade():
 	Events.delayed_msg("ai",tr("AI_0610"),3.0)
 	Events.delayed_msg("ai",tr("AI_0611"),2.0)
 	Events.delayed_msg("ai",tr("AI_0612"),1.0)
+	Menu.add_data_set({"name":tr("PLAYER_LOG10").format({"name":Objects.actors.player.name}),"color":Color(0.1,0.3,1.0),"cols":[1,5,5],"message":tr("PLAYER_LOG10_TEXT"),"set":"player_log","actor":"player"})
 	story_ends()
 
 

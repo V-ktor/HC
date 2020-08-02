@@ -574,11 +574,11 @@ func create_group_target(strength):
 	if strength>15 && randf()<0.33:
 		programs["wave"] = int(rand_range(0.8,2.0)*str_eff+4)
 		programs["phalanx"] = int(rand_range(0.4,1.0)*str_eff+1)
-		programs["agent"] = int(rand_range(0.4,1.25)*str_eff+2)
+		programs["agent"] = int(max(rand_range(0.4,1.0)*str_eff-1,0))
 	else:
 		programs["pulse"] = int(rand_range(0.4,1.25)*str_eff+2)
 		programs["anti_virus"] = int(rand_range(0.4,1.25)*str_eff+2)
-		programs["agent"] = int(rand_range(0.4,1.25)*str_eff+1)
+		programs["agent"] = int(max(rand_range(0.4,1.0)*str_eff-2,0))
 	if programs.has("pulse"):
 		action_strength = programs["pulse"]
 	if programs.has("wave"):
@@ -824,10 +824,10 @@ func init_world(Menu):
 	# Initialize new game.
 	randomize()
 	
-	var player = Actor.new(Menu.get_node("Login/Input/LineEdit").text,Color(0.1,0.3,1.0),"","",15,128,50.0,{"pulse":7},1000,0,37,{},100)
-	var ai = Actor.new("Hally",Color(0.13,0.5,1.0),"res://scenes/portraits/character01.tscn","res://scenes/gui/chat_bg/AI.tscn",15,256,60.0,{"pulse":6,"wave":2,"fire_wall":2},0,0,21,{},100)
+	var player = Actor.new(Menu.get_node("Login/Input/LineEdit").text,Color(0.1,0.3,1.0),"","",15,128,50.0,{"pulse":7},1000,0,37000,{},100)
+	var ai = Actor.new("Hally",Color(0.13,0.5,1.0),"res://scenes/portraits/character01.tscn","res://scenes/gui/chat_bg/AI.tscn",15,256,60.0,{"pulse":6,"wave":2,"fire_wall":2},0,0,21000,{},100)
 	ai.desc = "AI_DESC"
-	
+	actors.clear()
 	actors.player = player
 	actors.ai = ai
 	Menu.contacts.push_back("ai")

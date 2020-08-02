@@ -10,6 +10,7 @@ COMPILE,Compile
 CODE,Code
 DECK,Deck
 WEB,Web
+DECRYPT,Decrypt
 LOGIN,Login
 LOAD,Load
 SAVE,Save
@@ -91,6 +92,7 @@ PERSONS,Persons
 GROUPS,Groups
 COUNTRIES,Countries
 HISTORY,History
+MESSAGES,Messages
 WORLD_POPULATION,World population
 POPULATION,Population
 INFLUENCE,Influence
@@ -118,6 +120,8 @@ QUIT,Quit
 YES,Yes
 NO,No
 GRAB_FOCUS,Grab Focus
+RAW,Raw
+TRANSLATED,Translated
 WARNING,Warning
 NO_INIT_NODE,"No initialization node!"
 MULTIPLE_INIT_NODES,"Multiple initialization nodes!"
