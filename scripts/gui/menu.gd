@@ -1882,7 +1882,7 @@ func _save(filename=$Saves/ScrollContainer/VBoxContainer/New/LineEdit.text):
 	if $Saves.visible:
 		_close(true)
 
-func _load(filename):
+func _load(filename,ID=-1):
 	var file := File.new()
 	var error := file.open("user://saves/"+filename+".sav",File.READ)
 	if error!=OK:
@@ -1891,8 +1891,10 @@ func _load(filename):
 	
 	var currentline = JSON.parse(file.get_line()).result
 	var save_version = currentline.version
-	if currentline==null:
+	if currentline==null || save_version!=VERSION:
 		print("Incompatible version!")
+		if has_node("Saves/ScrollContainer/VBoxContainer/Button"+str(ID)):
+			get_node("Saves/ScrollContainer/VBoxContainer/Button"+str(ID)).hint_tooltip = tr("ERROR_INCOMPATIBLE_VERSION")
 		return
 	quicksave()
 	reset()
@@ -1931,20 +1933,6 @@ func _load(filename):
 	mode = ""
 	active = true
 	
-	# Compatibility with older save files.
-	if save_version!=VERSION:
-		# Fix changed cpu and memory values.
-		Objects.actors.player.memory = 128
-		if upgraded.has("memory"):
-			Objects.actors.player.memory += 32*upgraded.memory
-		Objects.actors.player.cpu = 15
-		if upgraded.has("cpu"):
-			Objects.actors.player.cpu += 3*upgraded.cpu
-	if Vars.get_var("part1_finished"):
-		# Continue story.
-		Events.call_chat("ai","suggest_contact")
-		Vars.clear_var("part1_finished")
-	
 	if $Saves.visible:
 		_close(true)
 	update_main_menu()
@@ -1952,7 +1940,7 @@ func _load(filename):
 func _select_file(ID):
 	# The save file button was pressed. Load the file in in the load menu, save when in the save menu.
 	if mode=="load":
-		_load(save_files[ID])
+		_load(save_files[ID],ID)
 	elif mode=="save":
 		_save(save_files[ID])
 
@@ -2142,6 +2130,7 @@ func _show_load():
 			bi = get_node("Saves/ScrollContainer/VBoxContainer/Button"+str(i))
 		else:
 			bi = $Saves/ScrollContainer/VBoxContainer/Button0.duplicate(0)
+			bi.name = "Button"+str(i)
 			bi.connect("pressed",self,"_select_file",[i])
 			$Saves/ScrollContainer/VBoxContainer.add_child(bi)
 		error = file.open("user://saves/"+save_files[i]+".sav",File.READ)
@@ -2176,6 +2165,7 @@ func _show_save():
 			bi = get_node("Saves/ScrollContainer/VBoxContainer/Button"+str(i))
 		else:
 			bi = $Saves/ScrollContainer/VBoxContainer/Button0.duplicate(0)
+			bi.name = "Button"+str(i)
 			bi.connect("pressed",self,"_select_file",[i])
 			$Saves/ScrollContainer/VBoxContainer.add_child(bi)
 		error = file.open("user://saves/"+save_files[i]+".sav",File.READ)

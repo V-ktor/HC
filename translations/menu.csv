@@ -133,4 +133,5 @@ GRAPHICS,Graphics
 MUSIC,Music
 SOUNDS,Sounds
 FONTS,Fonts
+ERROR_INCOMPATIBLE_VERSION,"Error: incompatible version"
 
