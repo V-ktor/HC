@@ -24,6 +24,7 @@ void fragment()
 	uv = vec2(mod(angle/2.0/pi,1.0),1.0-l);
 	COLOR = texture(TEXTURE,uv);
 }"
+custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
@@ -51,6 +52,7 @@ void fragment()
 	COLOR.rgb += scale*texture(SCREEN_TEXTURE,SCREEN_UV).rgb;
 }
 "
+custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=6]
 shader = SubResource( 5 )
@@ -69,6 +71,7 @@ void fragment()
 	COLOR.a *= 0.5-0.05*scale;
 }
 "
+custom_defines = ""
 
 [sub_resource type="ShaderMaterial" id=8]
 shader = SubResource( 7 )
@@ -181,7 +184,7 @@ func _process(delta):
 				hold = 0.5
 		else:
 			text += _text[0]
-			lines_skipped = max(get_line_count()-MAX_LINES,0)
+			lines_skipped = int(max(get_line_count()-MAX_LINES,0))
 			_text = _text.right(1)
 		delay = 0.05
 "
