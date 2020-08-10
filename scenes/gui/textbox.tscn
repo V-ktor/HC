@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scripts/gui/textbox.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/textbox.png" type="Texture" id=2]
@@ -6,8 +6,12 @@
 [ext_resource path="res://images/gui/textbox_progress.png" type="Texture" id=4]
 [ext_resource path="res://images/gui/textbox_idle.png" type="Texture" id=5]
 [ext_resource path="res://images/gui/textbox_border.png" type="Texture" id=6]
+[ext_resource path="res://fonts/Play-Bold.ttf" type="DynamicFontData" id=7]
 
-[sub_resource type="Animation" id=1]
+[sub_resource type="DynamicFont" id=10]
+font_data = ExtResource( 7 )
+
+[sub_resource type="Animation" id=18]
 resource_name = "collapse"
 length = 0.6
 tracks/0/type = "value"
@@ -20,7 +24,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 302, 37 ), Vector2( 302, 37 ), Vector2( 270, 51 ) ]
+"values": [ Vector2( 567, 69 ), Vector2( 567, 69 ), Vector2( 512, 98 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Border2:position")
@@ -32,7 +36,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 302, 91 ), Vector2( 302, 91 ), Vector2( 270, 77 ) ]
+"values": [ Vector2( 567, 154 ), Vector2( 567, 154 ), Vector2( 512, 126 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Border3:position")
@@ -44,7 +48,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 12, 91 ), Vector2( 196, 91 ), Vector2( 228, 77 ) ]
+"values": [ Vector2( 128, 154 ), Vector2( 128, 154 ), Vector2( 466, 126 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("Border4:position")
@@ -56,7 +60,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 12, 37 ), Vector2( 196, 37 ), Vector2( 228, 51 ) ]
+"values": [ Vector2( 128, 68 ), Vector2( 128, 68 ), Vector2( 466, 98 ) ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("Panel:rect_size")
@@ -65,10 +69,10 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.2 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 320, 128 ), Vector2( 0, 128 ) ]
+"values": [ Vector2( 480, 192 ), Vector2( 244, 192 ), Vector2( 244, 192 ) ]
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath("Panel:rect_position")
@@ -77,10 +81,10 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.2 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 248, 0 ) ]
+"values": [ Vector2( 112, 15 ), Vector2( 328, 15 ), Vector2( 328, 15 ) ]
 }
 tracks/6/type = "value"
 tracks/6/path = NodePath("Panel:modulate")
@@ -89,10 +93,10 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0, 0.2 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 tracks/7/type = "value"
 tracks/7/path = NodePath(".:visible")
@@ -113,10 +117,10 @@ tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 0.0, 0.0, 32.0 ]
+"values": [ 0.0, 32.0 ]
 }
 tracks/9/type = "value"
 tracks/9/path = NodePath("Portrait/Portrait:margin_top")
@@ -125,10 +129,10 @@ tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 0.0, 0.0, 40.0 ]
+"values": [ 0.0, 40.0 ]
 }
 tracks/10/type = "value"
 tracks/10/path = NodePath("Portrait/Portrait:margin_right")
@@ -137,10 +141,10 @@ tracks/10/loop_wrap = true
 tracks/10/imported = false
 tracks/10/enabled = true
 tracks/10/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 0.0, 0.0, -32.0 ]
+"values": [ 0.0, -32.0 ]
 }
 tracks/11/type = "value"
 tracks/11/path = NodePath("Portrait/Portrait:margin_bottom")
@@ -149,13 +153,13 @@ tracks/11/loop_wrap = true
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 0.0, 0.0, -40.0 ]
+"values": [ 0.0, -40.0 ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=12]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Border1:position")
@@ -167,7 +171,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 270, 51 ), Vector2( 302, 37 ) ]
+"values": [ Vector2( 512, 98 ), Vector2( 567, 69 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Border2:position")
@@ -179,7 +183,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 270, 77 ), Vector2( 302, 91 ) ]
+"values": [ Vector2( 512, 126 ), Vector2( 567, 154 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Border3:position")
@@ -188,10 +192,10 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 228, 77 ), Vector2( 196, 91 ), Vector2( 12, 91 ) ]
+"values": [ Vector2( 466, 126 ), Vector2( 128, 154 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("Border4:position")
@@ -200,10 +204,10 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 228, 51 ), Vector2( 196, 37 ), Vector2( 12, 37 ) ]
+"values": [ Vector2( 466, 98 ), Vector2( 128, 68 ) ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("Panel:rect_size")
@@ -215,7 +219,7 @@ tracks/4/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 128 ), Vector2( 0, 128 ), Vector2( 320, 128 ) ]
+"values": [ Vector2( 244, 192 ), Vector2( 244, 192 ), Vector2( 480, 192 ) ]
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath("Panel:rect_position")
@@ -227,7 +231,7 @@ tracks/5/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 248, 0 ), Vector2( 248, 0 ), Vector2( 0, 0 ) ]
+"values": [ Vector2( 328, 15 ), Vector2( 328, 15 ), Vector2( 112, 15 ) ]
 }
 tracks/6/type = "value"
 tracks/6/path = NodePath("Panel:modulate")
@@ -302,8 +306,7 @@ tracks/11/keys = {
 "values": [ -40.0, 0.0 ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "idle"
+[sub_resource type="Animation" id=13]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Idle:modulate")
@@ -318,8 +321,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 0.25098 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.25098 ) ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "progress"
+[sub_resource type="Animation" id=14]
 length = 0.8
 loop = true
 tracks/0/type = "value"
@@ -335,8 +337,7 @@ tracks/0/keys = {
 "values": [ 0.0, 360.0 ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "collapse"
+[sub_resource type="Animation" id=15]
 length = 0.6
 tracks/0/type = "value"
 tracks/0/path = NodePath("Border1:position")
@@ -483,7 +484,7 @@ tracks/11/keys = {
 "values": [ 0.0, 0.0, -40.0 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=16]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Border1:position")
@@ -630,8 +631,7 @@ tracks/11/keys = {
 "values": [ -40.0, 0.0 ]
 }
 
-[sub_resource type="Animation" id=7]
-resource_name = "idle"
+[sub_resource type="Animation" id=17]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Idle:modulate")
@@ -646,8 +646,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 0.25098 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.25098 ) ]
 }
 
-[sub_resource type="Animation" id=8]
-resource_name = "progress"
+[sub_resource type="Animation" id=9]
 length = 0.8
 loop = true
 tracks/0/type = "value"
@@ -669,43 +668,59 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -385.0
-margin_top = -192.0
-margin_right = -65.0
-margin_bottom = -64.0
+margin_left = -624.0
+margin_top = -256.0
+margin_right = -64.0
+margin_bottom = -32.0
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Panel" type="TextureRect" parent="."]
 modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 248.0
-margin_right = -72.0
+margin_left = 328.0
+margin_top = 15.0
+margin_right = 12.0001
+margin_bottom = -17.0
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 32.0
 margin_top = 24.0
-margin_right = -128.0
+margin_right = -144.0
 margin_bottom = -24.0
+custom_fonts/font = SubResource( 10 )
 text = "Text ..."
 valign = 1
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Portrait" type="TextureRect" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -126.0
-margin_top = 9.0
+margin_top = 52.0
 margin_right = -16.0
-margin_bottom = -9.0
+margin_bottom = -52.0
 texture = ExtResource( 3 )
+expand = true
 stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Portrait" type="TextureRect" parent="Portrait"]
 anchor_right = 1.0
@@ -716,48 +731,63 @@ margin_right = -32.0
 margin_bottom = -40.0
 expand = true
 stretch_mode = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Progress" type="Sprite" parent="."]
 visible = false
 self_modulate = Color( 1, 1, 1, 0.501961 )
-position = Vector2( 192, 104 )
+position = Vector2( 432, 168 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 4 )
 
 [node name="Idle" type="Sprite" parent="."]
 visible = false
 self_modulate = Color( 1, 1, 1, 0.752941 )
-position = Vector2( 192, 104 )
+position = Vector2( 432, 168 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 5 )
 
 [node name="Border1" type="Sprite" parent="."]
-position = Vector2( 270, 51 )
+position = Vector2( 512, 98 )
 texture = ExtResource( 6 )
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Border2" type="Sprite" parent="."]
-position = Vector2( 270, 77 )
+position = Vector2( 512, 126 )
 scale = Vector2( 1, -1 )
 texture = ExtResource( 6 )
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Border3" type="Sprite" parent="."]
-position = Vector2( 228, 77 )
+position = Vector2( 466, 126 )
 rotation = 3.14159
 texture = ExtResource( 6 )
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="Border4" type="Sprite" parent="."]
-position = Vector2( 228, 51 )
+position = Vector2( 466, 98 )
 scale = Vector2( -1, 1 )
 texture = ExtResource( 6 )
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/collapse = SubResource( 1 )
-anims/expand = SubResource( 2 )
-anims/idle = SubResource( 3 )
-anims/progress = SubResource( 4 )
+anims/collapse = SubResource( 18 )
+anims/expand = SubResource( 12 )
+anims/idle = SubResource( 13 )
+anims/progress = SubResource( 14 )
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
-anims/collapse = SubResource( 5 )
-anims/expand = SubResource( 6 )
-anims/idle = SubResource( 7 )
-anims/progress = SubResource( 8 )
+anims/collapse = SubResource( 15 )
+anims/expand = SubResource( 16 )
+anims/idle = SubResource( 17 )
+anims/progress = SubResource( 9 )
