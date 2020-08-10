@@ -184,7 +184,7 @@ AI_0263,"Select one of the blue nodes you control and use the 'Pulse' program by
 AI_0264,"After being installed it will attack random neighbor nodes."
 AI_0265,"It will take some time to capture a node. You can also install a second instance of 'Pulse' to speed up the process."
 AI_0266,"But beware, you only have a limited amount of uses!"
-AI_0280,"This is the text editor."
+AI_0280,"This is the code editor."
 AI_0281,"You can write new programs here and I will compile them!"
 AI_0282,"I'll just assume you know how to do these things."
 AI_0300,"So, I was thinking..."

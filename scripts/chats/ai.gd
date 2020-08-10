@@ -165,7 +165,7 @@ func ai_chat04():
 	Events.delayed_msg("ai",tr("AI_0062"),2.0)
 	Events.delayed_msg("ai",tr("AI_0063"),2.0)
 	Events.delayed_method(0.5,"show_web")
-	Objects.add_target("local_server",(tr("YOUR_SERVER")%Objects.actors["player"].name).capitalize(),null,"127.0.0.1",Color(0.4,0.3,0.2),"layered",[5,3,12],{"pulse":4,"fire_wall":2,"anti_virus":4},8,"ai_random",500,10,"_local_server_hack")
+	Objects.add_target("local_server",tr("YOUR_SERVER").format({"name":Objects.actors["player"].name}),null,"127.0.0.1",Color(0.4,0.3,0.2),"layered",[5,3,12],{"pulse":4,"fire_wall":2,"anti_virus":4},8,"ai_random",500,10,"_local_server_hack")
 	Events.delayed_msg("ai",tr("AI_0064"),0.5)
 	Events.delayed_choice("ai",[
 		{"text":"REPLY_0012_1"},
