@@ -193,6 +193,7 @@ class Server extends Obj:
 	var ai : String
 	var programs : Dictionary
 	var cpu : int
+	var time_limit : float
 	var credits : float
 	var prestige : float
 	var method_on_win
@@ -200,7 +201,7 @@ class Server extends Obj:
 	var music_overwrite
 	var optional := false
 	
-	func _init(_name,_group,_desc,_color,_layout,_layout_params,_programs,_cpu,_ai,_credits,_prestige,_method_on_win=null,_music_overwrite=null,_optional=false):
+	func _init(_name,_group,_desc,_color,_layout,_layout_params,_programs,_cpu,_time_limit,_ai,_credits,_prestige,_method_on_win=null,_music_overwrite=null,_optional=false):
 		name = _name
 		group = _group
 		desc = _desc
@@ -210,6 +211,7 @@ class Server extends Obj:
 		ai = _ai
 		programs = _programs
 		cpu = _cpu
+		time_limit = _time_limit
 		credits = _credits
 		prestige = _prestige
 		optional = _optional
@@ -217,7 +219,7 @@ class Server extends Obj:
 		music_overwrite = _music_overwrite
 	
 	func to_dict():
-		var dict = {"type":"server","name":name,"group":group,"desc":desc,"color":color,"layout":layout,"layout_params":layout_params,"ai":ai,"programs":programs,"cpu":cpu,"credits":credits,"prestige":prestige,"optional":optional,"method_on_win":method_on_win,"music_overwrite":music_overwrite}
+		var dict = {"type":"server","name":name,"group":group,"desc":desc,"color":color,"layout":layout,"layout_params":layout_params,"ai":ai,"programs":programs,"cpu":cpu,"time_limit":time_limit,"credits":credits,"prestige":prestige,"optional":optional,"method_on_win":method_on_win,"music_overwrite":music_overwrite}
 		return dict
 
 class Group extends Obj:
@@ -416,7 +418,9 @@ func _load(file):
 			dict.music_overwrite = null
 		if !dict.has("optional"):
 			dict.optional = false
-		obj = Server.new(dict.name,dict.group,dict.desc,color,dict.layout,dict.layout_params,dict.programs,dict.cpu,dict.ai,dict.credits,dict.prestige,dict.method_on_win,dict.music_overwrite,dict.optional)
+		if !dict.has("time_limit"):
+			dict.time_limit = 60.0
+		obj = Server.new(dict.name,dict.group,dict.desc,color,dict.layout,dict.layout_params,dict.programs,dict.cpu,dict.time_limit,dict.ai,dict.credits,dict.prestige,dict.method_on_win,dict.music_overwrite,dict.optional)
 		targets[ID] = obj
 	currentline = JSON.parse(file.get_line()).result
 	actors.clear()
@@ -489,9 +493,9 @@ func get_total_node_count(type,params):
 			return 1+3*params[0]*(params[0]+1)
 	return 0
 
-func add_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win=null,music_overwrite=null) -> Server:
+func add_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,time_limit,ai,credits,prestige,method_on_win=null,music_overwrite=null) -> Server:
 	# Add a new target to the target list.
-	var new_target := Server.new(name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win,music_overwrite)
+	var new_target := Server.new(name,group,desc,color,layout,layout_params,programs,cpu,time_limit,ai,credits,prestige,method_on_win,music_overwrite)
 	targets[ID] = new_target
 	$"/root/Menu".targets.push_front(ID)
 	$"/root/Menu".new_targets += 1
@@ -505,9 +509,9 @@ func remove_target(ID):
 	if $"/root/Menu/Targets".visible:
 		$"/root/Menu"._show_targets()
 
-func add_opt_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win=null):
+func add_opt_target(ID,name,group,desc,color,layout,layout_params,programs,cpu,time_limit,ai,credits,prestige,method_on_win=null):
 	# Add an optional target to the target list (cleared if scan is used).
-	var new_target := Server.new(name,group,desc,color,layout,layout_params,programs,cpu,ai,credits,prestige,method_on_win)
+	var new_target := Server.new(name,group,desc,color,layout,layout_params,programs,cpu,time_limit,ai,credits,prestige,method_on_win)
 	new_target.optional = true
 	targets[ID] = new_target
 
@@ -550,6 +554,7 @@ func create_group_target(strength):
 	var cpu := int(rand_range(1.2,1.4)*strength+rand_range(0.5,3.0))
 	var credits := int(rand_range(80,100)*strength+rand_range(100,300))
 	var prestige := int(rand_range(3.0,3.5)*sqrt(strength))
+	var time_limit := 60.0+8.0*floor(max(str_eff-5.0,0.0)/8.0)
 	var architecture
 	var params
 	var best_match := 999
@@ -598,7 +603,7 @@ func create_group_target(strength):
 		memory += prog.size*programs[type]
 	desc += tr("NODES")+": "+str(get_total_node_count(architecture,params))+"\n"+tr("CPU")+": "+str(cpu)+"\n"+tr("MEMORY")+": "+str(memory)
 	
-	add_opt_target(ID,name,group,desc,color,architecture,params,programs,cpu,"ai_random",credits,prestige,"_remove_opt_target")
+	add_opt_target(ID,name,group,desc,color,architecture,params,programs,cpu,time_limit,"ai_random",credits,prestige,"_remove_opt_target")
 	return ID
 
 
