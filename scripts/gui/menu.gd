@@ -584,7 +584,7 @@ func _attack_target():
 	_show_hack()
 	Events._on_hack_started(target_selected)
 	mi.connect("timeout",self,"_hack_ended")
-	mi.start(2,player.time_limit,[player.cpu,target.cpu],[decks[deck_selected].duplicate(),target.programs.duplicate()],["human",target.ai],[player.color,target.color],mi.callv("create_"+target.layout+"_system",target.layout_params))
+	mi.start(2,(player.time_limit+target.time_limit)/2.0,[player.cpu,target.cpu],[decks[deck_selected].duplicate(),target.programs.duplicate()],["human",target.ai],[player.color,target.color],mi.callv("create_"+target.layout+"_system",target.layout_params))
 	if target.music_overwrite!=null:
 		Music.play(target.music_overwrite)
 	else:

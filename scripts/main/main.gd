@@ -8,6 +8,7 @@ var points := []
 var colors := []
 var player_type := []
 var time := 0.0
+var time_scale := 2.0
 var active := false
 var started := false
 var last_mouse_pos := Vector2(0,0)
@@ -15,7 +16,6 @@ var tm := 0.0
 var gamestate
 var root_nodes := [[],[]]
 var victory_on_root_capture := false
-
 var node_selected := -1
 
 var action_button := preload("res://scenes/gui/action_button.tscn")
@@ -453,21 +453,21 @@ class Program:
 		if s=="local":
 			target = ID
 		elif s=="random_enemy":
-			var array = []
+			var array := []
 			for p in gamestate.nodes[ID].connections:
 				if gamestate.nodes[p].owner!=owner && !(p in targets):
 					array.push_back(p)
 			if array.size()>0:
 				target = array[randi()%array.size()]
 		elif s=="random_controled":
-			var array = []
+			var array := []
 			for p in gamestate.nodes[ID].connections:
 				if gamestate.nodes[p].owner==owner && !(p in targets):
 					array.push_back(p)
 			if array.size()>0:
 				target = array[randi()%array.size()]
 		elif s=="random_node":
-			var array = []
+			var array := []
 			for p in gamestate.nodes[ID].connections:
 				if !(p in targets):
 					array.push_back(p)
@@ -692,19 +692,19 @@ func parse(prgm):
 
 
 func _process(delta):
-	tm += delta
+	tm += delta*time_scale
 	$Background.position = 0.8*$Camera.get_camera_screen_center()
 	$Background/HexGrid.position = -$Background.position+$Camera.get_camera_screen_center()
 	$Background/HexGrid.region_rect = Rect2($Background.position-OS.window_size/2*$Camera.zoom+Vector2(0.0,32.0*tm),OS.window_size*$Camera.zoom)
 	$Background/HexGridD.position = $Background/HexGrid.position 
 	$Background/HexGridD.region_rect = $Background/HexGrid.region_rect
 	$GUI/Control/Time.value = time
-	$GUI/Control/Time/Label.text = str(time).pad_decimals(1)+"s"
+	$GUI/Control/Time/Label.text = str(time/time_scale).pad_decimals(1)+"s"
 	
 	if !active:
 		return
 	
-	time -= delta
+	time -= delta*time_scale
 	if time<=0.0:
 		stop()
 		$GUI/Control/Time/Label.text = "0.0s"
@@ -721,13 +721,13 @@ func _process(delta):
 			for i in range(e.owner)+range(e.owner+1,num_players):
 				t += p.control[i]
 			scale /= t
-			e.delay -= delta*scale*max(1.0-p.slowdown,0.0)
+			e.delay -= delta*time_scale*scale*max(1.0-p.slowdown,0.0)
 			if e.delay<=0.0:
 				e.delay = 0.0
 				parse(e)
-			e.node.get_node("VBoxContainer/Duration").text = tr("REMAINING_TIME")%min(e.delay/max(scale,0.01),999.9)
+			e.node.get_node("VBoxContainer/Duration").text = tr("REMAINING_TIME")%min(e.delay/max(scale*time_scale,0.01),99.9)
 			e.node.get_node("VBoxContainer/Status").value = e.node.get_node("VBoxContainer/Status").max_value-e.delay
-			e.update(delta)
+			e.update(delta*time_scale)
 
 func _input(event):
 	if event is InputEventMouseMotion && Input.is_action_pressed("screen_drag"):
