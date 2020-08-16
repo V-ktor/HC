@@ -1,4 +1,4 @@
-[gd_scene load_steps=198 format=2]
+[gd_scene load_steps=200 format=2]
 
 [ext_resource path="res://scripts/gui/menu.gd" type="Script" id=1]
 [ext_resource path="res://images/gui/blib_red.png" type="Texture" id=2]
@@ -44,6 +44,8 @@
 [ext_resource path="res://images/gui/menu_button_normal.png" type="Texture" id=42]
 [ext_resource path="res://images/gui/menu_button_hover.png" type="Texture" id=43]
 [ext_resource path="res://images/gui/menu_button_focus.png" type="Texture" id=44]
+[ext_resource path="res://images/gui/decrypt.png" type="Texture" id=45]
+[ext_resource path="res://images/gui/menu_credits.png" type="Texture" id=46]
 [ext_resource path="res://images/misc/crown.png" type="Texture" id=47]
 [ext_resource path="res://images/misc/star.png" type="Texture" id=48]
 [ext_resource path="res://images/gui/menu_options.png" type="Texture" id=49]
@@ -4966,6 +4968,7 @@ focus_mode = 2
 custom_fonts/bold_font = SubResource( 90 )
 custom_fonts/normal_font = SubResource( 6 )
 bbcode_enabled = true
+text = "TEXT"
 selection_enabled = true
 
 [node name="Quit" type="Panel" parent="."]
@@ -5391,6 +5394,7 @@ modulate = Color( 1, 1, 1, 0.752941 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+texture = ExtResource( 45 )
 expand = true
 stretch_mode = 6
 __meta__ = {
@@ -5506,18 +5510,9 @@ modulate = Color( 1, 1, 1, 0.752941 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="Left/ScrollContainer/VBoxContainer/Button11"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "CREDITS"
-align = 1
-valign = 1
-autowrap = true
-clip_text = true
+texture = ExtResource( 46 )
+expand = true
+stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
