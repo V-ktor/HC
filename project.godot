@@ -15,7 +15,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="CPHCS"
+config/name="Random Access Memories"
 run/main_scene="res://scenes/main/loading.tscn"
 config/use_custom_user_dir=true
 boot_splash/bg_color=Color( 0.141176, 0.141176, 0.141176, 1 )
