@@ -172,7 +172,7 @@ func chat02():
 	Events.delayed_player_msg("crypto",tr("AI_0365"),8.0,{"from_ally":"ai"})
 	Events.delayed_msg("crypto",tr("CRYPTO_0044"),0.5)
 	Events.delayed_player_msg("crypto",tr("AI_0366"),3.0,{"from_ally":"ai"})
-	Events.delayed_method(1.0,"failed_communication_attempt2")
+	Events.delayed_method(40.0,"failed_communication_attempt2")
 	
 	Music.play("Of_Far_Different_Nature-Escape-10-Control.ogg",-4)
 
