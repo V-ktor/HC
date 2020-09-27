@@ -479,17 +479,6 @@ polygons = [ PoolIntArray( 15, 10, 11 ), PoolIntArray( 15, 11, 12, 13 ), PoolInt
 bones = [ NodePath("Hip"), PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ), NodePath("Hip/Chest"), PoolRealArray( 0, 0, 1, 1, 0.5, 1, 1, 1, 0.5, 0, 0, 0, 0, 0, 0.5, 0, 1, 1, 1 ), NodePath("Hip/Chest/Head"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 1, 1, 1, 1, 0.5, 1, 0, 0, 0 ), NodePath("Hip/Chest/ArmRight"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmRight/LowerArmRight"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmLeft"), PoolRealArray( 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmLeft/LowerArmLeft"), PoolRealArray( 1, 1, 1, 1, 0.5, 0, 0, 0.5, 0.5, 0.5, 0, 0, 0, 0, 0 ), NodePath("Hip/Legs"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Legs/Feet"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ) ]
 internal_vertex_count = 5
 
-[node name="Legs" type="Polygon2D" parent="Polygons"]
-light_mask = 3
-material = SubResource( 5 )
-texture = ExtResource( 4 )
-skeleton = NodePath("../../Skeleton")
-polygon = PoolVector2Array( 704, 1200, 368, 1344, 464, 1392, 432, 1744, 448, 2128, 544, 2176, 608, 1760, 752, 2144, 880, 2096, 784, 1760, 880, 1408, 1008, 1376, 672, 1344, 512, 1744, 704, 1760 )
-uv = PoolVector2Array( 704, 1200, 368, 1344, 464, 1392, 432, 1744, 448, 2128, 544, 2176, 608, 1760, 752, 2144, 880, 2096, 784, 1760, 880, 1408, 1008, 1376, 672, 1344, 512, 1744, 704, 1760 )
-polygons = [ PoolIntArray( 0, 18, 16, 17 ), PoolIntArray( 18, 9, 22 ), PoolIntArray( 18, 2, 22 ), PoolIntArray( 9, 21, 18 ), PoolIntArray( 21, 18, 16 ), PoolIntArray( 21, 15, 16 ), PoolIntArray( 21, 20, 14, 15 ), PoolIntArray( 0, 12, 2, 1 ), PoolIntArray( 0, 12, 10, 11 ), PoolIntArray( 12, 6, 13 ), PoolIntArray( 12, 13, 2 ), PoolIntArray( 12, 6, 14 ), PoolIntArray( 12, 10, 14 ), PoolIntArray( 10, 9, 14 ), PoolIntArray( 13, 3, 2 ), PoolIntArray( 13, 4, 3 ), PoolIntArray( 13, 6, 5 ), PoolIntArray( 13, 4, 5 ), PoolIntArray( 6, 7, 14 ), PoolIntArray( 14, 9, 8 ), PoolIntArray( 14, 7, 8 ) ]
-bones = [ NodePath("Hip"), PoolRealArray( 1, 1, 0.5, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 0.5, 0, 0 ), NodePath("Hip/Chest"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/Head"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmRight"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmRight/LowerArmRight"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmLeft"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmLeft/LowerArmLeft"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Legs"), PoolRealArray( 0, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1 ), NodePath("Hip/Legs/Feet"), PoolRealArray( 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0 ) ]
-internal_vertex_count = 3
-
 [node name="Feet" type="Polygon2D" parent="Polygons"]
 light_mask = 3
 material = SubResource( 5 )
@@ -500,6 +489,17 @@ uv = PoolVector2Array( 448, 2128, 560, 2176, 752, 2144, 880, 2096, 976, 2384, 22
 polygons = [ PoolIntArray( 0, 18, 16, 17 ), PoolIntArray( 18, 9, 22 ), PoolIntArray( 18, 2, 22 ), PoolIntArray( 9, 21, 18 ), PoolIntArray( 21, 18, 16 ), PoolIntArray( 21, 15, 16 ), PoolIntArray( 22, 19, 8, 9 ), PoolIntArray( 21, 20, 14, 15 ), PoolIntArray( 0, 12, 10, 11 ), PoolIntArray( 12, 6, 13 ), PoolIntArray( 12, 13, 2 ), PoolIntArray( 12, 6, 14 ), PoolIntArray( 12, 10, 14 ), PoolIntArray( 10, 9, 14 ), PoolIntArray( 14, 9, 8 ), PoolIntArray( 14, 7, 8 ), PoolIntArray( 6, 5, 7, 1, 0 ), PoolIntArray( 1, 7, 4, 3, 2 ), PoolIntArray( 5, 4, 7 ) ]
 bones = [ NodePath("Hip"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/Head"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmRight"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmRight/LowerArmRight"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmLeft"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmLeft/LowerArmLeft"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Legs"), PoolRealArray( 1, 1, 1, 1, 0, 0, 0, 0 ), NodePath("Hip/Legs/Feet"), PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ) ]
 internal_vertex_count = 1
+
+[node name="Legs" type="Polygon2D" parent="Polygons"]
+light_mask = 3
+material = SubResource( 5 )
+texture = ExtResource( 4 )
+skeleton = NodePath("../../Skeleton")
+polygon = PoolVector2Array( 704, 1200, 368, 1344, 464, 1392, 432, 1744, 448, 2128, 544, 2176, 608, 1760, 752, 2144, 880, 2096, 784, 1760, 880, 1408, 1008, 1376, 672, 1344, 512, 1744, 704, 1760 )
+uv = PoolVector2Array( 704, 1200, 368, 1344, 464, 1392, 432, 1744, 448, 2128, 544, 2176, 608, 1760, 752, 2144, 880, 2096, 784, 1760, 880, 1408, 1008, 1376, 672, 1344, 512, 1744, 704, 1760 )
+polygons = [ PoolIntArray( 0, 18, 16, 17 ), PoolIntArray( 18, 9, 22 ), PoolIntArray( 18, 2, 22 ), PoolIntArray( 9, 21, 18 ), PoolIntArray( 21, 18, 16 ), PoolIntArray( 21, 15, 16 ), PoolIntArray( 21, 20, 14, 15 ), PoolIntArray( 0, 12, 2, 1 ), PoolIntArray( 0, 12, 10, 11 ), PoolIntArray( 12, 6, 13 ), PoolIntArray( 12, 13, 2 ), PoolIntArray( 12, 6, 14 ), PoolIntArray( 12, 10, 14 ), PoolIntArray( 10, 9, 14 ), PoolIntArray( 13, 3, 2 ), PoolIntArray( 13, 4, 3 ), PoolIntArray( 13, 6, 5 ), PoolIntArray( 13, 4, 5 ), PoolIntArray( 6, 7, 14 ), PoolIntArray( 14, 9, 8 ), PoolIntArray( 14, 7, 8 ) ]
+bones = [ NodePath("Hip"), PoolRealArray( 1, 1, 0.5, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 0.5, 0, 0 ), NodePath("Hip/Chest"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/Head"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmRight"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmRight/LowerArmRight"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmLeft"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Chest/ArmLeft/LowerArmLeft"), PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ), NodePath("Hip/Legs"), PoolRealArray( 0, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1 ), NodePath("Hip/Legs/Feet"), PoolRealArray( 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0 ) ]
+internal_vertex_count = 3
 
 [node name="Body" type="Polygon2D" parent="Polygons"]
 light_mask = 3

@@ -202,7 +202,7 @@ func add_riley():
 
 func add_riley_local_server():
 	var mi = Menu.main_scene.instance()
-	var target = Objects.add_target("local_server",tr("YOUR_SERVER").format({"name":Objects.actors["player"].name}),null,"127.0.0.1",Color(0.6,0.05,0.04),"layered",[4,4,18],Objects.actors["riley"].programs.duplicate(),Objects.actors["riley"].cpu,"ai_random",2500,25,"_local_server_defence")
+	var target = Objects.add_target("local_server",tr("YOUR_SERVER").format({"name":Objects.actors.player.name}),null,"127.0.0.1",Color(0.6,0.05,0.04),"layered",[4,4,18],Objects.actors.riley.programs.duplicate(),Objects.actors.riley.cpu,Objects.actors.riley.time_limit,"ai_random",2500,25,"_local_server_defence")
 	target.music_overwrite = "Of_Far_Different_Nature-Escape-14-Crypt.ogg"
 	triggered_method("on_hack_started","_riley_defence_start",[],"ai")
 	Menu.add_log_msg("LOG_DEFENCE","LOG_DEFENCE_HACK")
@@ -228,7 +228,7 @@ func add_riley_local_server():
 func _local_server_defence(victory):
 	if !Objects.actors.player.programs.has("lock"):
 		Objects.actors.player.programs["lock"] = 1
-		Menu.add_log_msg(tr("LOG_NEW_PROGRAM_ACQUIRED").replace("%s",tr(Programs.programs["lock"].name)),tr("LOG_NEW_PROGRAM_ACQUIRED").replace("%s",tr(Programs.programs["lock"].name)))
+		Menu.add_log_msg(tr("LOG_NEW_PROGRAM_ACQUIRED").format({"name":tr(Programs.programs["lock"].name)}),tr("LOG_NEW_PROGRAM_ACQUIRED").format({"name":tr(Programs.programs["lock"].name)}))
 	else:
 		Objects.actors.player.programs["lock"] += 1
 	Menu.get_node("Hack/Result/LabelReward").text += tr("TECHS")+": "+tr(Programs.programs["lock"].name)+"\n"
@@ -240,7 +240,7 @@ func break_free():
 	Objects.actors["riley"].cpu += 10
 	Objects.actors["riley"].memory += 100
 	Objects.actors["riley"].time_limit += 30.0
-	Objects.add_target("ai_server",tr("HALLY_SERVER"),null,tr("HALLY_SERVER"),Color(0.6,0.05,0.04),"radial",[5,4,12,2],Objects.actors["riley"].programs.duplicate(),Objects.actors["riley"].cpu,"ai_random",3000,30,"_riley_attack","Of_Far_Different_Nature-Escape-14-Crypt.ogg")
+	Objects.add_target("ai_server",tr("HALLY_SERVER"),null,tr("HALLY_SERVER"),Color(0.6,0.05,0.04),"radial",[5,4,12,2],Objects.actorsriley.programs.duplicate(),Objects.actorsriley.cpu,Objects.actors.riley.time_limit,"ai_random",3000,30,"_riley_attack","Of_Far_Different_Nature-Escape-14-Crypt.ogg")
 	triggered_method("on_hack_started","_riley_attack_start",[],"ai")
 	Menu.add_log_msg("LOG_DEFENCE_BREAK_FREE","LOG_DEFENCE_CAPTURE_FAILED")
 	call_chat("ai","break_free")

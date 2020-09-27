@@ -165,7 +165,7 @@ func ai_chat04():
 	Events.delayed_msg("ai",tr("AI_0062"),2.0)
 	Events.delayed_msg("ai",tr("AI_0063"),2.0)
 	Events.delayed_method(0.5,"show_web")
-	Objects.add_target("local_server",tr("YOUR_SERVER").format({"name":Objects.actors["player"].name}),null,"127.0.0.1",Color(0.4,0.3,0.2),"layered",[5,3,12],{"pulse":4,"fire_wall":2,"anti_virus":4},8,"ai_random",500,10,"_local_server_hack")
+	Objects.add_target("local_server",tr("YOUR_SERVER").format({"name":Objects.actors["player"].name}),null,"127.0.0.1",Color(0.4,0.3,0.2),"layered",[5,3,12],{"pulse":4,"fire_wall":2,"anti_virus":4},8,80.0,"ai_random",500,10,"_local_server_hack")
 	Events.delayed_msg("ai",tr("AI_0064"),0.5)
 	Events.delayed_choice("ai",[
 		{"text":"REPLY_0012_1"},
@@ -253,7 +253,7 @@ func gained_first_tech(tech):
 		Events.delayed_hack_msg(tr("AI_0093"),3.0)
 	elif tech=="wave" || tech=="beam_cannon":
 		Events.delayed_hack_msg(tr("AI_0094"),2.0)
-	Events.delayed_hack_msg(tr("AI_0095"),4.0)
+	Events.delayed_hack_msg(tr("AI_0095"),2.0)
 	Events.triggered_method("on_decompile","decompiled_first_tech",[],"ai")
 
 func decryption_intro():
@@ -823,7 +823,7 @@ func init_scan_data():
 	Events.delayed_msg("ai",tr("AI_0508"),2.0)
 	Events.delayed_msg("ai",tr("AI_0509"),2.0)
 	Events.delayed_msg("ai",tr("AI_0510"),1.0)
-	Objects.add_target("data_server",tr("DATA_STORAGE"),null,tr("DATA_STORAGE"),Color(0.6,0.05,0.04),"radial",[4,4,12,2],{"pulse":4,"wave":2,"phalanx":2,"scythe":4,"parry":4,"lock":2},20,"ai_random",1500,20,"_data_search")
+	Objects.add_target("data_server",tr("DATA_STORAGE"),null,tr("DATA_STORAGE"),Color(0.6,0.05,0.04),"radial",[4,4,12,2],{"pulse":4,"wave":2,"phalanx":2,"scythe":4,"parry":4,"lock":2},20,60.0,"ai_random",1500,20,"_data_search")
 
 func _data_search(victory):
 	if victory:

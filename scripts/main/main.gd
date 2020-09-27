@@ -625,7 +625,7 @@ func parse(prgm):
 					var pi = connection_particle.instance()
 					pi.from = gamestate.nodes[prgm.ID].node
 					pi.to = gamestate.nodes[new_target].node
-					pi.duration = prgm.delay
+					pi.duration = prgm.delay/time_scale
 					$ControlPoints.add_child(pi)
 					if prgm.stack.has(pos):
 						prgm.stack[pos].particles.push_back(pi)
@@ -639,7 +639,7 @@ func parse(prgm):
 						var pi = pulse_particle.instance()
 						pi.from = gamestate.nodes[prgm.ID].node
 						pi.to = gamestate.nodes[target].node
-						pi.duration = prgm.delay
+						pi.duration = prgm.delay/time_scale
 						$ControlPoints.add_child(pi)
 						if prgm.stack.has(pos):
 							prgm.stack[pos].particles.push_back(pi)

@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-const VERSION = "v0.2-alpha"
+const VERSION = "v0.2.1-alpha"
 const MAX_MSG = 100
 const PROGRAM_ICONS = [
 	"anti_virus_green","anti_virus_purple","beam_cannon","bombardment",
@@ -608,12 +608,12 @@ func _hack_ended(winner):
 		Objects.actors.player.credits += target.credits
 		Objects.actors.player.rating += target.prestige
 		$Hack/Result/LabelReward.text = tr("CREDITS")+": +"+str(target.credits)+"\n"+tr("RANKING")+": +"+str(target.prestige)+"\n"
-		add_log_msg(tr("LOG_HACK_SUCCESS")%target.name)
+		add_log_msg(tr("LOG_HACK_SUCCESS").format({"name":target.name}))
 		if Vars.get_var("gained_tech")!=null && (randf()<0.25 || Vars.get_var("gained_tech")<1):
 			var type = target.programs.keys()[randi()%target.programs.size()]
 			if !Objects.actors.player.programs.has(type):
 				Objects.actors.player.programs[type] = 1
-				add_log_msg(tr("LOG_NEW_PROGRAM_ACQUIRED").replace("%s",tr(Programs.programs[type].name)),tr("LOG_NEW_PROGRAM_ACQUIRED").replace("%s",tr(Programs.programs[type].name)))
+				add_log_msg(tr("LOG_NEW_PROGRAM_ACQUIRED").format({"name":tr(Programs.programs[type].name)}),tr("LOG_NEW_PROGRAM_ACQUIRED").format({"name":tr(Programs.programs[type].name)}))
 				Events._on_gained_tech(type)
 			else:
 				Objects.actors.player.programs[type] += 1
@@ -622,7 +622,7 @@ func _hack_ended(winner):
 	elif winner==1:
 		Objects.actors.player.rating = max(Objects.actors.player.rating-floor(target.prestige/2),0)
 		$Hack/Result/LabelReward.text = tr("RANKING")+": -"+str(floor(target.prestige/2))+"\n"
-		add_log_msg(tr("LOG_HACK_FAILED").replace("%s",target.name),tr("LOG_HACK_FAILED").replace("%s",target.name))
+		add_log_msg(tr("LOG_HACK_FAILED").format({"name":target.name}),tr("LOG_HACK_FAILED").format({"namne":target.name}))
 	else:
 		$Hack/Result/LabelReward.text = ""
 	Music.play_default()
@@ -776,14 +776,14 @@ func research(dict):
 	Objects.actors.player.programs[dict.type] -= 1
 	Programs.known_programs[dict.type] = prgm
 	Events._on_decompile(dict.type)
-	add_log_msg(tr("LOG_PROGRAM_DECOMPLIED")%tr(prgm.name),tr("LOG_PROGRAM_DECOMPLIED")%tr(prgm.name))
+	add_log_msg(tr("LOG_PROGRAM_DECOMPLIED").format({"name":tr(prgm.name)}),tr("LOG_PROGRAM_DECOMPLIED").format({"name":tr(prgm.name)}))
 	for cmd in Programs.COMMANDS.keys()+Programs.STATEMENTS+Programs.SETS+Programs.TARGETS:
 		if cmd in Programs.known_commands:
 			continue
 		for node in prgm.code.values():
 			if node.type==cmd:
 				Programs.known_commands.push_back(cmd)
-				add_log_msg(tr("LOG_COMMAND_LEARNED")%cmd,tr("LOG_COMMAND_LEARNED")%cmd)
+				add_log_msg(tr("LOG_COMMAND_LEARNED").format({"name":cmd}),tr("LOG_COMMAND_LEARNED").format({"name":cmd}))
 				continue
 
 func _upgrade(tech):
@@ -1891,7 +1891,7 @@ func _load(filename,ID=-1):
 	
 	var currentline = JSON.parse(file.get_line()).result
 	var save_version = currentline.version
-	if currentline==null || save_version!=VERSION:
+	if currentline==null:# || save_version!=VERSION:
 		print("Incompatible version!")
 		if has_node("Saves/ScrollContainer/VBoxContainer/Button"+str(ID)):
 			get_node("Saves/ScrollContainer/VBoxContainer/Button"+str(ID)).hint_tooltip = tr("ERROR_INCOMPATIBLE_VERSION")
